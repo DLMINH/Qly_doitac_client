@@ -3,8 +3,8 @@
         .controller('mainCtrl', ['$scope', '$rootScope', '$location', '$window',
             function($scope, $rootScope, $location, $window) {
 
-                $rootScope.serverAdd = "http://localhost:8180";
-                $rootScope.clientAdd = "http://localhost:8000";
+                $rootScope.serverAdd = "http://112.137.130.47:8180";
+                $rootScope.clientAdd = "http://112.137.130.47:8100";
                 if(sessionStorage['User-Data']){
                     $rootScope.loggedIn = true;
                 }
