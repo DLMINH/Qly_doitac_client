@@ -54,7 +54,7 @@
                             $scope.input.continent = null;
                             $scope.Nations = null;
 
-                            $scope.editInfo = true;
+                            $scope.editInfo = false;
                             $("#add_partner").fadeTo(500, 0).slideUp(500, function() {
                                 // $(this).remove();
                             });
