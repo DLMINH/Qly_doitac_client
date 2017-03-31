@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quản Lý Đối Tác</title>
+    <!-- Bootstrap -->
+    <link href="bower_components/gentelella/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="bower_components/gentelella/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="bower_components/gentelella/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="bower_components/gentelella/build/css/custom.min.css" rel="stylesheet">
+    <!-- AngularJs -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="app.js"></script>
+    <script src="main/controllers/main.ctrl.js"></script>
+</head>
+<div ng-view ng-if="loggedIn != true"></div>
+
+<body class="nav-md" ng-app="myAdminApp" ng-controller="mainCtrl" ng-cloak>
+    <div class="container body" ng-show="loggedIn">
+        <div class="main_container">
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view">
+                    <div class="navbar nav_title" style="border: 0;">
+                        <a class="site_title"><span>Quản Lý Đối Tác</span></a>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- menu profile quick info -->
+                    <!-- /menu profile quick info -->
+                    <br />
+                    <!-- sidebar menu -->
+                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                        <div class="menu_section">
+                            <h3>General</h3>
+                            <ul class="nav side-menu">
+                                <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="/#/nation_continent"><i class="fa fa-globe"></i> Quốc Gia Và Châu lục </a></li>
+                                        <li><a href="/#/partner"><i class="fa fa-group"></i> Đối Tác </a></li>
+                                        <li><a href="/#/vnu"><i class="fa fa-university"></i> VNU </a></li>
+                                        <li><a href="/#/contract"><i class="fa fa-archive"></i> Hợp Đồng </a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /sidebar menu -->
+                    <!-- /menu footer buttons -->
+                    <!-- /menu footer buttons -->
+                </div>
+            </div>
+            <!-- top navigation -->
+            <div class="top_nav">
+                <div class="nav_menu">
+                    <nav>
+                        <div class="nav toggle">
+                            <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                        </div>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="">
+                                <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <span class=" fa fa-angle-down"></span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                    <li><a href="javascript:;"> Profile</a></li>
+                                    <li>
+                                        <a href="javascript:;">
+                                            <span>Settings</span>
+                                        </a>
+                                    </li>
+                                    <li><a href="javascript:;">Help</a></li>
+                                    <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                                </ul>
+                            </li>
+                            <li role="presentation" class="dropdown">
+                                <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-envelope-o"></i>
+                                    <span class="badge bg-green">6</span>
+                                </a>
+                                <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+                                    <li>
+                                        <a>
+                                            <span>
+                          <span>John Smith</span>
+                                            <span class="time">3 mins ago</span>
+                                            </span>
+                                            <span class="message">
+                          Film festivals used to be do-or-die moments for movie makers. They were where...
+                        </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <span>
+                          <span>John Smith</span>
+                                            <span class="time">3 mins ago</span>
+                                            </span>
+                                            <span class="message">
+                          Film festivals used to be do-or-die moments for movie makers. They were where...
+                        </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <div class="text-center">
+                                            <a>
+                                                <strong>See All Alerts</strong>
+                                                <i class="fa fa-angle-right"></i>
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <!-- /top navigation -->
+            <!-- page content -->
+            <div class="right_col" role="main">
+                <div class="">
+                    <div ui-view=></div>
+                </div>
+            </div>
+            <!-- /page content -->
+            <!-- footer content -->
+            <footer>
+                <div class="pull-right">
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+            <!-- /footer content -->
+        </div>
+    </div>
+    <!-- user -->
+    <script src="main/controllers/user.ctrl.js"></script>
+    <script src="main/services/user.service.js"></script>
+    <!-- nation and continent -->
+    <script src="main/controllers/nation.ctrl.js"></script>
+    <script src="main/services/nation.service.js"></script>
+    <!-- partner -->
+    <script src="main/controllers/partner.ctrl.js"></script>
+    <script src="main/services/partner.service.js"></script>
+    <!-- vnu -->
+    <script src="main/controllers/vnu.ctrl.js"></script>
+    <script src="main/services/vnu.service.js"></script>
+    <!-- contract -->
+    <script src="main/controllers/contract.ctrl.js"></script>
+    <script src="main/services/contract.service.js"></script>
+    <!-- config request header -->
+    <script src="main/services/httpRequestInterceptor.js"></script>
+    <!-- jQuery -->
+    <script src="bower_components/gentelella/vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="bower_components/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="bower_components/gentelella/vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="bower_components/gentelella/vendors/nprogress/nprogress.js"></script>
+    <!-- jQuery Smart Wizard -->
+    <script src="bower_components/gentelella/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="bower_components/gentelella/build/js/custom.min.js"></script>
+</body>
+
+</html>

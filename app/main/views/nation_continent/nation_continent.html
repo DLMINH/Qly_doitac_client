@@ -1,0 +1,110 @@
+<div class="page-title" ng-init="getAllContinent()">
+    <div class="title_left">
+        <h3>Quốc Gia và Châu Lục</h3>
+    </div>
+    <div class="title_right">
+        <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search for...">
+                <span class="input-group-btn">
+                      <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clearfix"></div>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Châu lục</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle cursor" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a data-toggle="collapse" data-target="#add_nation" class="cursor"> Thêm Quốc Gia </a>
+                            </li>
+                            <li><a data-toggle="collapse" data-target="#add_continent" class="cursor"> Thêm Châu Lục </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="alert alert-success" ng-if="success">
+                    <strong>Tạo thành công!</strong>
+                </div>
+                <form class="form-horizontal form-label-left collapse" id="add_nation">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a data-toggle="collapse" data-target="#add_nation" class="cursor"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                    </ul>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên Quốc Gia</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" name="country" class="form-control col-md-10" ng-model="input.nationName" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Châu Lục</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select class="form-control" ng-model="input.continentId">
+                                <option ng-repeat="continent in allContinent" value="{{continent.id}}">{{continent.continentName}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button type="submit" class="btn btn-success" ng-click="createNation()">Tạo</button>
+                        </div>
+                    </div>
+                    <div class="divider-dashed"></div>
+                </form>
+                <form class="form-horizontal form-label-left collapse" id="add_continent">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a data-toggle="collapse" data-target="#add_continent" class="cursor"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                    </ul>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên Châu Lục</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" name="country" class="form-control col-md-10" ng-model="input.continentName" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button type="submit" class="btn btn-success" ng-click="createContinent()">Tạo</button>
+                        </div>
+                    </div>
+                    <div class="divider-dashed"></div>
+                </form>
+                <div class="table-responsive">
+                    <table class="table table-striped jambo_table bulk_action">
+                        <thead>
+                            <tr class="headings">
+                                <!-- <th> -->
+                                <!-- <input type="checkbox" id="check-all" class="flat"> -->
+                                <!-- </th> -->
+                                <th class="column-title">Châu Lục </th>
+                                <th class="column-title">Số Quốc Gia</th>
+                                <!-- <th class="column-title no-link last"><span class="nobr">Action</span> -->
+                                <!-- </th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="even pointer" ng-repeat="continent in allContinent">
+                                <!-- <td class="a-center "> -->
+                                <!-- <input type="checkbox" class="flat" name="table_records"> -->
+                                <!-- </td> -->
+                                <td class=" ">{{continent.continentName}}</td>
+                                <td class=" ">{{continent.nation.length}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
