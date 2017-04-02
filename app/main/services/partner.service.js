@@ -11,8 +11,17 @@
         	getAllPartner: getAllPartner,
             createPartner: createPartner,
             editPartnerInfo: editPartnerInfo,
-            getAllPartnerContact : getAllPartnerContact
+            getAllPartnerContact : getAllPartnerContact,
+            editPartnerContact : editPartnerContact,
+            deletePartner : deletePartner
         };
+
+        function deletePartner(partnerId){
+            return $http({
+                url:$rootScope.serverAdd + '/partner/' + partnerId + '/delete',
+                method : 'DELETE'
+            })
+        }
 
         function getAllPartnerContact(partnerId){
             return $http({
@@ -39,6 +48,14 @@
         function editPartnerInfo(data){
             return $http({
                 url:$rootScope.serverAdd + '/partner/edit',
+                method : 'PUT',
+                data : data
+            })
+        }
+
+        function editPartnerContact(data){
+            return $http({
+                url:$rootScope.serverAdd + '/partner/contact/edit',
                 method : 'PUT',
                 data : data
             })

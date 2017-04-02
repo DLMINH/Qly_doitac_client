@@ -12,7 +12,7 @@ angular.module('myApp', [
     'vnu',
     'contract'
 ]).
-config(['$locationProvider', '$routeProvider', '$stateProvider', function($locationProvider, $routeProvider, $stateProvider) {
+config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProvider', function($locationProvider, $routeProvider, $stateProvider, $urlRouterProvider) {
     $locationProvider.hashPrefix('');
 
     if (sessionStorage["User-Data"] == null) {
@@ -22,12 +22,8 @@ config(['$locationProvider', '$routeProvider', '$stateProvider', function($locat
                 controller: "userCtrl"
             }).otherwise({ redirectTo: "/login" });
     } else {
-        // $urlRouterProvider.otherwise('/home');
+        $urlRouterProvider.otherwise('/contract');
         $stateProvider
-            .state('/', {
-                url : '/',
-                templateUrl : 'index.html'
-            })
             .state('/404', {
                 url: '/404',
                 templateUrl: '404.html'
