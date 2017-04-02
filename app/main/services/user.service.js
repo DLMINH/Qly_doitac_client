@@ -8,7 +8,8 @@
 
     function userService($log, $http, $q, $rootScope) {
         return {
-        	login: login
+        	login : login,
+            logout : logout
         };
 
         function login(data){
@@ -16,6 +17,13 @@
                 url:$rootScope.serverAdd + '/login',
                 method: 'POST',
                 data: data
+            })
+        }
+
+        function logout(){
+            return $http({
+                url:$rootScope.serverAdd + '/logout',
+                method: 'GET'
             })
         }
     }
