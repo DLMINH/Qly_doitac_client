@@ -7,7 +7,7 @@
     <div class="title_right">
         <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search for...">
+                <input type="text" class="form-control" placeholder="Search for..." ng-model="search">
                 <span class="input-group-btn">
                       <button class="btn btn-default" type="button">Go!</button>
                     </span>
@@ -297,7 +297,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="even pointer" ng-repeat="partner in allPartner">
+                            <tr class="even pointer" ng-repeat="partner in filtered = allContract | filter : search |
+                                startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
                                 <!-- <td class="a-center "> -->
                                 <!-- <input type="checkbox" class="flat" name="table_records"> -->
                                 <!-- </td> -->
@@ -325,6 +326,7 @@
                             </tr>
                         </tbody>
                     </table>
+                    <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="noOfPages" items-per-page="entryLimit"></ul>
                 </div>
                 <!-- edit partner info -->
                 <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="edit_partnerInfo">

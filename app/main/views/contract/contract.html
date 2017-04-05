@@ -80,7 +80,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="even pointer" ng-repeat="contract in allContract | filter : search">
+                            <tr class="even pointer" ng-repeat="contract in filtered = allContract | filter : search |
+                                startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
                                 <!-- <td class="a-center "> -->
                                 <!-- <input type="checkbox" class="flat" name="table_records"> -->
                                 <!-- </td> -->
@@ -105,6 +106,7 @@
                             </tr>
                         </tbody>
                     </table>
+                    <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="noOfPages" items-per-page="entryLimit"></ul>
                 </div>
                 <div ui-view></div>
                 <!-- edit partner info -->

@@ -174,7 +174,18 @@
                 vnuService.getAllContract()
                     .then(function(response) {
                         $scope.allContract = response.data;
-                        console.log(response);
+                        $scope.currentPage = 1;
+                        $scope.totalItems = response.data.length;
+                        $scope.entryLimit = 10; // items per page
+                        $scope.noOfPages = Math.ceil($scope.totalItems / $scope.entryLimit);
+
+                        $scope.$watch('search', function(newVal, oldVal) {
+                            $scope.filtered = filterFilter($scope.allContract, newVal);
+                            $scope.totalItems = $scope.filtered.length;
+                            $scope.noOfPages = Math.ceil($scope.totalItems / $scope.entryLimit);
+                            $scope.currentPage = 1;
+                        }, true);
+                        // console.log(response);
                     }, function(error) {
                         console.log(error);
                     })

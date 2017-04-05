@@ -1,7 +1,7 @@
 (function() {
     var app = angular.module("partner", []);
-    app.controller('partnerCtrl', ['$scope', 'partnerService', 'nationService', '$location', '$rootScope', '$window', '$timeout',
-        function($scope, partnerService, nationService, $location, $rootScope, $window, $timeout) {
+    app.controller('partnerCtrl', ['$scope', 'partnerService', 'nationService', '$location', '$rootScope', '$window', '$timeout', 'filterFilter',
+        function($scope, partnerService, nationService, $location, $rootScope, $window, $timeout, filterFilter) {
             $scope.input = {};
             $scope.alertDanger = function(error, danger) {
                 $scope.errorMessage = error;
@@ -48,6 +48,17 @@
                     .then(function(response) {
                         // console.log(response.data);
                         $scope.allPartner = response.data;
+                        $scope.currentPage = 1;
+                        $scope.totalItems = response.data.length;
+                        $scope.entryLimit = 10; // items per page
+                        $scope.noOfPages = Math.ceil($scope.totalItems / $scope.entryLimit);
+
+                        $scope.$watch('search', function(newVal, oldVal) {
+                            $scope.filtered = filterFilter($scope.allPartner, newVal);
+                            $scope.totalItems = $scope.filtered.length;
+                            $scope.noOfPages = Math.ceil($scope.totalItems / $scope.entryLimit);
+                            $scope.currentPage = 1;
+                        }, true);
                     }, function(error) {
                         console.log(error)
                     })
