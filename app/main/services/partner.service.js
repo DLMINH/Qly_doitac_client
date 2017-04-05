@@ -13,8 +13,25 @@
             editPartnerInfo: editPartnerInfo,
             getAllPartnerContact : getAllPartnerContact,
             editPartnerContact : editPartnerContact,
-            deletePartner : deletePartner
+            deletePartner : deletePartner,
+            deletePartnerContact : deletePartnerContact,
+            createPartnerContact : createPartnerContact
         };
+
+         function createPartnerContact(data, partnerId){
+            return $http({
+                url:$rootScope.serverAdd + '/partner/' + partnerId + '/contact/create',
+                method : 'POST',
+                data : data
+            })
+        }
+
+        function deletePartnerContact(contactId){
+            return $http({
+                url:$rootScope.serverAdd + '/partner/contact/' + contactId + '/delete',
+                method : 'DELETE'
+            })
+        }
 
         function deletePartner(partnerId){
             return $http({

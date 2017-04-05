@@ -5,7 +5,7 @@
     <div class="title_right">
         <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search for...">
+                <input type="text" class="form-control" placeholder="Search for..." ng-model="search">
                 <span class="input-group-btn">
                       <button class="btn btn-default" type="button">Go!</button>
                     </span>
@@ -36,7 +36,7 @@
             </div>
             <div class="x_content">
                 <div class="alert alert-success" ng-if="success">
-                    <strong>Success!</strong> Indicates a successful or positive action.
+                    <strong>{{successMessage}}</strong>
                 </div>
                 <div class="alert alert-danger" ng-if="danger">
                     <strong>{{errorMessage}}</strong>
@@ -105,6 +105,12 @@
                     <div class="x_panel">
                         <div class="x_title">
                             <h2>Các loại hợp đồng</h2>
+                            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search for..." ng-model="type_contract"
+                                        style="border-radius:25px; border: 1px solid rgba(221,226,232,.49); box-shadow: inset 0 1px 0 rgba(0,0,0,.075)">
+                                </div>
+                            </div>
                             <div class="clearfix"></div>
                         </div>
                         <div class="x_content">
@@ -113,15 +119,27 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Loại hợp đồng</th>
+                                        <th>Sửa</th>
+                                        <th>Xóa</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="typeContract in allTypeContract">
+                                    <tr ng-repeat="typeContract in typeContract_filtered = allTypeContract | filter : type_contract | startFrom:(typeContract_currentPage-1)*typeContract_entryLimit | limitTo:typeContract_entryLimit" id="tr_typeContract_{{typeContract.id}}">
                                         <th scope="row">{{typeContract.id}}</th>
-                                        <td>{{typeContract.typeContract}}</td>
+                                        <td id="typeContract_{{typeContract.id}}">{{typeContract.typeContract}}</td>
+                                        <th>
+                                            <i id="edit_typeContract_{{typeContract.id}}" class="fa fa-edit cursor" ng-click="editTypeContract(typeContract.id); edit_typeContract = true"></i>
+                                            <i id="save_edit_typeContract_{{typeContract.id}}" class="fa fa-save cursor" ng-click="saveEditTypeContract(typeContract.id)" ng-if="edit_typeContract"></i>
+                                        </th>
+                                        <th id="confirm_delete_typeContract_{{typeContract.id}}">
+                                            <i id="i_confirm_delete_typeContract_{{typeContract.id}}" class="fa fa-trash cursor" ng-click="confirmDeleteTypeContract(typeContract.id); deleteTypeContractValue = true"></i>
+                                            <button id="button_confirm_delete_typeContract_{{typeContract.id}}" ng-if="deleteTypeContractValue" type="button" class="btn btn-default btn-xs" ng-click="cancerDeleteTypeContract(typeContract.id)">Hủy</button>
+                                            <button id="button_delete_typeContract_{{typeContract.id}}" ng-if="deleteTypeContractValue" type="button" class="btn btn-success btn-xs" ng-click="deleteTypeContract(typeContract.id)">Xác nhận</button>
+                                        </th>
                                     </tr>
                                 </tbody>
                             </table>
+                            <ul uib-pagination total-items="typeContract_totalItems" ng-model="typeContract_currentPage" max-size="typeContract_noOfPages" items-per-page="typeContract_entryLimit"></ul>
                         </div>
                     </div>
                 </div>
@@ -129,6 +147,12 @@
                     <div class="x_panel">
                         <div class="x_title">
                             <h2>Người kí kết (VNU-UET)</h2>
+                            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search for..." ng-model="uet_man"
+                                        style="border-radius:25px; border: 1px solid rgba(221,226,232,.49); box-shadow: inset 0 1px 0 rgba(0,0,0,.075)">
+                                </div>
+                            </div>
                             <div class="clearfix"></div>
                         </div>
                         <div class="x_content">
@@ -137,22 +161,42 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Người kí kết</th>
+                                        <th>Sửa</th>
+                                        <th>Xóa</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="uetMan in allUetMan">
+                                    <tr ng-repeat="uetMan in uetMan_filtered = allUetMan | filter : uet_man | startFrom:(uetMan_currentPage-1)*uetMan_entryLimit | limitTo:uetMan_entryLimit" id="tr_uetMan_{{uetMan.id}}">
                                         <th scope="row">{{uetMan.id}}</th>
-                                        <td>{{uetMan.uetManName}}</td>
+                                        <td id="uetMan_{{uetMan.id}}">{{uetMan.uetManName}}</td>
+                                        <th>
+                                            <i id="edit_uetMan_{{uetMan.id}}" class="fa fa-edit cursor" ng-click="editUetMan(uetMan.id); edit_uetMan = true"></i>
+                                            <i id="save_edit_uetMan_{{uetMan.id}}" class="fa fa-save cursor" ng-click="saveEditUetMan(uetMan.id)" ng-if="edit_uetMan"></i>
+                                        </th>
+                                        <th id="confirm_delete_uetMan_{{uetMan.id}}">
+                                            <i id="i_confirm_delete_uetMan_{{uetMan.id}}" class="fa fa-trash cursor" ng-click="confirmDeleteUetMan(uetMan.id); deleteUetManValue = true"></i>
+                                            <button id="button_confirm_delete_uetMan_{{uetMan.id}}" ng-if="deleteUetManValue" type="button" class="btn btn-default btn-xs" ng-click="cancerDeleteUetMan(uetMan.id)">Hủy</button>
+                                            <button id="button_delete_uetMan_{{uetMan.id}}" ng-if="deleteUetManValue" type="button" class="btn btn-success btn-xs" ng-click="deleteUetMan(uetMan.id)">Xác nhận</button>
+                                        </th>
                                     </tr>
                                 </tbody>
                             </table>
+                            <ul uib-pagination total-items="uetMan_totalItems" ng-model="uetMan_currentPage" max-size="uetMan_noOfPages" items-per-page="uetMan_entryLimit"></ul>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-sm-6 col-xs-12" ng-init="getAllUnit()">
+            </div>
+            <div class="x_content">
+                <div class="col-md-6 col-sm-6 col-xs-12" ng-init="getAllUnitName()">
                     <div class="x_panel">
                         <div class="x_title">
                             <h2>Đơn vị theo dõi</h2>
+                            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search for..." ng-model="all_unit"
+                                        style="border-radius:25px; border: 1px solid rgba(221,226,232,.49); box-shadow: inset 0 1px 0 rgba(0,0,0,.075)">
+                                </div>
+                            </div>
                             <div class="clearfix"></div>
                         </div>
                         <div class="x_content">
@@ -161,120 +205,30 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Đơn vị theo dõi</th>
+                                        <th>Sửa</th>
+                                        <th>Xóa</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="unit in allUnit">
-                                        <th scope="row">{{unit.id}}</th>
-                                        <td>{{unit.unitName}}</td>
+                                    <tr ng-repeat="unitName in allUnit_filtered = allUnit | filter : all_unit | startFrom:(allUnit_currentPage-1)*allUnit_entryLimit | limitTo:allUnit_entryLimit" id="tr_unitName_{{unitName.id}}">
+                                        <th scope="row">{{unitName.id}}</th>
+                                        <td id="unitName_{{unitName.id}}">{{unitName.unitName}}</td>
+                                        <th>
+                                            <i id="edit_unitName_{{unitName.id}}" class="fa fa-edit cursor" ng-click="editUnitName(unitName.id); edit_unitName = true"></i>
+                                            <i id="save_edit_unitName_{{unitName.id}}" class="fa fa-save cursor" ng-click="saveEditUnitName(unitName.id)" ng-if="edit_unitName"></i>
+                                        </th>
+                                        <th id="confirm_delete_unitName_{{unitName.id}}">
+                                            <i id="i_confirm_delete_unitName_{{unitName.id}}" class="fa fa-trash cursor" ng-click="confirmDeleteUnitName(unitName.id); deleteUnitNameValue = true"></i>
+                                            <button id="button_confirm_delete_unitName_{{unitName.id}}" ng-if="deleteUnitNameValue" type="button" class="btn btn-default btn-xs" ng-click="cancerDeleteUnitName(unitName.id)">Hủy</button>
+                                            <button id="button_delete_unitName_{{unitName.id}}" ng-if="deleteUnitNameValue" type="button" class="btn btn-success btn-xs" ng-click="deleteUnitName(unitName.id)">Xác nhận</button>
+                                        </th>
                                     </tr>
                                 </tbody>
                             </table>
+                            <ul uib-pagination total-items="allUnit_totalItems" ng-model="allUnit_currentPage" max-size="allUnit_noOfPages" items-per-page="allUnit_entryLimit"></ul>
                         </div>
                     </div>
                 </div>
-                <div ui-view></div>
-                <!-- edit partner info -->
-                <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" id="close_modal"><span aria-hidden="true">×</span>
-                                </button>
-                                <h4 class="modal-title" id="myModalLabel">Chỉnh sửa thông tin doanh nghiệp</h4>
-                            </div>
-                            <div class="modal-body">
-                                <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Tên cơ quan hợp tác: </label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input type="text" id="last-name" name="last-name" class="form-control col-md-7 col-xs-12" ng-model="Partner.partnerInfo.partnerName">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="middle-name" class="control-label col-md-4 col-sm-4 col-xs-12">Quốc Gia: </label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name" ng-model="Partner.nation.nationName">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Châu Lục</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <select class="form-control" ng-model="input.continent" ng-change="showNation(input.continent)">
-                                                <option ng-repeat="continent in allContinent" value="{{continent.nation}}">
-                                                    {{continent.continentName}}
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Quốc Gia</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <select class="form-control" ng-model="input.nationId" required>
-                                                <option ng-repeat="nation in Nations" value="{{nation.id}}">
-                                                    {{nation.nationName}}
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Giám đốc</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.partnerInfo.director">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Email</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.partnerInfo.email">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Website</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input type="text" id="last-name" name="last-name" class="form-control col-md-7 col-xs-12" ng-model="Partner.partnerInfo.website">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="middle-name" class="control-label col-md-4 col-sm-4 col-xs-12">Số điện thoại</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name" ng-model="Partner.partnerInfo.phone">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Đại chỉ</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.partnerInfo.address">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Mô tả</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.partnerInfo.description">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Mã số thuế</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.partnerInfo.taxCode">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Lĩnh vực làm việc</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.partnerInfo.fieldWork">
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" ng-click="editPartnerInfo()">Save changes</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- end edit partner info -->
             </div>
         </div>
     </div>

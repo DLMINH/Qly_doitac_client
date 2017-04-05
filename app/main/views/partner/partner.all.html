@@ -27,6 +27,8 @@
                         <ul class="dropdown-menu" role="menu">
                             <li><a data-toggle="collapse" data-target="#add_partner" class="cursor"> Thêm Doanh Nghiệp </a>
                             </li>
+                            <li><a data-toggle="collapse" data-target="#create_partner_contact" class="cursor"> Thêm liên hệ của doanh nghiệp </a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
@@ -202,8 +204,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-4" ng-init="done = false">
-                                    <button type="submit" class="buttonFinish btn btn-default" ng-click="close()"
-                                        ng-if="done == true">Hoàn thành</button>
+                                    <button type="submit" class="buttonFinish btn btn-default" ng-click="close()" ng-if="done == true">Hoàn thành</button>
                                     <button type="submit" class="btn btn-primary" ng-click="close()" ng-if="done == false">Để sau</button>
                                     <button type="submit" class="btn btn-success" ng-click="editPartnerInfo(); done = true;">Tạo</button>
                                 </div>
@@ -212,8 +213,64 @@
                     </div>
                 </div>
                 <!-- end form tao partner -->
-                <!-- form edit info sau khi tao partner -->
-                <!-- end form edit info sau khi tao partner -->
+                <!-- create partner contact -->
+                <form class="form-horizontal form-label-left collapse" id="create_partner_contact" ng-init="getAllContinent()">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a data-toggle="collapse" data-target="#create_partner_contact" class="cursor"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                    </ul>
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-3 col-xs-12">Tên doanh nghiệp: </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select class="form-control" ng-model="input.partnerContact.partnerId">
+                                <option value="" selected="selected">
+                                    -- Chọn Doanh nghiệp --
+                                </option>
+                                <option ng-repeat="partner in allPartner" value="{{partner.id}}">
+                                    {{partner.partnerInfo.partnerName}}
+                                </option>
+                            </select>
+                            <!-- <p ng-if="input.continentId >= 0" ng-init="init()">{{input.continentId}}</p> -->
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-3 col-xs-12">Tên liên hệ: </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" name="country" id="autocomplete-custom-append" class="form-control col-md-10" ng-model="input.partnerContact.contactName" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-3 col-xs-12">Email: </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" name="country" id="autocomplete-custom-append" class="form-control col-md-10" ng-model="input.partnerContact.email" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-3 col-xs-12">Phone: </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" name="country" id="autocomplete-custom-append" class="form-control col-md-10" ng-model="input.partnerContact.phone" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-3 col-xs-12">Chức vụ: </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" name="country" id="autocomplete-custom-append" class="form-control col-md-10" ng-model="input.partnerContact.about" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-3 col-xs-12">Skype: </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" name="country" id="autocomplete-custom-append" class="form-control col-md-10" ng-model="input.partnerContact.skype" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-4">
+                            <button type="submit" class="btn btn-success" ng-click="createPartnerContact()">Tạo</button>
+                        </div>
+                    </div>
+                    <div class="divider-dashed"></div>
+                </form>
+                <!-- end create partner contact -->
                 <div class="clearfix"></div>
                 <div class="table-responsive">
                     <table class="table table-striped jambo_table bulk_action">
@@ -412,7 +469,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="contact in PartnerContacts.partnerContacts">
+                                        <tr ng-repeat="contact in PartnerContacts.partnerContacts" id="tr_contact_{{contact.id}}">
                                             <!-- <th scope="row">{{typeContract.id}}</th> -->
                                             <td id="contactName_{{contact.id}}">{{contact.contactName}}</td>
                                             <td id="email_{{contact.id}}">{{contact.email}}</td>
@@ -423,7 +480,7 @@
                                                 <i id="edit_contact_{{contact.id}}" class="fa fa-edit cursor" ng-click="editContact(contact.id); edit_contact = true"></i>
                                                 <i id="save_edit_contact_{{contact.id}}" class="fa fa-save cursor" ng-click="saveEditContact(contact.id)" ng-if="edit_contact"></i>
                                             </th>
-                                            <!-- <th><i class="fa fa-trash cursor" data-toggle="modal" data-target="#delete_nation" ng-click="comfirmDelete(nation.id)"></i></th> -->
+                                            <th><i class="fa fa-trash cursor" data-toggle="modal" data-target="#delete_partner_contact" ng-click="comfirmDelete(contact.id)"></i></th>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -440,11 +497,26 @@
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_modal_delete_partner"><span aria-hidden="true">×</span>
                                 </button>
-                                <h4 class="modal-title" id="myModalLabel2">Bạn có chắc muốn xóa doanh nghiệp này này</h4>
+                                <h4 class="modal-title" id="myModalLabel2">Bạn có chắc muốn xóa doanh nghiệp này này?</h4>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
                                 <button type="button" class="btn btn-primary" ng-click="deletePartner(comfirmDeleteId)">Xóa</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="delete_partner_contact">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_modal_delete_partner_contact"><span aria-hidden="true">×</span>
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel2">Bạn có chắc muốn xóa liên hệ của doanh nghiệp này này?</h4>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                                <button type="button" class="btn btn-primary" ng-click="deletePartnerContact(comfirmDeleteId)">Xóa</button>
                             </div>
                         </div>
                     </div>
