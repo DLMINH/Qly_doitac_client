@@ -2,7 +2,7 @@
     var app = angular.module("partner", []);
     app.controller('partnerCtrl', ['$scope', 'partnerService', 'nationService', '$location', '$rootScope', '$window', '$timeout',
         function($scope, partnerService, nationService, $location, $rootScope, $window, $timeout) {
-            $scope.input = [];
+            $scope.input = {};
             $scope.alertDanger = function(error, danger) {
                 $scope.errorMessage = error;
                 if (danger == 'danger') {
@@ -84,17 +84,28 @@
 
             $scope.deletePartner = function(partnerId) {
                 partnerService.deletePartner(partnerId)
-                    .then(function(){
+                    .then(function() {
                         $scope.getAllPartner();
                         $('#close_modal_delete_partner').trigger('click');
                         $scope.alertSuccess("Xóa thành công doanh nghiệp!", "");
-                    }, function(error){
+                    }, function(error) {
                         $('#close_modal_delete_partner').trigger('click');
                         $scope.alertDanger(error.data.message, '')
                     })
             }
 
-
+            $scope.deletePartnerContact = function(contactId) {
+                partnerService.deletePartnerContact(contactId)
+                    .then(function() {
+                        $('#tr_contact_' + contactId).remove();
+                        $('#close_modal_delete_partner_contact').trigger('click');
+                        $scope.alertSuccess("Xóa liên hệ thành công!", "successdelete_edit");
+                        $scope.getAllPartner();
+                    }, function(error) {
+                        $('#close_modal_delete_partner_contact').trigger('click');
+                        $scope.alertDanger(error.data.message, 'danger');
+                    })
+            }
 
             $scope.createPartner = function() {
                 // $('#step-1').css("display","none");
@@ -137,6 +148,19 @@
                 }
             }
 
+            $scope.createPartnerContact = function() {
+                if ($scope.input.partnerContact.partnerId != null && $scope.input.partnerContact.contactName != null) {
+                    partnerService.createPartnerContact($scope.input.partnerContact, $scope.input.partnerContact.partnerId)
+                        .then(function() {
+                            $scope.getAllPartner();
+                            $scope.input.partnerContact = null;
+                            $scope.alertSuccess("Tạo liên hệ thành công", '');
+                        }, function(error) {
+                            $scope.alertDanger(error.data.message, '');
+                        })
+                }
+            }
+
             $scope.editPartner = function(partner) {
                 $scope.Partner = partner;
 
@@ -155,7 +179,7 @@
                         console.log(response);
                         $("#close_modal").trigger('click');
                         $scope.success = true;
-                        if ($scope.editInfo == true){
+                        if ($scope.editInfo == true) {
                             $('#a_step_2').addClass("done");
                         }
                         $scope.alertSuccess('Sửa thông tin doanh nghiệp thành công!', '')
@@ -168,14 +192,12 @@
 
             $scope.close = function() {
                 // alert(1)
-                $("#step-2").fadeOut(500, 0).slideUp(500, function() {
-                    // $(this).remove();
-
-                    // $('#step-1').show();
+                $("#step-2").fadeOut("slow", function() {
+                    $scope.editInfo = false;
+                    $('#a_step_1').removeClass("done");
+                    $('#a_step_2').removeClass("done").addClass("disabled");
                 });
-                $scope.editInfo = false;
-                $('#a_step_1').removeClass("done");
-                $('#a_step_2').removeClass("disabled").addClass("disabled");
+
             }
 
             $scope.showContact = function(partnerContacts) {

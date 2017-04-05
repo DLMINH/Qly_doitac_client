@@ -12,13 +12,64 @@
             createUetMan : createUetMan,
             createTypeContract : createTypeContract,
             getAllTypeContract : getAllTypeContract,
-            getAllUnit : getAllUnit,
+            getAllUnitName : getAllUnitName,
             getAllUetMan :getAllUetMan,
             getAllContract : getAllContract,
             createContract : createContract,
             editContract : editContract,
-            deleteContract :deleteContract
+            deleteContract :deleteContract,
+            editTypeContract : editTypeContract,
+            editUetMan : editUetMan,
+            editUnitName : editUnitName,
+            deleteTypeContract : deleteTypeContract,
+            deleteUnitName : deleteUnitName,
+            deleteUetMan : deleteUetMan
         };
+
+        function deleteUnitName(unitNameId){
+            return $http({
+                url:$rootScope.serverAdd + '/unit/' + unitNameId + '/delete',
+                method: 'DELETE'
+            })
+        }
+
+        function deleteUetMan(uetManId){
+            return $http({
+                url:$rootScope.serverAdd + '/uetMan/' + uetManId + '/delete',
+                method: 'DELETE'
+            })
+        }
+
+        function deleteTypeContract(typeContractId){
+            return $http({
+                url:$rootScope.serverAdd + '/typeContract/' + typeContractId + '/delete',
+                method: 'DELETE'
+            })
+        }
+
+        function editTypeContract(data, typeContractId){
+            return $http({
+                url:$rootScope.serverAdd + '/typeContract/edit',
+                method: 'PUT',
+                data: data
+            })
+        }
+
+        function editUetMan(data, uetManId){
+            return $http({
+                url:$rootScope.serverAdd + '/uetMan/edit',
+                method: 'PUT',
+                data: data
+            })
+        }
+
+        function editUnitName(data, unitNameId){
+            return $http({
+                url:$rootScope.serverAdd + '/unit/edit',
+                method: 'PUT',
+                data: data
+            })
+        }
 
         function deleteContract(contractId){
             return $http({
@@ -57,7 +108,7 @@
             })
         }
 
-        function getAllUnit(data){
+        function getAllUnitName(data){
             return $http({
                 url:$rootScope.serverAdd + '/unit',
                 method: 'GET'

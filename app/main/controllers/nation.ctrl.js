@@ -133,7 +133,7 @@
                 // $('#nation_' + nationId).html('<div class="col-md-4 col-sm-4 col-xs-6">' + 
                 //     '<input type="text" name="country" class="form-control col-md-6" ng-model="' + nationName + '" required /></div>');
                 var nationName = $('#nation_' + nationId).text();
-                $('#nation_' + nationId).html('<input id="nation_value_' + nationId + '" value="' + nationName + '" style="border-radius:3px; border: 1px solid;" ng-model="editNationV"/>');
+                $('#nation_' + nationId).html('<input id="nation_value_' + nationId + '" value="' + nationName + '" style="border-radius:3px; border: 1px solid;"/>');
                 $('#edit_nation_' + nationId).hide();
                 $('#save_edit_nation_' + nationId).show();
             }
@@ -164,7 +164,7 @@
                 // $('#nation_' + nationId).html('<div class="col-md-4 col-sm-4 col-xs-6">' + 
                 //     '<input type="text" name="country" class="form-control col-md-6" ng-model="' + nationName + '" required /></div>');
                 var continentName = $('#continent_' + continentId).text();
-                $('#continent_' + continentId).html('<input id="continent_value_' + continentId + '" value="' + continentName + '" style="border-radius:3px; border: 1px solid;" ng-model="editNationV"/>');
+                $('#continent_' + continentId).html('<input id="continent_value_' + continentId + '" value="' + continentName + '" style="border-radius:3px; border: 1px solid;"/>');
                 $('#edit_continent_' + continentId).hide();
                 $('#save_edit_continent_' + continentId).show();
             }

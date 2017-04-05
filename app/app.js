@@ -4,6 +4,7 @@
 angular.module('services', []);
 angular.module('myApp', [
     'ui.router',
+    'ui.bootstrap',
     'ngRoute',
     'services',
     'user',
@@ -53,4 +54,13 @@ config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProv
                 controller : 'vnuCtrl'
             });
     }
-}]);
+}])
+.filter('startFrom', function () {
+    return function (input, start) {
+        if (input) {
+            start = +start;
+            return input.slice(start);
+        }
+        return [];
+    };
+});
