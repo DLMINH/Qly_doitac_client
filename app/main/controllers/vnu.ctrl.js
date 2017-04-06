@@ -93,7 +93,7 @@
                 vnuService.getAllTypeContract()
                     .then(function(response) {
                         $scope.allTypeContract = response.data;
-                        console.log(response);
+                        // console.log(response);
                         $scope.typeContract_currentPage = 1;
                         $scope.typeContract_totalItems = response.data.length;
                         $scope.typeContract_entryLimit = 5; // items per page
@@ -193,6 +193,12 @@
 
             $scope.createContract = function() {
                 if (($scope.input.partnerId + $scope.input.partnerContactId + $scope.input.unitNameId + $scope.input.uetManId + $scope.input.typeContractId + $scope.input.contentContract + $scope.input.funding) != "") {
+                    if ($scope.input.startDate) {
+                        $scope.input.startDate = $scope.input.startDate.getTime();
+                    }
+                    if ($scope.input.endDate) {
+                        $scope.input.endDate = $scope.input.endDate.getTime();
+                    }
                     vnuService.createContract($scope.input)
                         .then(function() {
                             $("#close_modal_create").trigger('click');
@@ -217,6 +223,8 @@
             }
 
             $scope.editContract = function() {
+                $scope.editContractData.startDate = $scope.editContractData.startDate.getTime();
+                $scope.editContractData.endDate = $scope.editContractData.endDate.getTime();
                 vnuService.editContract($scope.editContractData, $scope.editContractData.id)
                     .then(function() {
                         $("#close_modal_edit").trigger('click');
@@ -238,7 +246,7 @@
                 $scope.contractId = contractId;
             }
             $scope.deleteContract = function() {
-                alert($scope.contractId);
+                // alert($scope.contractId);
                 vnuService.deleteContract($scope.contractId)
                     .then(function() {
                         $("#close_modal_delete").trigger('click');
@@ -286,7 +294,7 @@
                 }
             }
 
-            $scope.confirmDeleteTypeContract = function(typeContractId){
+            $scope.confirmDeleteTypeContract = function(typeContractId) {
                 // $('#confirm_delete_typeContract_' + typeContractId).html(''+
                 //         '<button type="button" class="btn btn-default btn-xs" ng-click="cancerDeleteTypeContract(' + typeContractId +')">Hủy</button> ' +
                 //         '<button type="button" class="btn btn-success btn-xs" ng-click="deletetypeContract(' + typeContractId + ')">Xác nhận</button>');
@@ -295,19 +303,19 @@
                 $('#button_delete_typeContract_' + typeContractId).show();
             }
 
-            $scope.cancerDeleteTypeContract = function(typeContractId){
+            $scope.cancerDeleteTypeContract = function(typeContractId) {
                 $('#i_confirm_delete_typeContract_' + typeContractId).show();
                 $('#button_confirm_delete_typeContract_' + typeContractId).hide();
                 $('#button_delete_typeContract_' + typeContractId).hide();
             }
 
-            $scope.deleteTypeContract = function(typeContractId){
+            $scope.deleteTypeContract = function(typeContractId) {
                 vnuService.deleteTypeContract(typeContractId)
-                    .then(function (){
+                    .then(function() {
                         $scope.alertSuccess("Xóa loại hợp đồng thành công!", '');
                         // $('#tr_typeContract_' + typeContractId).remove();
                         $scope.getAllTypeContract();
-                    }, function(error){
+                    }, function(error) {
                         console.log(error);
                         $scope.alertDanger(error.data.message, '');
                     })
@@ -343,24 +351,24 @@
                 }
             }
 
-            $scope.confirmDeleteUetMan = function(uetManId){
+            $scope.confirmDeleteUetMan = function(uetManId) {
                 $('#i_confirm_delete_uetMan_' + uetManId).hide();
                 $('#button_confirm_delete_uetMan_' + uetManId).show();
                 $('#button_delete_uetMan_' + uetManId).show();
             }
 
-            $scope.cancerDeleteUetMan = function(uetManId){
+            $scope.cancerDeleteUetMan = function(uetManId) {
                 $('#i_confirm_delete_uetMan_' + uetManId).show();
                 $('#button_confirm_delete_uetMan_' + uetManId).hide();
                 $('#button_delete_uetMan_' + uetManId).hide();
             }
 
-            $scope.deleteUetMan = function(uetManId){
+            $scope.deleteUetMan = function(uetManId) {
                 vnuService.deleteUetMan(uetManId)
-                    .then(function (){
+                    .then(function() {
                         $scope.alertSuccess("Xóa loại hợp đồng thành công!", '');
                         $scope.getAllUetMan();
-                    }, function(error){
+                    }, function(error) {
                         console.log(error);
                         $scope.alertDanger(error.data.message, '');
                     })
@@ -396,27 +404,31 @@
                 }
             }
 
-            $scope.confirmDeleteUnitName = function(unitNameId){
+            $scope.confirmDeleteUnitName = function(unitNameId) {
                 $('#i_confirm_delete_unitName_' + unitNameId).hide();
                 $('#button_confirm_delete_unitName_' + unitNameId).show();
                 $('#button_delete_unitName_' + unitNameId).show();
             }
 
-            $scope.cancerDeleteUnitName = function(unitNameId){
+            $scope.cancerDeleteUnitName = function(unitNameId) {
                 $('#i_confirm_delete_unitName_' + unitNameId).show();
                 $('#button_confirm_delete_unitName_' + unitNameId).hide();
                 $('#button_delete_unitName_' + unitNameId).hide();
             }
 
-            $scope.deleteUnitName = function(unitNameId){
+            $scope.deleteUnitName = function(unitNameId) {
                 vnuService.deleteUnitName(unitNameId)
-                    .then(function (){
+                    .then(function() {
                         $scope.alertSuccess("Xóa loại hợp đồng thành công!", '');
                         $scope.getAllUnitName();
-                    }, function(error){
+                    }, function(error) {
                         console.log(error);
                         $scope.alertDanger(error.data.message, '');
                     })
+            }
+
+            $scope.date = function() {
+                console.log($scope.input.startDate.getTime());
             }
         }
     ])
