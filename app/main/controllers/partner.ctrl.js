@@ -46,7 +46,7 @@
             $scope.getAllPartner = function() {
                 partnerService.getAllPartner()
                     .then(function(response) {
-                        // console.log(response.data);
+                        console.log(response.data);
                         $scope.allPartner = response.data;
                         $scope.currentPage = 1;
                         $scope.totalItems = response.data.length;
@@ -204,10 +204,11 @@
             $scope.close = function() {
                 // alert(1)
                 $("#step-2").fadeOut("slow", function() {
-                    $scope.editInfo = false;
+                    
                     $('#a_step_1').removeClass("done");
                     $('#a_step_2').removeClass("done").addClass("disabled");
                 });
+                $scope.editInfo = false;
 
             }
 

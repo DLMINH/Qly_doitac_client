@@ -43,6 +43,45 @@
 
             }
 
+            // create contract from excel
+            $scope.convert = function() {
+                var xlf = document.getElementById('xlf');
+
+                function handleFile(e) {
+                    var files = e.target.files;
+                    var i, f;
+                    for (i = 0, f = files[i]; i != files.length; ++i) {
+                        var reader = new FileReader();
+                        var name = f.name;
+                        reader.onload = function(e) {
+                            var data = e.target.result;
+
+                            var workbook = XLSX.read(data, { type: 'binary' });
+
+                            var first_sheet_name = workbook.SheetNames[0];
+                            /* DO SOMETHING WITH workbook HERE */
+                            var worksheet = workbook.Sheets[first_sheet_name];
+                            $rootScope.excel = XLSX.utils.sheet_to_json(worksheet);
+
+                            if ($rootScope.excel) {
+                                console.log($rootScope.excel);
+                            }
+                        };
+                        reader.readAsBinaryString(f);
+                    }
+                }
+                if (xlf.addEventListener) xlf.addEventListener('change', handleFile, false);
+
+                // input_dom_element.addEventListener('change', handleFile, false);
+            }
+
+            $scope.setExcelTable = function() {
+                // alert(1);
+                // console.log($rootScope.excel);
+                $scope.excelTable = $rootScope.excel;
+                // $rootScope.excelTable =$rootScope.excel  ;
+            }
+
             $scope.createUnit = function() {
                 if ($scope.input.unitName != "") {
                     vnuService.createUnit($scope.input)
@@ -220,23 +259,22 @@
 
             $scope.setEditContract = function(contract) {
                 $scope.editContractData = contract;
+                // console.log(contract);
+                $scope.editContractData.startDate = null;
+                $scope.editContractData.endDate = null;
             }
 
             $scope.editContract = function() {
-                $scope.editContractData.startDate = $scope.editContractData.startDate.getTime();
-                $scope.editContractData.endDate = $scope.editContractData.endDate.getTime();
+                if ($scope.editContractData.startDate != null) {
+                    $scope.editContractData.startDate = $scope.editContractData.startDate.getTime();
+                }
+                if ($scope.editContractData.endDate != null) {
+                    $scope.editContractData.endDate = $scope.editContractData.endDate.getTime();
+                }
                 vnuService.editContract($scope.editContractData, $scope.editContractData.id)
                     .then(function() {
                         $("#close_modal_edit").trigger('click');
-                        $scope.success = true;
-                        $scope.input = [];
-                        $timeout(function() {
-                            // 
-                            $(".alert").fadeTo(500, 0).slideUp(500, function() {
-                                // $(this).remove();
-                                $scope.success = false;
-                            });
-                        }, 3000);
+                        $scope.alertSuccess("Sửa hợp đồng thành công!","");
                         $scope.getAllContract();
                     }, function(error) {
                         console.log(error);
