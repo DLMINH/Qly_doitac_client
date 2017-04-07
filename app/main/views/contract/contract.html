@@ -24,38 +24,54 @@
                         <a class="dropdown-toggle cursor" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
                         <ul class="dropdown-menu" role="menu">
                             <li><a data-toggle="modal" data-target="#add_contract" class="cursor"> Thêm hợp đồng </a>
-                            </li>
+                                <li><a data-toggle="collapse" data-target="#insert_excel" class="cursor"> Thêm hợp đồng từ excel </a>
+                                </li>
                         </ul>
-                    </li>
+                        </li>
                 </ul>
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
                 <div class="alert alert-success" ng-if="success">
-                    <strong>Success!</strong> Indicates a successful or positive action.
+                    <strong>{{successMessage}}</strong>
                 </div>
                 <div class="alert alert-danger" ng-if="danger">
                     <strong>{{errorMessage}}</strong>
                 </div>
                 <!-- form tao unit -->
-                <form class="form-horizontal form-label-left collapse" id="">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a data-toggle="collapse" data-target="#add_contract" class="cursor"><i class="fa fa-chevron-up"></i></a>
-                        </li>
-                    </ul>
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên đơn vị theo dõi</label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" name="country" class="form-control col-md-10" ng-model="input.unitName" required />
-                        </div>
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Insert internship</h2>
+                        <input type="file" name="xlfile" id="xlf" ng-init="convert()">
+                        <button ng-click="setExcelTable()">Show Students</button>
+                        <button ng-click="send()">Upload</button>
+                        <div class="clearfix"></div>
                     </div>
-                    <div class="form-group">
-                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                            <button type="submit" class="btn btn-success" ng-click="createUnit()">Tạo</button>
-                        </div>
+                    <div class="x_content">
+                        <table class="table table-striped" ng-if="excelTable != null">
+                            <thead>
+                                <tr>
+                                    <th>Student Name</th>
+                                    <th>Birthday</th>
+                                    <th>Student Code</th>
+                                    <th>Grade</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="intern in excelTable">
+                                    <th scope="row">{{intern.studentName}}</th>
+                                    <td>{{intern.birthday}}</td>
+                                    <td>{{intern.studentCode}}</td>
+                                    <td>{{intern.grade}}</td>
+                                    <td>{{intern.startDate | date:'medium'}}</td>
+                                    <td>{{intern.endDate | date:'medium'}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="divider-dashed"></div>
-                </form>
+                </div>
                 <div class="table-responsive">
                     <table class="table table-striped jambo_table bulk_action">
                         <thead>
@@ -88,7 +104,7 @@
                                 <td class=" ">{{contract.partner.partnerInfo.partnerName}}</td>
                                 <td class=" ">{{contract.partner.nation.nationName}}</td>
                                 <td class=" ">{{contract.uetMan.uetManName}}</td>
-                                <td class=" ">{{contract.contentContract}}</td>
+                                <td class=" " ng-bind-html="contract.contentContract"></td>
                                 <td class=" ">{{contract.funding}}</td>
                                 <td class=" ">{{contract.startDate | date:'dd/MM/yyyy'}}</td>
                                 <td class=" ">{{contract.endDate | date:'dd/MM/yyyy'}}</td>
@@ -284,6 +300,58 @@
                     </div>
                 </div>
                 <!-- end confirm delete contract -->
+                <!-- insert excel -->
+                <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" id="close_modal_edit"><span aria-hidden="true">×</span>
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel">Chỉnh sửa hợp đồng</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="x_panel">
+                                    <div class="x_title">
+                                        <h2>Insert internship</h2>
+                                        <input type="file" name="xlfile" id="xlf" ng-init="convert()">
+                                        <button ng-click="setExcelTable()">Show Students</button>
+                                        <button ng-click="send()">Upload</button>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="x_content">
+                                        <table class="table table-striped" ng-if="excelTable != null">
+                                            <thead>
+                                                <tr>
+                                                    <th>Student Name</th>
+                                                    <th>Birthday</th>
+                                                    <th>Student Code</th>
+                                                    <th>Grade</th>
+                                                    <th>Start Date</th>
+                                                    <th>End Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="intern in excelTable">
+                                                    <th scope="row">{{intern.studentName}}</th>
+                                                    <td>{{intern.birthday}}</td>
+                                                    <td>{{intern.studentCode}}</td>
+                                                    <td>{{intern.grade}}</td>
+                                                    <td>{{intern.startDate | date:'medium'}}</td>
+                                                    <td>{{intern.endDate | date:'medium'}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                                <button type="button" class="btn btn-primary" ng-click="editContract()">Lưu thay đổi</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- insert excel -->
             </div>
         </div>
     </div>

@@ -77,13 +77,7 @@
                 nationService.createContinent($scope.request)
                     .then(function(response) {
                         console.log(response)
-                        $scope.success = true;
-                        $timeout(function() {
-                            // $scope.success = false;
-                            $(".alert").fadeTo(500, 0).slideUp(500, function() {
-                                $scope.success = false;
-                            });
-                        }, 3000);
+                        $scope.alertSuccess("Tạo Châu lục thành công!", "");
                         $scope.getAllContinent();
                         $scope.input.continentName = "";
                     }, function(error) {

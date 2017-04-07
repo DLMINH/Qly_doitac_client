@@ -11,6 +11,7 @@ angular.module('myApp', [
     'nation',
     'partner',
     'vnu',
+    'ngSanitize',
     'contract'
 ]).
 config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProvider', function($locationProvider, $routeProvider, $stateProvider, $urlRouterProvider) {
