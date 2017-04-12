@@ -402,6 +402,7 @@
                 // alert(1);
 
                 // console.log($rootScope.excel);
+                $scope.checkContractValue = true;
                 $scope.excelTable = $rootScope.excel;
                 // console.log($scope.excelTable);
                 angular.forEach($scope.excelTable, function(v) {
