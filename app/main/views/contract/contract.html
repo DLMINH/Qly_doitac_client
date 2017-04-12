@@ -23,15 +23,27 @@
                     <li class="dropdown">
                         <a class="dropdown-toggle cursor" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a data-toggle="modal" data-target="#add_contract" class="cursor"> Thêm hợp đồng </a>
-                                <li><a data-toggle="collapse" data-target="#insert_excel" class="cursor"> Thêm hợp đồng từ excel </a>
-                                </li>
+                            <li>
+                                <a data-toggle="modal" data-target="#add_contract" class="cursor"> Thêm hợp đồng </a>
+                            </li>
+                            <li>
+                                <a data-toggle="collapse" data-target="#insert_excel" class="cursor"> Thêm hợp đồng từ excel (nước ngoài)</a>
+                            </li>
+                            <li>
+                                <a data-toggle="collapse" data-target="#insert_excel_in" class="cursor"> Thêm hợp đồng từ excel (trong nước)</a>
+                            </li>
+                            <li>
+                                <a class="cursor" ng-click="exportData()"> Xuất hợp đồng thành excel</a>
+                            </li>
                         </ul>
-                        </li>
+                    </li>
                 </ul>
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
+                <div class="alert alert-warning" ng-if="warning">
+                    <strong>{{warningMessage}}</strong>
+                </div>
                 <div class="alert alert-success" ng-if="success">
                     <strong>{{successMessage}}</strong>
                 </div>
@@ -39,26 +51,128 @@
                     <strong>{{errorMessage}}</strong>
                 </div>
                 <!-- form tao unit -->
-                
+                <div class="collapse" id="insert_excel">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a data-toggle="collapse" data-target="#insert_excel" class="cursor" id="close_insert_excel"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                    </ul>
+                    <h2>Thêm hợp đồng từ excel (nước ngoài)</h2>
+                    <input type="file" name="xlfile" id="xlf" ng-init="convert()">
+                    <button ng-click="setExcelTable()">Kiểm tra dữ liệu</button>
+                    <button ng-click="importExcel()" ng-if="checkContractValue">Import</button>
+                    <div class="clearfix"></div>
+                    <div class="table-responsive">
+                        <table class="table table-striped jambo_table bulk_action" ng-if="excelTable != null">
+                            <thead>
+                                <tr class="headings">
+                                    <th class="column-title">Tên cơ quan hợp tác</th>
+                                    <th class="column-title">Quốc gia</th>
+                                    <th class="column-title">Người ký đối tác</th>
+                                    <th class="column-title">Nội dung hợp tác</th>
+                                    <th class="column-title">Người ký VNU</th>
+                                    <th class="column-title">Đơn vị theo dõi</th>
+                                    <th class="column-title">Ngày ký</th>
+                                    <th class="column-title">Ngày hết hiệu lực</th>
+                                    <th class="column-title">Tự động renew</th>
+                                    <th class="column-title">Hiệu quả hợp tác</th>
+                                    <th class="column-title">Lưu ý</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="even pointer" ng-repeat="contract in excelTable" id="excel_{{contract.STT}}">
+                                    <td id="partnerName_{{contract.STT}}">{{contract.partnerName}}</td>
+                                    <td id="">{{contract.nation}}</td>
+                                    <td id="contactName_{{contract.STT}}">{{contract.contactName}}</td>
+                                    <td id="" ng-bind-html="contract.contentContract"></td>
+                                    <td id="uetMan_{{contract.STT}}" ng-mouseleave="hideButton(contract.STT)">
+                                        <p id="p_uetMan_{{contract.STT}}" ng-mouseover="showButton(contract.STT)">{{contract.uetMan}}</p>
+                                    </td>
+                                    <td id="unitName_{{contract.STT}}">
+                                        {{contract.unitName}}
+                                    </td>
+                                    <td id="">{{contract.startDate | date:'dd/MM/yyyy'}}</td>
+                                    <td id="">{{contract.endDate | date:'dd/MM/yyyy'}}</td>
+                                    <td id="">{{contract.renew}}</td>
+                                    <td id="">{{contract.result}}</td>
+                                    <td id="">{{contract.notice}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="collapse" id="insert_excel_in">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a data-toggle="collapse" data-target="#insert_excel_in" class="cursor" id="close_insert_excel_in"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                    </ul>
+                    <h2>Thêm hợp đồng từ excel (trong nước)</h2>
+                    <input type="file" name="xlfile" id="xlfIn" ng-init="convertIn()">
+                    <button ng-click="setExcelTableIn()">Kiểm tra dữ liệu</button>
+                    <button ng-click="importExcel()" ng-if="checkContractValue">Import</button>
+                    <div class="clearfix"></div>
+                    <div class="table-responsive">
+                        <table class="table table-striped jambo_table bulk_action" ng-if="excelTableIn != null">
+                            <thead>
+                                <tr class="headings">
+                                    <th class="column-title">Tên cơ quan hợp tác</th>
+                                    <th class="column-title">Quốc gia</th>
+                                    <th class="column-title">Người ký đối tác</th>
+                                    <th class="column-title">Nội dung hợp tác</th>
+                                    <th class="column-title">Người ký VNU</th>
+                                    <th class="column-title">Đơn vị theo dõi</th>
+                                    <th class="column-title">Ngày ký</th>
+                                    <th class="column-title">Ngày hết hiệu lực</th>
+                                    <th class="column-title">Tự động renew</th>
+                                    <th class="column-title">Hiệu quả hợp tác</th>
+                                    <th class="column-title">Lưu ý</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="even pointer" ng-repeat="contract in excelTableIn" id="In_excel_{{contract.STT}}">
+                                    <td id="In_partnerName_{{contract.STT}}">{{contract.partnerName}}</td>
+                                    <td id="">{{contract.nation}}</td>
+                                    <td id="In_contactName_{{contract.STT}}">{{contract.contactName}}</td>
+                                    <td id="" ng-bind-html="contract.contentContract"></td>
+                                    <td id="In_uetMan_{{contract.STT}}" ng-mouseleave="hideButton(contract.STT)">
+                                        <p id="In_p_uetMan_{{contract.STT}}" ng-mouseover="showButton(contract.STT)">{{contract.uetMan}}</p>
+                                    </td>
+                                    <td id="In_unitName_{{contract.STT}}">
+                                        {{contract.unitName}}
+                                    </td>
+                                    <td id="">{{contract.startDate | date:'dd/MM/yyyy'}}</td>
+                                    <td id="">{{contract.endDate | date:'dd/MM/yyyy'}}</td>
+                                    <td id="">{{contract.renew}}</td>
+                                    <td id="">{{contract.result}}</td>
+                                    <td id="">{{contract.notice}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                 <div class="table-responsive">
-                    <table class="table table-striped jambo_table bulk_action">
+                    <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="noOfPages" items-per-page="entryLimit"></ul>
+                    <table class="table table-striped jambo_table bulk_action" id="tableExcel">
                         <thead>
                             <tr class="headings">
                                 <!-- <th> -->
                                 <!-- <input type="checkbox" id="check-all" class="flat"> -->
                                 <!-- </th> -->
-                                <th class="column-title">Tên cơ quan hợp tác </th>
-                                <th class="column-title">Quốc Gia </th>
-                                <th class="column-title">Người ký (VNU-UET) </th>
-                                <th class="column-title">Nội dung hợp tác chính </th>
-                                <th class="column-title">Kinh phí </th>
-                                <th class="column-title">Ngày ký </th>
-                                <th class="column-title">Ngày hết hiệu lực </th>
+                                <th class="column-title">Tên cơ quan hợp tác</th>
+                                <th class="column-title">Quốc Gia</th>
+                                <th class="column-title">Người ký (VNU-UET)</th>
+                                <th class="column-title">Người ký (Đối tác)</th>
+                                <th class="column-title">Nội dung hợp tác chính</th>
+                                <th class="column-title">Kinh phí</th>
+                                <th class="column-title">Ngày ký</th>
+                                <th class="column-title">Ngày hết hiệu lực</th>
                                 <th class="column-title">Đơn vị theo dõi</th>
                                 <th class="column-title">Hiệu quả hợp tác</th>
-                                <th class="column-title">Lưu ý </th>
-                                <th class="column-title">Sửa </th>
-                                <th class="column-title">Xóa </th>
+                                <th class="column-title">Lưu ý</th>
+                                <th class="column-title">Sửa</th>
+                                <th class="column-title">Xóa</th>
+                                <th class="column-title">
+                                    <i class="fa fa-chevron-down cursor" data-toggle="collapse" data-target="#export_xcel"></i>
+                                </th>
                                 <!-- <th class="column-title no-link last"><span class="nobr">Action</span> -->
                                 <!-- </th> -->
                             </tr>
@@ -66,12 +180,10 @@
                         <tbody>
                             <tr class="even pointer" ng-repeat="contract in filtered = allContract | filter : search |
                                 startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
-                                <!-- <td class="a-center "> -->
-                                <!-- <input type="checkbox" class="flat" name="table_records"> -->
-                                <!-- </td> -->
                                 <td class=" ">{{contract.partner.partnerInfo.partnerName}}</td>
                                 <td class=" ">{{contract.partner.nation.nationName}}</td>
                                 <td class=" ">{{contract.uetMan.uetManName}}</td>
+                                <td class=" ">{{contract.partnerContact.contactName}} <br /> {{contract.partnerContact.about}}</td>
                                 <td class=" " ng-bind-html="contract.contentContract"></td>
                                 <td class=" ">{{contract.funding}}</td>
                                 <td class=" ">{{contract.startDate | date:'dd/MM/yyyy'}}</td>
@@ -86,6 +198,12 @@
                                 </td>
                                 <td class=" " ng-click="setDeleteContractId(contract.id)">
                                     <a class="cursor" data-toggle="modal" data-target="#delete_contract"><i class="fa fa-trash"></i></a>
+                                </td>
+                                <td class="a-center ">
+                                    <input type="checkbox" class="flat" name="table_records"
+                                        ng-click="selectContract(contract); contract.checked = !contract.checked"
+                                        ng-checked="contract.checked">
+                                
                                 </td>
                             </tr>
                         </tbody>

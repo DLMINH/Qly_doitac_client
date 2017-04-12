@@ -23,8 +23,26 @@
             editUnitName : editUnitName,
             deleteTypeContract : deleteTypeContract,
             deleteUnitName : deleteUnitName,
-            deleteUetMan : deleteUetMan
+            deleteUetMan : deleteUetMan,
+            checkContract : checkContract,
+            importExcel : importExcel
         };
+
+        function importExcel(data){
+            return $http({
+                url:$rootScope.serverAdd + '/contract/excel',
+                method: 'POST',
+                data: data
+            })
+        }
+
+        function checkContract(data){
+            return $http({
+                url:$rootScope.serverAdd + '/checkContract',
+                method: 'POST',
+                data: data
+            })
+        }
 
         function deleteUnitName(unitNameId){
             return $http({
