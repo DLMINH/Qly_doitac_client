@@ -14,7 +14,7 @@
     "angular-ui-router": "^0.4.2",
     "gentelella": "^1.4.0",
     "angular-bootstrap": "^2.5.0",
-    "js-xlsx": "^0.9.9",
-    "angular-sanitize": "^1.6.4"
+    "angular-sanitize": "^1.6.4",
+    "js-xlsx-style": "^0.8.6"
   }
 }
