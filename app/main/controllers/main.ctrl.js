@@ -6,6 +6,8 @@
                 $rootScope.clientAdd = "http://localhost:8100";
                 if(sessionStorage['User-Data']){
                     $rootScope.loggedIn = true;
+                    $rootScope.role = sessionStorage["role"];
+                    $rootScope.id = sessionStorage["id"];
                 }
 
                 $scope.logout = function (){

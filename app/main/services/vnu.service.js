@@ -8,157 +8,191 @@
 
     function vnuService($log, $http, $q, $rootScope) {
         return {
-        	createUnit : createUnit,
-            createUetMan : createUetMan,
-            createTypeContract : createTypeContract,
-            getAllTypeContract : getAllTypeContract,
-            getAllUnitName : getAllUnitName,
-            getAllUetMan :getAllUetMan,
-            getAllContract : getAllContract,
-            createContract : createContract,
-            editContract : editContract,
-            deleteContract :deleteContract,
-            editTypeContract : editTypeContract,
-            editUetMan : editUetMan,
-            editUnitName : editUnitName,
-            deleteTypeContract : deleteTypeContract,
-            deleteUnitName : deleteUnitName,
-            deleteUetMan : deleteUetMan,
-            checkContract : checkContract,
-            importExcel : importExcel
+            createUnit: createUnit,
+            createUetMan: createUetMan,
+            createTypeContract: createTypeContract,
+            getAllTypeContract: getAllTypeContract,
+            getAllUnitName: getAllUnitName,
+            getAllUetMan: getAllUetMan,
+            getAllContract: getAllContract,
+            createContract: createContract,
+            editContract: editContract,
+            deleteContract: deleteContract,
+            editTypeContract: editTypeContract,
+            editUetMan: editUetMan,
+            editUnitName: editUnitName,
+            deleteTypeContract: deleteTypeContract,
+            deleteUnitName: deleteUnitName,
+            deleteUetMan: deleteUetMan,
+            checkContract: checkContract,
+            importExcel: importExcel,
+            editActivity: editActivity,
+            deleteActivity: deleteActivity,
+            createAccount: createAccount
         };
 
-        function importExcel(data){
+        function createAccount(data, unitNameId) {
             return $http({
-                url:$rootScope.serverAdd + '/contract/excel',
+                url: $rootScope.serverAdd + '/unit/' + unitNameId + '/account/create',
                 method: 'POST',
                 data: data
             })
         }
 
-        function checkContract(data){
+        function deleteActivity(cooperateActivityId) {
             return $http({
-                url:$rootScope.serverAdd + '/checkContract',
-                method: 'POST',
-                data: data
-            })
-        }
-
-        function deleteUnitName(unitNameId){
-            return $http({
-                url:$rootScope.serverAdd + '/unit/' + unitNameId + '/delete',
+                url: $rootScope.serverAdd + '/cooperateActivity/' + cooperateActivityId + '/delete',
                 method: 'DELETE'
             })
         }
 
-        function deleteUetMan(uetManId){
+        function editActivity(data) {
             return $http({
-                url:$rootScope.serverAdd + '/uetMan/' + uetManId + '/delete',
-                method: 'DELETE'
-            })
-        }
-
-        function deleteTypeContract(typeContractId){
-            return $http({
-                url:$rootScope.serverAdd + '/typeContract/' + typeContractId + '/delete',
-                method: 'DELETE'
-            })
-        }
-
-        function editTypeContract(data, typeContractId){
-            return $http({
-                url:$rootScope.serverAdd + '/typeContract/edit',
+                url: $rootScope.serverAdd + '/cooperateActivity/edit',
                 method: 'PUT',
                 data: data
             })
         }
 
-        function editUetMan(data, uetManId){
+        function importExcel(data) {
             return $http({
-                url:$rootScope.serverAdd + '/uetMan/edit',
-                method: 'PUT',
+                url: $rootScope.serverAdd + '/contract/excel',
+                method: 'POST',
                 data: data
             })
         }
 
-        function editUnitName(data, unitNameId){
+        function checkContract(data) {
             return $http({
-                url:$rootScope.serverAdd + '/unit/edit',
-                method: 'PUT',
+                url: $rootScope.serverAdd + '/checkContract',
+                method: 'POST',
                 data: data
             })
         }
 
-        function deleteContract(contractId){
+        function deleteUnitName(unitNameId) {
             return $http({
-                url:$rootScope.serverAdd + '/contract/' + contractId + '/delete',
+                url: $rootScope.serverAdd + '/unit/' + unitNameId + '/delete',
                 method: 'DELETE'
             })
         }
 
-        function editContract(data, contractId){
+        function deleteUetMan(uetManId) {
             return $http({
-                url:$rootScope.serverAdd + '/contract/' + contractId + '/edit',
+                url: $rootScope.serverAdd + '/uetMan/' + uetManId + '/delete',
+                method: 'DELETE'
+            })
+        }
+
+        function deleteTypeContract(typeContractId) {
+            return $http({
+                url: $rootScope.serverAdd + '/typeContract/' + typeContractId + '/delete',
+                method: 'DELETE'
+            })
+        }
+
+        function editTypeContract(data, typeContractId) {
+            return $http({
+                url: $rootScope.serverAdd + '/typeContract/edit',
                 method: 'PUT',
                 data: data
             })
         }
 
-        function createContract(data){
+        function editUetMan(data, uetManId) {
             return $http({
-                url:$rootScope.serverAdd + '/contract/create',
+                url: $rootScope.serverAdd + '/uetMan/edit',
+                method: 'PUT',
+                data: data
+            })
+        }
+
+        function editUnitName(data, unitNameId) {
+            return $http({
+                url: $rootScope.serverAdd + '/unit/edit',
+                method: 'PUT',
+                data: data
+            })
+        }
+
+        function deleteContract(contractId) {
+            return $http({
+                url: $rootScope.serverAdd + '/contract/' + contractId + '/delete',
+                method: 'DELETE'
+            })
+        }
+
+        function editContract(data, contractId) {
+            return $http({
+                url: $rootScope.serverAdd + '/contract/' + contractId + '/edit',
+                method: 'PUT',
+                data: data
+            })
+        }
+
+        function createContract(data) {
+            return $http({
+                url: $rootScope.serverAdd + '/contract/create',
                 method: 'POST',
                 data: data
             })
         }
 
-        function getAllContract(data){
+        function getAllContract(data) {
+            if ($rootScope.role == 'UNIT') {
+                return $http({
+                    url: $rootScope.serverAdd + '/unit/' + $rootScope.id + '/contract',
+                    method: 'GET'
+                })
+            } else {
+                return $http({
+                    url: $rootScope.serverAdd + '/contract',
+                    method: 'GET'
+                })
+            }
+
+        }
+
+        function getAllTypeContract(data) {
             return $http({
-                url:$rootScope.serverAdd + '/contract',
+                url: $rootScope.serverAdd + '/typeContract',
                 method: 'GET'
             })
         }
 
-        function getAllTypeContract(data){
+        function getAllUnitName(data) {
             return $http({
-                url:$rootScope.serverAdd + '/typeContract',
+                url: $rootScope.serverAdd + '/unit',
                 method: 'GET'
             })
         }
 
-        function getAllUnitName(data){
+        function getAllUetMan(data) {
             return $http({
-                url:$rootScope.serverAdd + '/unit',
+                url: $rootScope.serverAdd + '/uetMan',
                 method: 'GET'
             })
         }
 
-        function getAllUetMan(data){
+        function createUnit(data) {
             return $http({
-                url:$rootScope.serverAdd + '/uetMan',
-                method: 'GET'
-            })
-        }
-
-        function createUnit(data){
-            return $http({
-                url:$rootScope.serverAdd + '/unit/create',
+                url: $rootScope.serverAdd + '/unit/create',
                 method: 'POST',
                 data: data
             })
         }
 
-        function createUetMan(data){
+        function createUetMan(data) {
             return $http({
-                url:$rootScope.serverAdd + '/uetMan/create',
+                url: $rootScope.serverAdd + '/uetMan/create',
                 method: 'POST',
                 data: data
             })
         }
 
-        function createTypeContract(data){
+        function createTypeContract(data) {
             return $http({
-                url:$rootScope.serverAdd + '/typeContract/create',
+                url: $rootScope.serverAdd + '/typeContract/create',
                 method: 'POST',
                 data: data
             })

@@ -10,6 +10,8 @@
             	userService.login($scope.request)
             		.then(function (response){
             			sessionStorage.setItem("User-Data", response.data.token);
+                        sessionStorage.setItem("role", response.data.role);
+                        sessionStorage.setItem("id", response.data.id);
             			$window.location.href = $rootScope.clientAdd;
             		}, function (error){
             			console.log(error);
