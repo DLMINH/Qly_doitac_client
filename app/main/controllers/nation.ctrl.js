@@ -54,9 +54,9 @@
             }
 
             $scope.createNation = function() {
-                $scope.request = [{
+                $scope.request = {
                     nationName: $scope.input.nationName
-                }]
+                };
                 console.log($scope.request);
                 nationService.createNation($scope.request, $scope.input.continentId)
                     .then(function(response) {

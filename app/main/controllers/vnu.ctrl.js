@@ -435,10 +435,19 @@
                                 v.uetManId = response.data.uetMan;
                             }
                             if (response.data.unitName == "nf") {
-                                $('#unitName_' + v.STT).css('background-color', '#f0ad4e');
-                                $scope.checkContractValue = false;
+                                if ($rootScope.role == "UNIT") {
+                                     v.unitNameId = $rootScope.id;
+                                } else {
+                                    $('#unitName_' + v.STT).css('background-color', '#f0ad4e');
+                                    $scope.checkContractValue = false;
+                                }
                             } else {
-                                v.unitNameId = response.data.unitName;
+                                if ($rootScope.role == "UNIT") {
+                                    v.unitNameId = $rootScope.id;
+                                } else {
+                                    v.unitNameId = response.data.unitName;
+                                }
+
                             }
                             v.typeContractId = 1;
                         }, function(error) {
@@ -482,10 +491,19 @@
                                 v.uetManId = response.data.uetMan;
                             }
                             if (response.data.unitName == "nf") {
-                                $('#In_unitName_' + v.STT).css('background-color', '#f0ad4e');
-                                $scope.checkContractValue = false;
+                                if ($rootScope.role == "UNIT") {
+                                     v.unitNameId = $rootScope.id;
+                                } else {
+                                    $('#unitName_' + v.STT).css('background-color', '#f0ad4e');
+                                    $scope.checkContractValue = false;
+                                }
                             } else {
-                                v.unitNameId = response.data.unitName;
+                                if ($rootScope.role == "UNIT") {
+                                    v.unitNameId = $rootScope.id;
+                                } else {
+                                    v.unitNameId = response.data.unitName;
+                                }
+
                             }
                             v.typeContractId = 1;
                         }, function(error) {
@@ -538,6 +556,27 @@
 
             }
 
+            $scope.createAccount = function() {
+                if ($scope.input.userName != "" && $scope.input.password != "") {
+                    $scope.request = {
+                        userName: $scope.input.userName,
+                        password: $scope.input.password
+                    }
+                    console.log($scope.request);
+                    console.log($scope.input.unitNameId);
+                    vnuService.createAccount($scope.request, $scope.input.unitNameId)
+                        .then(function() {
+                            $scope.alertSuccess("Tạo tài khoản thành công!", "");
+                            $scope.input.username = "";
+                            $scope.input.password = "";
+                            $scope.getAllUnitName();
+                        }, function(error) {
+                            console.log(error);
+                            $scope.alertDanger(error.data.message, "");
+                        })
+                }
+            }
+
             $scope.createUnit = function() {
                 if ($scope.input.unitName != "") {
                     vnuService.createUnit($scope.input)
@@ -547,7 +586,7 @@
                             $scope.getAllUnitName();
                         }, function(error) {
                             console.log(error);
-                            $scope.alertDanger(error.data.message);
+                            $scope.alertDanger(error.data.message, "");
                             // alert("Có lỗi xảy ra, hãy reload lại trang và thử lại");
                         })
                 }
@@ -629,7 +668,7 @@
             $scope.getAllUnitName = function() {
                 vnuService.getAllUnitName()
                     .then(function(response) {
-                        // console.log(response);
+                        console.log(response);
                         $scope.allUnit = response.data;
                         $scope.allUnit_currentPage = 1;
                         $scope.allUnit_totalItems = response.data.length;
@@ -672,6 +711,11 @@
                         $scope.allContract = response.data;
                         angular.forEach($scope.allContract, function(contract) {
                             contract.checked = false;
+                            contract.contentContract = "";
+                            angular.forEach(contract.cooperateActivity, function(v) {
+                                contract.contentContract = contract.contentContract + v.cooperateActivity + "<br />";
+                            });
+                            // console.log(contract.contentContract);
                         });
                         $scope.currentPage = 1;
                         $scope.totalItems = response.data.length;
@@ -698,18 +742,12 @@
                     if ($scope.input.endDate) {
                         $scope.input.endDate = $scope.input.endDate.getTime();
                     }
+                    $scope.input.contentContract = $scope.input.contentContract.replace(/(?:\r\n|\r|\n)/g, '<br />');
                     vnuService.createContract($scope.input)
                         .then(function() {
                             $("#close_modal_create").trigger('click');
-                            $scope.success = true;
+                            $scope.alertSuccess("Tạo hợp đồng thành công!", "");
                             $scope.input = [];
-                            $timeout(function() {
-                                // 
-                                $(".alert").fadeTo(500, 0).slideUp(500, function() {
-                                    // $(this).remove();
-                                    $scope.success = false;
-                                });
-                            }, 3000);
                             $scope.getAllContract();
                         }, function(error) {
                             console.log(error);
@@ -719,7 +757,7 @@
 
             $scope.setEditContract = function(contract) {
                 $scope.editContractData = contract;
-                // console.log(contract);
+                console.log(contract);
                 $scope.editContractData.startDate = null;
                 $scope.editContractData.endDate = null;
             }
@@ -731,6 +769,10 @@
                 if ($scope.editContractData.endDate != null) {
                     $scope.editContractData.endDate = $scope.editContractData.endDate.getTime();
                 }
+                if ($scope.editContractData.cooperateActivityValue != null) {
+                    $scope.editContractData.cooperateActivityValue = $scope.editContractData.cooperateActivityValue.replace(/(?:\r\n|\r|\n)/g, '<br />');
+                    // console.log($scope.editContractData.cooperateActivityValue);
+                }
                 vnuService.editContract($scope.editContractData, $scope.editContractData.id)
                     .then(function() {
                         $("#close_modal_edit").trigger('click');
@@ -740,22 +782,59 @@
                         console.log(error);
                     })
             }
-            $scope.setDeleteContractId = function(contractId) {
-                $scope.contractId = contractId;
+            $scope.editActivity = function(activityId) {
+                // $('#nation_' + nationId).html('<div class="col-md-4 col-sm-4 col-xs-6">' + 
+                //     '<input type="text" name="country" class="form-control col-md-6" ng-model="' + nationName + '" required /></div>');
+                var activity = $('#activity' + activityId).text();
+                $('#activity' + activityId).html('<input class="form-control col-md-6" id="activity_value_' + activityId + '" value="' + activity + '" style="border-radius:3px; border: 1px solid;"/>');
+                $('#edit_activity_' + activityId).hide();
+                $('#save_edit_activity_' + activityId).show();
             }
+            $scope.saveEditActivity = function(activityId) {
+                // console.log(nationId);
+                var activity = $('#activity_value_' + activityId).val();
+                // console.log(v);
+                $scope.request = {
+                    id: activityId,
+                    cooperateActivity: activity
+                }
+                console.log($scope.request);
+                vnuService.editActivity($scope.request)
+                    .then(function() {
+                        $('#edit_activity_' + activityId).show();
+                        $('#save_edit_activity_' + activityId).hide();
+                        $('#activity' + activityId).html(activity);
+                        $scope.alertSuccess('Sửa hoạt động thành công!', 'successdelete_edit');
+                    }, function(error) {
+                        console.log(error);
+                        $scope.alertDanger(error.data.message, 'danger');
+                    })
+            }
+
+            $scope.deleteActivity = function() {
+                vnuService.deleteActivity($scope.comfirmDeleteId)
+                    .then(function() {
+                        $scope.alertSuccess('Xóa hoạt động thành công!', 'successdelete_edit');
+                        $('#tr_activity_' + $scope.comfirmDeleteId).remove();
+                        $('#close_modal_delete_activity').trigger('click');
+                    }, function(error) {
+                        console.log(error);
+                        $('#close_modal_delete_activity').trigger('click');
+                        $scope.alertDanger(error.data.message, 'danger');
+                    })
+            }
+
+            $scope.comfirmDelete = function(id) {
+                $scope.comfirmDeleteId = id;
+            }
+
+
             $scope.deleteContract = function() {
                 // alert($scope.contractId);
-                vnuService.deleteContract($scope.contractId)
+                vnuService.deleteContract($scope.comfirmDeleteId)
                     .then(function() {
                         $("#close_modal_delete").trigger('click');
-                        $scope.success = true;
-                        $timeout(function() {
-                            // 
-                            $(".alert").fadeTo(500, 0).slideUp(500, function() {
-                                // $(this).remove();
-                                $scope.success = false;
-                            });
-                        }, 3000);
+                        $scope.alertSuccess("Xóa hợp đồng thành công!", "");
                         $scope.getAllContract();
                     }, function(error) {
                         console.log(error);

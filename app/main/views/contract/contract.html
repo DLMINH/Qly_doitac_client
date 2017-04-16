@@ -183,7 +183,8 @@
                                 <td class=" ">{{contract.partner.partnerInfo.partnerName}}</td>
                                 <td class=" ">{{contract.partner.nation.nationName}}</td>
                                 <td class=" ">{{contract.uetMan.uetManName}}</td>
-                                <td class=" ">{{contract.partnerContact.contactName}} <br /> {{contract.partnerContact.about}}</td>
+                                <td class=" ">{{contract.partnerContact.contactName}}
+                                    <br /> {{contract.partnerContact.about}}</td>
                                 <td class=" " ng-bind-html="contract.contentContract"></td>
                                 <td class=" ">{{contract.funding}}</td>
                                 <td class=" ">{{contract.startDate | date:'dd/MM/yyyy'}}</td>
@@ -196,14 +197,11 @@
                                         <i class="fa fa-edit"></i>
                                     </a>
                                 </td>
-                                <td class=" " ng-click="setDeleteContractId(contract.id)">
+                                <td class=" " ng-click="comfirmDelete(contract.id)">
                                     <a class="cursor" data-toggle="modal" data-target="#delete_contract"><i class="fa fa-trash"></i></a>
                                 </td>
                                 <td class="a-center ">
-                                    <input type="checkbox" class="flat" name="table_records"
-                                        ng-click="selectContract(contract); contract.checked = !contract.checked"
-                                        ng-checked="contract.checked">
-                                
+                                    <input type="checkbox" class="flat" name="table_records" ng-click="selectContract(contract); contract.checked = !contract.checked" ng-checked="contract.checked">
                                 </td>
                             </tr>
                         </tbody>
@@ -221,11 +219,42 @@
                                 <h4 class="modal-title" id="myModalLabel">Chỉnh sửa hợp đồng</h4>
                             </div>
                             <div class="modal-body">
+                                <div class="alert alert-danger" ng-if="danger_edit">
+                                    <strong>{{errorMessage}}</strong>
+                                </div>
+                                <div class="alert alert-success" ng-if="successdelete_edit">
+                                    <strong>{{successMessage}}</strong>
+                                </div>
                                 <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
                                     <div class="form-group">
                                         <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Nội dung hợp tác: </label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input type="text" class="form-control col-md-7 col-xs-12" ng-model="editContractData.contentContract">
+                                            <!-- <textarea class="form-control" rows="7" ng-model="editContractData.contentContract"></textarea> -->
+                                            <ul class="nav navbar-right panel_toolbox">
+                                                <li class="dropdown">
+                                                    <a class="dropdown-toggle cursor" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        <li><a data-toggle="collapse" data-target="#add_activity" class="cursor"> Thêm hoạt động hợp tác </a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                            <!-- <input  class="form-control col-md-7 col-xs-12" type="text" ng-model="editContractData.cooperateActivityValue"> -->
+                                            <textarea id="add_activity" class="form-control collapse" rows="7" ng-model="editContractData.cooperateActivityValue"></textarea>
+                                            <br />
+                                            <table class="table table-striped">
+                                                <tbody>
+                                                    <tr ng-repeat="activity in editContractData.cooperateActivity" id="tr_activity_{{activity.id}}">
+                                                        <!-- <th scope="row">{{typeContract.id}}</th> -->
+                                                        <td id="activity{{activity.id}}">{{activity.cooperateActivity}}</td>
+                                                        <th>
+                                                            <i id="edit_activity_{{activity.id}}" class="fa fa-edit cursor" ng-click="editActivity(activity.id); edit_activity = true"></i>
+                                                            <i id="save_edit_activity_{{activity.id}}" class="fa fa-save cursor" ng-click="saveEditActivity(activity.id)" ng-if="edit_activity"></i>
+                                                        </th>
+                                                        <th><i class="fa fa-trash cursor" data-toggle="modal" data-target="#delete_activity" ng-click="comfirmDelete(activity.id)"></i></th>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -299,7 +328,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group" ng-if="role == 'ADMIN'">
                                         <label class="control-label col-md-4 col-sm-4 col-xs-12">Đơn vị theo dõi: </label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <select class="form-control" ng-model="input.unitNameId">
@@ -332,7 +361,7 @@
                                     <div class="form-group">
                                         <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Nội dung hợp tác chính: </label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input type="text" class="form-control col-md-7 col-xs-12" ng-model="input.contentContract">
+                                            <textarea class="form-control" rows="5" ng-model="input.contentContract"></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -386,58 +415,23 @@
                     </div>
                 </div>
                 <!-- end confirm delete contract -->
-                <!-- insert excel -->
-                <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="">
-                    <div class="modal-dialog modal-lg">
+                <!-- comfirm delete activity -->
+                <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="delete_activity">
+                    <div class="modal-dialog modal-sm">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" id="close_modal_edit"><span aria-hidden="true">×</span>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_modal_delete_activity"><span aria-hidden="true">×</span>
                                 </button>
-                                <h4 class="modal-title" id="myModalLabel">Chỉnh sửa hợp đồng</h4>
-                            </div>
-                            <div class="modal-body">
-                                <div class="x_panel">
-                                    <div class="x_title">
-                                        <h2>Insert internship</h2>
-                                        <input type="file" name="xlfile" id="xlf" ng-init="convert()">
-                                        <button ng-click="setExcelTable()">Show Students</button>
-                                        <button ng-click="send()">Upload</button>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                    <div class="x_content">
-                                        <table class="table table-striped" ng-if="excelTable != null">
-                                            <thead>
-                                                <tr>
-                                                    <th>Student Name</th>
-                                                    <th>Birthday</th>
-                                                    <th>Student Code</th>
-                                                    <th>Grade</th>
-                                                    <th>Start Date</th>
-                                                    <th>End Date</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr ng-repeat="intern in excelTable">
-                                                    <th scope="row">{{intern.studentName}}</th>
-                                                    <td>{{intern.birthday}}</td>
-                                                    <td>{{intern.studentCode}}</td>
-                                                    <td>{{intern.grade}}</td>
-                                                    <td>{{intern.startDate | date:'medium'}}</td>
-                                                    <td>{{intern.endDate | date:'medium'}}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                                <h4 class="modal-title" id="myModalLabel2">Bạn có chắc muốn xóa hoạt động này?</h4>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-                                <button type="button" class="btn btn-primary" ng-click="editContract()">Lưu thay đổi</button>
+                                <button type="button" class="btn btn-primary" ng-click="deleteActivity(comfirmDeleteId)">Xóa</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- insert excel -->
+                <!-- end confirm delte activity -->
             </div>
         </div>
     </div>
