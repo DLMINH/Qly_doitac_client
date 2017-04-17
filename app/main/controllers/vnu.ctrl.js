@@ -735,6 +735,9 @@
             }
 
             $scope.createContract = function() {
+                if($rootScope.role == 'UNIT'){
+                    $scope.input.unitNameId = $rootScope.id;
+                }
                 if (($scope.input.partnerId + $scope.input.partnerContactId + $scope.input.unitNameId + $scope.input.uetManId + $scope.input.typeContractId + $scope.input.contentContract + $scope.input.funding) != "") {
                     if ($scope.input.startDate) {
                         $scope.input.startDate = $scope.input.startDate.getTime();
