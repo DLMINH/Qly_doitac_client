@@ -4,6 +4,12 @@
             <section class="login_content">
                 <form>
                     <h1>Login Form</h1>
+                    <div class="alert alert-success" ng-if="success">
+                        <p>{{successMessage}}</p>
+                    </div>
+                    <div class="alert alert-danger" ng-if="danger">
+                        <p>{{errorMessage}}</p>
+                    </div>
                     <div>
                         <input type="text" class="form-control" placeholder="Username" required="" ng-model="input.username" />
                     </div>
