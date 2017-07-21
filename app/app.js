@@ -12,7 +12,8 @@ angular.module('myApp', [
     'partner',
     'vnu',
     'ngSanitize',
-    'contract'
+    'contract',
+    'angular-md5'
 ]).
 config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProvider', function($locationProvider, $routeProvider, $stateProvider, $urlRouterProvider) {
     $locationProvider.hashPrefix('');
@@ -53,6 +54,11 @@ config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProv
                 url : '/contract',
                 templateUrl : 'main/views/contract/contract.html',
                 controller : 'vnuCtrl'
+            })
+            .state('/activity', {
+                url : '/activity',
+                templateUrl : 'main/views/activity/activity.html',
+                controller : 'actCtrl'
             });
     }
 }])

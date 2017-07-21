@@ -1,11 +1,11 @@
 (function() {
     var app = angular.module("user", []);
-    app.controller('userCtrl', ['$scope', 'userService', '$location', '$rootScope', '$window',
-        function($scope, userService, $location, $rootScope, $window) {
+    app.controller('userCtrl', ['$scope', 'userService', '$location', '$rootScope', '$window', 'md5',
+        function($scope, userService, $location, $rootScope, $window, md5) {
             $scope.login = function() {
             	$scope.request = {
             		userName : $scope.input.username,
-            		password : $scope.input.password
+            		password : md5.createHash($scope.input.password || '')
             	}
             	userService.login($scope.request)
             		.then(function (response){

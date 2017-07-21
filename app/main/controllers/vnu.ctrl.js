@@ -1,7 +1,7 @@
 (function() {
     var app = angular.module("vnu", []);
-    app.controller('vnuCtrl', ['$scope', 'vnuService', '$location', '$rootScope', '$window', '$timeout', 'partnerService', 'filterFilter',
-        function($scope, vnuService, $location, $rootScope, $window, $timeout, partnerService, filterFilter) {
+    app.controller('vnuCtrl', ['$scope', 'vnuService', '$location', '$rootScope', '$window', '$timeout', 'partnerService', 'filterFilter', 'md5',
+        function($scope, vnuService, $location, $rootScope, $window, $timeout, partnerService, filterFilter, md5) {
             $scope.alertWarning = function(warning, timeout) {
                 $scope.warningMessage = warning;
                 $scope.warning = true;
@@ -318,7 +318,6 @@
                     saveAs(new Blob([s2ab(wbout)], { type: "" }), "Danh muc hop tac.xlsx");
                     $scope.alertSuccess("Xuất hợp đồng ra file excel thành công!", "");
                 }
-
             };
 
 
@@ -560,14 +559,14 @@
                 if ($scope.input.userName != "" && $scope.input.password != "") {
                     $scope.request = {
                         userName: $scope.input.userName,
-                        password: $scope.input.password
+                        password: md5.createHash($scope.input.password || '')
                     }
                     console.log($scope.request);
                     console.log($scope.input.unitNameId);
                     vnuService.createAccount($scope.request, $scope.input.unitNameId)
                         .then(function() {
                             $scope.alertSuccess("Tạo tài khoản thành công!", "");
-                            $scope.input.username = "";
+                            $scope.input.userName = "";
                             $scope.input.password = "";
                             $scope.getAllUnitName();
                         }, function(error) {

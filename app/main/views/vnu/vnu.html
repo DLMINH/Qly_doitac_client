@@ -21,14 +21,17 @@
                 <h2>VNU</h2>
                 <ul class="nav navbar-right panel_toolbox">
                     <li class="dropdown">
-                        <a class="dropdown-toggle cursor" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <a class="dropdown-toggle cursor" data-toggle="dropdown" role="button" aria-expanded="false">
+                            Thêm
+                            <i class="fa fa-wrench"></i>
+                        </a>
                         <ul class="dropdown-menu" role="menu">
                             <li ng-if="role == 'ADMIN'"><a data-toggle="collapse" data-target="#add_unit" class="cursor"> Thêm đơn vị theo dõi </a>
                             </li>
                             <li><a data-toggle="collapse" data-target="#add_uet_man" class="cursor"> Thêm người kí kết (VNU-UET) </a>
                             </li>
-                            <li><a data-toggle="collapse" data-target="#add_type_contract" class="cursor"> Thêm loại hợp đồng </a>
-                            </li>
+                            <!-- <li><a data-toggle="collapse" data-target="#add_type_contract" class="cursor"> Thêm loại hợp đồng </a>
+                            </li> -->
                             <li ng-if="role == 'ADMIN'"><a data-toggle="collapse" data-target="#create_account" class="cursor"> Tạo tài khoản cho đơn vị theo dõi </a>
                             </li>
                         </ul>
@@ -120,7 +123,7 @@
                 </form>
                 <!-- end form tao uetman -->
                 <!-- form tao type contract -->
-                <form class="form-horizontal form-label-left collapse" id="add_type_contract">
+                <!-- <form class="form-horizontal form-label-left collapse" id="add_type_contract">
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a data-toggle="collapse" data-target="#add_type_contract" class="cursor"><i class="fa fa-chevron-up"></i></a>
                         </li>
@@ -137,15 +140,15 @@
                         </div>
                     </div>
                     <div class="divider-dashed"></div>
-                </form>
+                </form> -->
                 <!-- end form tao type contract -->
-                <div class="col-md-6 col-sm-6 col-xs-12" ng-init="getAllTypeContract()">
+                <div class="col-md-6 col-sm-6 col-xs-12" ng-init="getAllUnitName()" ng-if="role == 'ADMIN'">
                     <div class="x_panel">
                         <div class="x_title">
-                            <h2>Các loại hợp đồng</h2>
+                            <h2>Đơn vị theo dõi</h2>
                             <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search for..." ng-model="type_contract" style="border-radius:25px; border: 1px solid rgba(221,226,232,.49); box-shadow: inset 0 1px 0 rgba(0,0,0,.075)">
+                                    <input type="text" class="form-control" placeholder="Search for..." ng-model="all_unit" style="border-radius:25px; border: 1px solid rgba(221,226,232,.49); box-shadow: inset 0 1px 0 rgba(0,0,0,.075)">
                                 </div>
                             </div>
                             <div class="clearfix"></div>
@@ -155,28 +158,30 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Loại hợp đồng</th>
+                                        <th>Đơn vị theo dõi</th>
+                                        <th>Account</th>
                                         <th>Sửa</th>
                                         <th>Xóa</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="typeContract in typeContract_filtered = allTypeContract | filter : type_contract | startFrom:(typeContract_currentPage-1)*typeContract_entryLimit | limitTo:typeContract_entryLimit" id="tr_typeContract_{{typeContract.id}}">
-                                        <th scope="row">{{typeContract.id}}</th>
-                                        <td id="typeContract_{{typeContract.id}}">{{typeContract.typeContract}}</td>
+                                    <tr ng-repeat="unitName in allUnit_filtered = allUnit | filter : all_unit | startFrom:(allUnit_currentPage-1)*allUnit_entryLimit | limitTo:allUnit_entryLimit" id="tr_unitName_{{unitName.id}}">
+                                        <th scope="row">{{unitName.id}}</th>
+                                        <td id="unitName_{{unitName.id}}">{{unitName.unitName}}</td>
+                                        <td id="username_{{unitName.id}}">{{unitName.user.userName}}</td>
                                         <th>
-                                            <i id="edit_typeContract_{{typeContract.id}}" class="fa fa-edit cursor" ng-click="editTypeContract(typeContract.id); edit_typeContract = true"></i>
-                                            <i id="save_edit_typeContract_{{typeContract.id}}" class="fa fa-save cursor" ng-click="saveEditTypeContract(typeContract.id)" ng-if="edit_typeContract"></i>
+                                            <i id="edit_unitName_{{unitName.id}}" class="fa fa-edit cursor" ng-click="editUnitName(unitName.id); edit_unitName = true"></i>
+                                            <i id="save_edit_unitName_{{unitName.id}}" class="fa fa-save cursor" ng-click="saveEditUnitName(unitName.id)" ng-if="edit_unitName"></i>
                                         </th>
-                                        <th id="confirm_delete_typeContract_{{typeContract.id}}">
-                                            <i id="i_confirm_delete_typeContract_{{typeContract.id}}" class="fa fa-trash cursor" ng-click="confirmDeleteTypeContract(typeContract.id); deleteTypeContractValue = true"></i>
-                                            <button id="button_confirm_delete_typeContract_{{typeContract.id}}" ng-if="deleteTypeContractValue" type="button" class="btn btn-default btn-xs" ng-click="cancerDeleteTypeContract(typeContract.id)">Hủy</button>
-                                            <button id="button_delete_typeContract_{{typeContract.id}}" ng-if="deleteTypeContractValue" type="button" class="btn btn-success btn-xs" ng-click="deleteTypeContract(typeContract.id)">Xác nhận</button>
+                                        <th id="confirm_delete_unitName_{{unitName.id}}">
+                                            <i id="i_confirm_delete_unitName_{{unitName.id}}" class="fa fa-trash cursor" ng-click="confirmDeleteUnitName(unitName.id); deleteUnitNameValue = true"></i>
+                                            <button id="button_confirm_delete_unitName_{{unitName.id}}" ng-if="deleteUnitNameValue" type="button" class="btn btn-default btn-xs" ng-click="cancerDeleteUnitName(unitName.id)">Hủy</button>
+                                            <button id="button_delete_unitName_{{unitName.id}}" ng-if="deleteUnitNameValue" type="button" class="btn btn-success btn-xs" ng-click="deleteUnitName(unitName.id)">Xác nhận</button>
                                         </th>
                                     </tr>
                                 </tbody>
                             </table>
-                            <ul uib-pagination total-items="typeContract_totalItems" ng-model="typeContract_currentPage" max-size="typeContract_noOfPages" items-per-page="typeContract_entryLimit"></ul>
+                            <ul uib-pagination total-items="allUnit_totalItems" ng-model="allUnit_currentPage" max-size="allUnit_noOfPages" items-per-page="allUnit_entryLimit"></ul>
                         </div>
                     </div>
                 </div>
@@ -222,7 +227,7 @@
                     </div>
                 </div>
             </div>
-            <div class="x_content" ng-if="role == 'ADMIN'">
+            <!-- <div class="x_content" ng-if="role == 'ADMIN'">
                 <div class="col-md-6 col-sm-6 col-xs-12" ng-init="getAllUnitName()">
                     <div class="x_panel">
                         <div class="x_title">
@@ -264,7 +269,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

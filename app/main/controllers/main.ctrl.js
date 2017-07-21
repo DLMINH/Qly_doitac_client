@@ -2,7 +2,7 @@
     angular.module('myApp')
         .controller('mainCtrl', ['$scope', '$rootScope', '$location', '$window', 'userService',
             function($scope, $rootScope, $location, $window, userService) {
-                $rootScope.serverAdd = "http://localhost:8080";
+                $rootScope.serverAdd = "http://localhost:8180";
                 $rootScope.clientAdd = "http://localhost:8100";
                 if(sessionStorage['User-Data']){
                     $rootScope.loggedIn = true;

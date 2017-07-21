@@ -147,8 +147,8 @@
                             // });
                             $scope.Partner = {};
                             $scope.Partner.id = response.data.id;
-                            $scope.Partner.partnerInfo = {};
-                            $scope.Partner.partnerInfo.partnerName = $scope.request.partnerName;
+                            $scope.Partner = {};
+                            $scope.Partner.partnerName = $scope.request.partnerName;
                             $scope.Partner.nation = {};
 
                             $scope.Partner.nation.nationName = $scope.nation_.nationName;
@@ -157,6 +157,15 @@
                             $scope.alertDanger("Có lỗi xảy ra, hãy thử reload lại trang và tạo tạo lại!", '');
                         })
                 }
+            }
+
+            $scope.addContact = function() {
+                $scope.editInfo = false;
+                $scope.addPartnerContact = true;
+                // $('#step-3').hide();
+                // $('#step-3').fadeIn("slow");
+                $('#a_step_2').addClass("done");
+                $('#a_step_3').removeClass("disabled");
             }
 
             $scope.createPartnerContact = function() {
@@ -183,9 +192,9 @@
 
             $scope.editPartnerInfo = function() {
                 console.log($scope.Partner);
-                $scope.Partner.partnerInfo.partnerId = $scope.Partner.id;
+                $scope.Partner.partnerId = $scope.Partner.id;
                 // $scope.Partner.partnerInfo.nationId = $scope.Partner.id;
-                partnerService.editPartnerInfo($scope.Partner.partnerInfo)
+                partnerService.editPartnerInfo($scope.Partner)
                     .then(function(response) {
                         console.log(response);
                         $("#close_modal").trigger('click');
@@ -204,7 +213,7 @@
             $scope.close = function() {
                 // alert(1)
                 $("#step-2").fadeOut("slow", function() {
-                    
+
                     $('#a_step_1').removeClass("done");
                     $('#a_step_2').removeClass("done").addClass("disabled");
                 });
