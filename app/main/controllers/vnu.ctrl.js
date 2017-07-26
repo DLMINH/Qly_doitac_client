@@ -159,11 +159,11 @@
                         var curr_year = endDate.getFullYear();
                         endDate = curr_date + "-" + curr_month + "-" + curr_year;
                         ws['A' + i] = {
-                            h: excel.partner.partnerInfo.partnerName,
-                            r: excel.partner.partnerInfo.partnerName,
+                            h: excel.partner.partnerName,
+                            r: excel.partner.partnerName,
                             t: "s",
-                            v: excel.partner.partnerInfo.partnerName,
-                            w: excel.partner.partnerInfo.partnerName,
+                            v: excel.partner.partnerName,
+                            w: excel.partner.partnerName,
                             s: {
                                 alignment: {
                                     wrapText: true,
