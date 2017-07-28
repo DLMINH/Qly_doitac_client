@@ -1,22 +1,7 @@
-<div class="page-title" ng-init="getAllContract()">
-    <div class="title_left">
-        <h3>Hợp Đồng</h3>
-    </div>
-    <div class="title_right">
-        <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search for..." ng-model="search">
-                <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="clearfix"></div>
 <div class="row">
-    <div class="col-md-12 col-sm-12 col-xs-12">
-        <div class="x_panel">
+    <div class="col-md-12 col-sm-12 col-xs-12" ng-init="getAllContract()">
+        <!-- <div class="x_panel"> -->
             <div class="x_title">
                 <!-- <h2>Hợp Đồng</h2> -->
                 <ul class="nav navbar-right panel_toolbox">
@@ -41,6 +26,9 @@
                         </ul>
                     </li>
                 </ul>
+                <div class="input-group pull-right">
+                    <input type="text" class="form-control" placeholder="Search for..." ng-model="search" style="border-radius:25px; border: 1px solid rgba(221,226,232,.49); box-shadow: inset 0 1px 0 rgba(0,0,0,.075);">
+                </div>
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
@@ -436,6 +424,6 @@
                 </div>
                 <!-- end confirm delte activity -->
             </div>
-        </div>
+        <!-- </div> -->
     </div>
 </div>

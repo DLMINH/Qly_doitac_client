@@ -1,7 +1,8 @@
 (function() {
     var app = angular.module("nation", []);
-    app.controller('nationCtrl', ['$scope', 'nationService', '$location', '$rootScope', '$window', '$timeout',
-        function($scope, nationService, $location, $rootScope, $window, $timeout) {
+    app.controller('nationCtrl', ['$scope', 'nationService', '$location', '$rootScope', '$window', '$timeout', '$state',
+        function($scope, nationService, $location, $rootScope, $window, $timeout, $state) {
+            $rootScope.currentUrl = $state.current.url;
             $scope.alertDanger = function(error, danger) {
                 $scope.errorMessage = error;
                 if (danger == 'danger') {
@@ -53,6 +54,16 @@
                     })
             }
 
+            $scope.getAllNation = function() {
+                nationService.getAllNation()
+                    .then(function(response) {
+                        $scope.allNations = response.data;
+                        console.log(response.data);
+                    }, function(error) {
+                        console.log(error);
+                    })
+            }
+
             $scope.createNation = function() {
                 $scope.request = {
                     nationName: $scope.input.nationName
@@ -64,7 +75,7 @@
                         $scope.alertSuccess('Tạo Quốc gia thành công!', '');
                         $scope.input.nationName = "";
                         $scope.input.continentId = null;
-                        $scope.getAllContinent();
+                        $scope.getAllNation();
                     }, function(error) {
                         console.log(error);
                     })

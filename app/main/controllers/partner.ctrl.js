@@ -1,8 +1,9 @@
 (function() {
     var app = angular.module("partner", []);
-    app.controller('partnerCtrl', ['$scope', 'partnerService', 'nationService', '$location', '$rootScope', '$window', '$timeout', 'filterFilter',
-        function($scope, partnerService, nationService, $location, $rootScope, $window, $timeout, filterFilter) {
+    app.controller('partnerCtrl', ['$scope', 'partnerService', 'nationService', '$location', '$rootScope', '$window', '$timeout', 'filterFilter', '$state',
+        function($scope, partnerService, nationService, $location, $rootScope, $window, $timeout, filterFilter, $state) {
             $scope.input = {};
+            $rootScope.currentUrl = $state.current.url;
             $scope.alertDanger = function(error, danger) {
                 $scope.errorMessage = error;
                 if (danger == 'danger') {

@@ -1,197 +1,182 @@
-<div class="page-title" ng-init="getAllContinent()">
-    <div class="title_left">
-        <h3>Quốc Gia và Châu Lục</h3>
-    </div>
-    <div class="title_right">
-        <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search for...">
-                <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="clearfix"></div>
-<div class="row">
+<div class="row" ng-init="getAllNation()">
     <div class="col-md-12 col-sm-12 col-xs-12">
-        <div class="x_panel">
-            <div class="x_title">
-                <h2>Châu lục</h2>
-                <ul class="nav navbar-right panel_toolbox">
-                    <li class="dropdown">
-                        <a class="dropdown-toggle cursor" data-toggle="dropdown" role="button" aria-expanded="false">
+        <!-- <div class="x_panel"> -->
+        <div class="x_title">
+            <!-- <h2>Châu lục</h2> -->
+            <ul class="nav navbar-right panel_toolbox">
+                <li class="dropdown">
+                    <a class="dropdown-toggle cursor" data-toggle="dropdown" role="button" aria-expanded="false">
                             Thêm
                             <i class="fa fa-wrench"></i>
                         </a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a data-toggle="collapse" data-target="#add_nation" class="cursor"> Thêm Quốc Gia </a>
-                            </li>
-                            <li><a data-toggle="collapse" data-target="#add_continent" class="cursor"> Thêm Châu Lục </a>
-                            </li>
-                        </ul>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a data-toggle="collapse" data-target="#add_nation" class="cursor"> Thêm Quốc Gia </a>
+                        </li>
+                        <li><a data-toggle="collapse" data-target="#add_continent" class="cursor"> Thêm Châu Lục </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <div class="alert alert-success" ng-if="success">
+                <strong>{{successMessage}}</strong>
+            </div>
+            <div class="alert alert-danger" ng-if="danger">
+                <strong>{{errorMessage}}</strong>
+            </div>
+            <form class="form-horizontal form-label-left collapse" id="add_nation">
+                <ul class="nav navbar-right panel_toolbox">
+                    <li><a data-toggle="collapse" data-target="#add_nation" class="cursor"><i class="fa fa-chevron-up"></i></a>
                     </li>
                 </ul>
-                <div class="clearfix"></div>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên Quốc Gia</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" name="country" class="form-control col-md-10" ng-model="input.nationName" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Châu Lục</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select class="form-control" ng-model="input.continentId">
+                            <option ng-repeat="continent in allContinent" value="{{continent.id}}">{{continent.continentName}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                        <button type="submit" class="btn btn-success" ng-click="createNation()">Tạo</button>
+                    </div>
+                </div>
+                <div class="divider-dashed"></div>
+            </form>
+            <form class="form-horizontal form-label-left collapse" id="add_continent">
+                <ul class="nav navbar-right panel_toolbox">
+                    <li><a data-toggle="collapse" data-target="#add_continent" class="cursor"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                </ul>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên Châu Lục</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" name="country" class="form-control col-md-10" ng-model="input.continentName" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                        <button type="submit" class="btn btn-success" ng-click="createContinent()">Tạo</button>
+                    </div>
+                </div>
+                <div class="divider-dashed"></div>
+            </form>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <!-- <th> -->
+                            <!-- <input type="checkbox" id="check-all" class="flat"> -->
+                            <!-- </th> -->
+                            <th class="column-title">Quốc gia </th>
+                            <th class="column-title">Châu lục</th>
+                            <th>Sửa</th>
+                            <th>Xóa</th>
+                            <!-- <th class="column-title no-link last"><span class="nobr">Action</span> -->
+                            <!-- </th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="even pointer" ng-repeat="nation in allNations">
+                            <!-- <td class="a-center "> -->
+                            <!-- <input type="checkbox" class="flat" name="table_records"> -->
+                            <!-- </td> -->
+                            <td class=" " id="continent_{{continent.id}}">{{nation.nationName}}</td>
+                            <td>
+                                {{nation.continent.continentName}}
+                            </td>
+                            <td class=" ">
+                                <i id="edit_continent_{{continent.id}}" class="fa fa-edit cursor" ng-click="editContinent(continent.id); edit_continent = true"></i>
+                                <i id="save_edit_continent_{{natcontinention.id}}" class="fa fa-save cursor" ng-click="saveEditContinent(continent.id)" ng-if="edit_continent"></i>
+                            </td>
+                            <td class=" ">
+                                <i class="fa fa-trash cursor" data-toggle="modal" data-target="#delete_continent" ng-click="comfirmDelete(continent.id)"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="x_content">
-                <div class="alert alert-success" ng-if="success">
-                    <strong>{{successMessage}}</strong>
-                </div>
-                <div class="alert alert-danger" ng-if="danger">
-                    <strong>{{errorMessage}}</strong>
-                </div>
-                <form class="form-horizontal form-label-left collapse" id="add_nation">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a data-toggle="collapse" data-target="#add_nation" class="cursor"><i class="fa fa-chevron-up"></i></a>
-                        </li>
-                    </ul>
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên Quốc Gia</label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" name="country" class="form-control col-md-10" ng-model="input.nationName" />
+            <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="view_nation">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel2">{{Continent.continentName}}</h4>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Châu Lục</label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <select class="form-control" ng-model="input.continentId">
-                                <option ng-repeat="continent in allContinent" value="{{continent.id}}">{{continent.continentName}}</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                            <button type="submit" class="btn btn-success" ng-click="createNation()">Tạo</button>
-                        </div>
-                    </div>
-                    <div class="divider-dashed"></div>
-                </form>
-                <form class="form-horizontal form-label-left collapse" id="add_continent">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a data-toggle="collapse" data-target="#add_continent" class="cursor"><i class="fa fa-chevron-up"></i></a>
-                        </li>
-                    </ul>
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên Châu Lục</label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" name="country" class="form-control col-md-10" ng-model="input.continentName" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                            <button type="submit" class="btn btn-success" ng-click="createContinent()">Tạo</button>
-                        </div>
-                    </div>
-                    <div class="divider-dashed"></div>
-                </form>
-                <div class="table-responsive">
-                    <table class="table table-striped jambo_table bulk_action">
-                        <thead>
-                            <tr class="headings">
-                                <!-- <th> -->
-                                <!-- <input type="checkbox" id="check-all" class="flat"> -->
-                                <!-- </th> -->
-                                <th class="column-title">Châu Lục </th>
-                                <th class="column-title">Số Quốc Gia</th>
-                                <th>Sửa</th>
-                                <th>Xóa</th>
-                                <!-- <th class="column-title no-link last"><span class="nobr">Action</span> -->
-                                <!-- </th> -->
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="even pointer" ng-repeat="continent in allContinent">
-                                <!-- <td class="a-center "> -->
-                                <!-- <input type="checkbox" class="flat" name="table_records"> -->
-                                <!-- </td> -->
-                                <td class=" " id="continent_{{continent.id}}">{{continent.continentName}}</td>
-                                <td data-toggle="modal" data-target="#view_nation" ng-click="showNation(continent)">
-                                    <a class="cursor">{{continent.nation.length}}</a>
-                                </td>
-                                <td class=" ">
-                                    <i id="edit_continent_{{continent.id}}" class="fa fa-edit cursor" ng-click="editContinent(continent.id); edit_continent = true"></i>
-                                    <i id="save_edit_continent_{{natcontinention.id}}" class="fa fa-save cursor" ng-click="saveEditContinent(continent.id)" ng-if="edit_continent"></i>
-                                </td>
-                                <td class=" ">
-                                    <i class="fa fa-trash cursor" data-toggle="modal" data-target="#delete_continent" ng-click="comfirmDelete(continent.id)"></i>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="view_nation">
-                    <div class="modal-dialog modal-sm">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
-                                </button>
-                                <h4 class="modal-title" id="myModalLabel2">{{Continent.continentName}}</h4>
+                        <div class="modal-body">
+                            <div class="alert alert-danger" ng-if="danger_edit">
+                                <strong>{{errorMessage}}</strong>
                             </div>
-                            <div class="modal-body">
-                                <div class="alert alert-danger" ng-if="danger_edit">
-                                    <strong>{{errorMessage}}</strong>
-                                </div>
-                                <div class="alert alert-success" ng-if="successdelete_edit">
-                                    <strong>{{successMessage}}</strong>
-                                </div>
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <!-- <th>#</th> -->
-                                            <th>Quốc gia</th>
-                                            <th>Sửa</th>
-                                            <th>Xóa</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr ng-repeat="nation in Continent.nation" id="tr_nation_{{nation.id}}">
-                                            <!-- <th scope="row">{{typeContract.id}}</th> -->
-                                            <td id="nation_{{nation.id}}">{{nation.nationName}}</td>
-                                            <th>
-                                                <i id="edit_nation_{{nation.id}}" class="fa fa-edit cursor" ng-click="editNation(nation.id); edit_nation = true"></i>
-                                                <i id="save_edit_nation_{{nation.id}}" class="fa fa-save cursor" ng-click="saveEditNation(nation.id)" ng-if="edit_nation"></i>
-                                            </th>
-                                            <th><i class="fa fa-trash cursor" data-toggle="modal" data-target="#delete_nation" ng-click="comfirmDelete(nation.id)"></i></th>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div class="alert alert-success" ng-if="successdelete_edit">
+                                <strong>{{successMessage}}</strong>
                             </div>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <!-- <th>#</th> -->
+                                        <th>Quốc gia</th>
+                                        <th>Sửa</th>
+                                        <th>Xóa</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="nation in Continent.nation" id="tr_nation_{{nation.id}}">
+                                        <!-- <th scope="row">{{typeContract.id}}</th> -->
+                                        <td id="nation_{{nation.id}}">{{nation.nationName}}</td>
+                                        <th>
+                                            <i id="edit_nation_{{nation.id}}" class="fa fa-edit cursor" ng-click="editNation(nation.id); edit_nation = true"></i>
+                                            <i id="save_edit_nation_{{nation.id}}" class="fa fa-save cursor" ng-click="saveEditNation(nation.id)" ng-if="edit_nation"></i>
+                                        </th>
+                                        <th><i class="fa fa-trash cursor" data-toggle="modal" data-target="#delete_nation" ng-click="comfirmDelete(nation.id)"></i></th>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-                <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="delete_nation">
-                    <div class="modal-dialog modal-sm">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_modal_delete_nation"><span aria-hidden="true">×</span>
-                                </button>
-                                <h4 class="modal-title" id="myModalLabel2">Bạn có chắc muốn xóa quốc gia này?</h4>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-                                <button type="button" class="btn btn-primary" ng-click="deleteNation(comfirmDeleteId)">Xóa</button>
-                            </div>
+            </div>
+            <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="delete_nation">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_modal_delete_nation"><span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel2">Bạn có chắc muốn xóa quốc gia này?</h4>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                            <button type="button" class="btn btn-primary" ng-click="deleteNation(comfirmDeleteId)">Xóa</button>
                         </div>
                     </div>
                 </div>
-                <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="delete_continent">
-                    <div class="modal-dialog modal-sm">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_modal_delete_continent"><span aria-hidden="true">×</span>
-                                </button>
-                                <h4 class="modal-title" id="myModalLabel2">Bạn có chắc muốn xóa châu lục này?</h4>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-                                <button type="button" class="btn btn-primary" ng-click="deleteContinent(comfirmDeleteId)">Xóa</button>
-                            </div>
+            </div>
+            <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="delete_continent">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_modal_delete_continent"><span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel2">Bạn có chắc muốn xóa châu lục này?</h4>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                            <button type="button" class="btn btn-primary" ng-click="deleteContinent(comfirmDeleteId)">Xóa</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- </div> -->
     </div>
 </div>

@@ -1,7 +1,8 @@
 (function() {
     var app = angular.module("vnu", []);
-    app.controller('vnuCtrl', ['$scope', 'vnuService', '$location', '$rootScope', '$window', '$timeout', 'partnerService', 'filterFilter', 'md5',
-        function($scope, vnuService, $location, $rootScope, $window, $timeout, partnerService, filterFilter, md5) {
+    app.controller('vnuCtrl', ['$scope', 'vnuService', '$location', '$rootScope', '$window', '$timeout', 'partnerService', 'filterFilter', 'md5', '$state',
+        function($scope, vnuService, $location, $rootScope, $window, $timeout, partnerService, filterFilter, md5, $state) {
+            $rootScope.currentUrl = $state.current.url;
             $scope.alertWarning = function(warning, timeout) {
                 $scope.warningMessage = warning;
                 $scope.warning = true;
