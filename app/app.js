@@ -48,12 +48,12 @@ config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProv
                 })
                 .state('/settings.vnu', {
                     url: '/vnu',
-                    templateUrl: 'main/views/vnu/vnu.html',
+                    templateUrl: 'main/views/settings/settings.vnu.html',
                     controller: 'vnuCtrl'
                 })
                 .state('/settings.nation_continent', {
                     url: '/nation_continent',
-                    templateUrl: 'main/views/nation_continent/nation_continent.html',
+                    templateUrl: 'main/views/settings/settings.nation_continent.html',
                     controller: 'nationCtrl'
                 })
                 .state('/partner', {
