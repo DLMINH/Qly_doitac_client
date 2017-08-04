@@ -436,7 +436,7 @@
                             }
                             if (response.data.unitName == "nf") {
                                 if ($rootScope.role == "UNIT") {
-                                     v.unitNameId = $rootScope.id;
+                                    v.unitNameId = $rootScope.id;
                                 } else {
                                     $('#unitName_' + v.STT).css('background-color', '#f0ad4e');
                                     $scope.checkContractValue = false;
@@ -492,7 +492,7 @@
                             }
                             if (response.data.unitName == "nf") {
                                 if ($rootScope.role == "UNIT") {
-                                     v.unitNameId = $rootScope.id;
+                                    v.unitNameId = $rootScope.id;
                                 } else {
                                     $('#unitName_' + v.STT).css('background-color', '#f0ad4e');
                                     $scope.checkContractValue = false;
@@ -704,6 +704,24 @@
                     })
             }
 
+            $scope.getAllContractOfPartner = function() {
+                vnuService.getAllContractOfPartner($scope.Partner.id)
+                    .then(function(response) {
+                        console.log(response);
+                        $scope.allContract = response.data;
+                        angular.forEach($scope.allContract, function(contract) {
+                            contract.checked = false;
+                            contract.contentContract = "";
+                            angular.forEach(contract.cooperateActivity, function(v) {
+                                contract.contentContract = contract.contentContract + v.cooperateActivity + "<br />";
+                            });
+                            // console.log(contract.contentContract);
+                        });
+                    }, function(error) {
+                        console.log(error);
+                    })
+            }
+
             $scope.getAllContract = function() {
                 vnuService.getAllContract()
                     .then(function(response) {
@@ -735,7 +753,11 @@
             }
 
             $scope.createContract = function() {
-                if($rootScope.role == 'UNIT'){
+                if ($scope.Partner != undefined) {
+                    $scope.input.partnerId = $scope.Partner.id;
+                    var Partner = true;
+                }
+                if ($rootScope.role == 'UNIT') {
                     $scope.input.unitNameId = $rootScope.id;
                 }
                 if (($scope.input.partnerId + $scope.input.partnerContactId + $scope.input.unitNameId + $scope.input.uetManId + $scope.input.typeContractId + $scope.input.contentContract + $scope.input.funding) != "") {
@@ -748,10 +770,16 @@
                     $scope.input.contentContract = $scope.input.contentContract.replace(/(?:\r\n|\r|\n)/g, '<br />');
                     vnuService.createContract($scope.input)
                         .then(function() {
-                            $("#close_modal_create").trigger('click');
+                            // 
                             $scope.alertSuccess("Tạo hợp đồng thành công!", "");
                             $scope.input = [];
-                            $scope.getAllContract();
+                            if (Partner != undefined) {
+                                $scope.getAllContractOfPartner();
+                            } else {
+                                $("#close_modal_create").trigger('click');
+                                $scope.getAllContract();
+                            }
+
                         }, function(error) {
                             console.log(error);
                         })
@@ -761,8 +789,33 @@
             $scope.setEditContract = function(contract) {
                 $scope.editContractData = contract;
                 console.log(contract);
-                $scope.editContractData.startDate = null;
-                $scope.editContractData.endDate = null;
+                // $scope.editContractData.startDate = null;
+                $scope.editContractData.startDate = new Date($scope.editContractData.startDate)
+                // var curr_date = $scope.editContractData.startDate.getDate();
+                // // console.log(curr_date.length());
+                // if (curr_date.length == 1) {
+                //     curr_date = '0' + curr_date;
+                // }
+                // var curr_month = $scope.editContractData.startDate.getMonth() + 1; //Months are zero based
+                // if (curr_month.length == 1) {
+                //     curr_month = '0' + curr_month;
+                // }
+                // var curr_year = $scope.editContractData.startDate.getFullYear();
+                // $scope.editContractData.startDate = curr_year + "-" + curr_month + "-" + curr_date;
+                // console.log($scope.editContractData.startDate);
+
+
+                $scope.editContractData.endDate = new Date($scope.editContractData.endDate)
+                // var curr_date = $scope.editContractData.endDate.getDate();
+                // if (curr_date.length == 1) {
+                //     curr_date = '0' + curr_date;
+                // }
+                // var curr_month = $scope.editContractData.endDate.getMonth() + 1; //Months are zero based
+                // if (curr_month.length == 1) {
+                //     curr_month = '0' + curr_month;
+                // }
+                // var curr_year = $scope.editContractData.endDate.getFullYear();
+                // $scope.editContractData.endDate = curr_year + "-" + curr_month + "-" + curr_date;
             }
 
             $scope.editContract = function() {
@@ -815,10 +868,10 @@
             }
 
             $scope.deleteActivity = function() {
-                vnuService.deleteActivity($scope.comfirmDeleteId)
+                vnuService.deleteActivity($scope.confirmDeleteId)
                     .then(function() {
                         $scope.alertSuccess('Xóa hoạt động thành công!', 'successdelete_edit');
-                        $('#tr_activity_' + $scope.comfirmDeleteId).remove();
+                        $('#tr_activity_' + $scope.confirmDeleteId).remove();
                         $('#close_modal_delete_activity').trigger('click');
                     }, function(error) {
                         console.log(error);
@@ -827,18 +880,27 @@
                     })
             }
 
-            $scope.comfirmDelete = function(id) {
-                $scope.comfirmDeleteId = id;
+            $scope.confirmDelete = function(id, name) {
+                $scope.confirmDeleteId = id;
+                $scope.confirmDeleteName = name;
             }
 
+            $scope.close = function(id) {
+                $('#' + id).modal('hide');
+            }
 
             $scope.deleteContract = function() {
                 // alert($scope.contractId);
-                vnuService.deleteContract($scope.comfirmDeleteId)
+                vnuService.deleteContract($scope.confirmDeleteId)
                     .then(function() {
-                        $("#close_modal_delete").trigger('click');
                         $scope.alertSuccess("Xóa hợp đồng thành công!", "");
-                        $scope.getAllContract();
+                        if ($scope.Partner != undefined) {
+                            $('#delete_contract').modal('hide');
+                            $scope.getAllContractOfPartner();
+                        } else {
+                            $scope.getAllContract();
+                            $("#close_modal_delete").trigger('click');
+                        }
                     }, function(error) {
                         console.log(error);
                     })
@@ -857,10 +919,10 @@
                 // console.log(v);
                 if (typeContract != "") {
                     $scope.request = {
-                            id: typeContractId,
-                            typeContract: typeContract
-                        }
-                        // console.log($scope.request);
+                        id: typeContractId,
+                        typeContract: typeContract
+                    }
+                    // console.log($scope.request);
                     vnuService.editTypeContract($scope.request)
                         .then(function() {
                             $('#edit_typeContract_' + typeContractId).show();
@@ -914,10 +976,10 @@
                 // console.log(v);
                 if (uetManName != "") {
                     $scope.request = {
-                            id: uetManId,
-                            uetManName: uetManName
-                        }
-                        // console.log($scope.request);
+                        id: uetManId,
+                        uetManName: uetManName
+                    }
+                    // console.log($scope.request);
                     vnuService.editUetMan($scope.request)
                         .then(function() {
                             $('#edit_uetMan_' + uetManId).show();
@@ -947,6 +1009,7 @@
                 vnuService.deleteUetMan(uetManId)
                     .then(function() {
                         $scope.alertSuccess("Xóa loại hợp đồng thành công!", '');
+                        $('#delete_uet_man').modal('hide');
                         $scope.getAllUetMan();
                     }, function(error) {
                         console.log(error);
@@ -967,10 +1030,10 @@
                 // console.log(v);
                 if (unitName != "") {
                     $scope.request = {
-                            id: unitNameId,
-                            unitName: unitName
-                        }
-                        // console.log($scope.request);
+                        id: unitNameId,
+                        unitName: unitName
+                    }
+                    // console.log($scope.request);
                     vnuService.editUnitName($scope.request)
                         .then(function() {
                             $('#edit_unitName_' + unitNameId).show();
@@ -1000,6 +1063,7 @@
                 vnuService.deleteUnitName(unitNameId)
                     .then(function() {
                         $scope.alertSuccess("Xóa loại hợp đồng thành công!", '');
+                        $('#delete_unit').modal('hide');
                         $scope.getAllUnitName();
                     }, function(error) {
                         console.log(error);

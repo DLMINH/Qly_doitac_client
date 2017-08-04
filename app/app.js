@@ -25,7 +25,7 @@ config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProv
                     controller: "userCtrl"
                 }).otherwise({ redirectTo: "/login" });
         } else {
-            $urlRouterProvider.otherwise('/contract');
+            $urlRouterProvider.otherwise('/partner/contract');
             $stateProvider
                 .state('/404', {
                     url: '/404',
@@ -69,24 +69,42 @@ config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProv
                 })
                 .state('/partner.information', {
                     url: '/information',
-                    templateUrl: 'main/views/partner/partner.all.html',
-                    controller: 'partnerCtrl'
+                    views: {
+                        '': {
+                            templateUrl: 'main/views/partner/partner.all.html',
+                            controller: 'partnerCtrl'
+                        },
+                        'contract@/partner.information': {
+                            templateUrl: 'main/views/partner/partner.contract.html',
+                            controller: 'partnerCtrl'
+                        },
+                        'activity@/partner.information': {
+                            templateUrl: 'main/views/partner/partner.annualActivity.html',
+                            controller: 'partnerCtrl'
+                        }
+                    }
                 })
+                // .state('/partner.information.contract', {
+                //     url: '/contract',
+                //     templateUrl: 'main/views/contract/contract.html',
+                //     controller: 'partnerCtrl'
+                // })
+
                 .state('/partner.activity', {
                     url: '/activity',
-                    templateUrl: 'main/views/partner/partner.all.html',
+                    templateUrl: 'main/views/partner/partner.annualActivity.all.html',
                     controller: 'partnerCtrl'
                 })
                 .state('/partner.contract', {
                     url: '/contract',
-                    templateUrl: 'main/views/contract/contract.html',
+                    templateUrl: 'main/views/partner/partner.contract.all.html',
                     controller: 'vnuCtrl'
-                })
-                .state('/activity', {
-                    url: '/activity',
-                    templateUrl: 'main/views/activity/activity.html',
-                    controller: 'actCtrl'
                 });
+                // .state('/activity', {
+                //     url: '/activity',
+                //     templateUrl: 'main/views/activity/activity.html',
+                //     controller: 'actCtrl'
+                // })
         }
     }])
     .filter('startFrom', function() {

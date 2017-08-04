@@ -136,11 +136,14 @@
                                         <i id="edit_uetMan_{{uetMan.id}}" class="fa fa-edit cursor" ng-click="editUetMan(uetMan.id); edit_uetMan = true"></i>
                                         <i id="save_edit_uetMan_{{uetMan.id}}" class="fa fa-save cursor" ng-click="saveEditUetMan(uetMan.id)" ng-if="edit_uetMan"></i>
                                     </th>
-                                    <th id="confirm_delete_uetMan_{{uetMan.id}}">
+                                    <!-- <th id="confirm_delete_uetMan_{{uetMan.id}}">
                                         <i id="i_confirm_delete_uetMan_{{uetMan.id}}" class="fa fa-trash cursor" ng-click="confirmDeleteUetMan(uetMan.id); deleteUetManValue = true"></i>
                                         <button id="button_confirm_delete_uetMan_{{uetMan.id}}" ng-if="deleteUetManValue" type="button" class="btn btn-default btn-xs" ng-click="cancerDeleteUetMan(uetMan.id)">Hủy</button>
                                         <button id="button_delete_uetMan_{{uetMan.id}}" ng-if="deleteUetManValue" type="button" class="btn btn-success btn-xs" ng-click="deleteUetMan(uetMan.id)">Xác nhận</button>
-                                    </th>
+                                    </th> -->
+                                    <td class=" ">
+                                        <a class="cursor" ng-click="confirmDelete(uetMan.id, uetMan.uetManName)" data-toggle="modal" data-target="#delete_uet_man"><i class="fa fa-trash"></i></a>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -179,15 +182,48 @@
                                         <i id="edit_unitName_{{unitName.id}}" class="fa fa-edit cursor" ng-click="editUnitName(unitName.id); edit_unitName = true"></i>
                                         <i id="save_edit_unitName_{{unitName.id}}" class="fa fa-save cursor" ng-click="saveEditUnitName(unitName.id)" ng-if="edit_unitName"></i>
                                     </th>
-                                    <th id="confirm_delete_unitName_{{unitName.id}}">
+                                    <!-- <th id="confirm_delete_unitName_{{unitName.id}}">
                                         <i id="i_confirm_delete_unitName_{{unitName.id}}" class="fa fa-trash cursor" ng-click="confirmDeleteUnitName(unitName.id); deleteUnitNameValue = true"></i>
                                         <button id="button_confirm_delete_unitName_{{unitName.id}}" ng-if="deleteUnitNameValue" type="button" class="btn btn-default btn-xs" ng-click="cancerDeleteUnitName(unitName.id)">Hủy</button>
                                         <button id="button_delete_unitName_{{unitName.id}}" ng-if="deleteUnitNameValue" type="button" class="btn btn-success btn-xs" ng-click="deleteUnitName(unitName.id)">Xác nhận</button>
-                                    </th>
+                                    </th> -->
+                                    <td class=" ">
+                                        <a class="cursor" ng-click="confirmDelete(unitName.id, unitName.unitName)" data-toggle="modal" data-target="#delete_unit"><i class="fa fa-trash"></i></a>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
                         <!-- <ul uib-pagination total-items="allUnit_totalItems" ng-model="allUnit_currentPage" max-size="allUnit_noOfPages" items-per-page="allUnit_entryLimit"></ul> -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="delete_uet_man">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_modal_delete"><span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel2">Bạn có chắc muốn xóa người kí (UET) {{confirmDeleteName}}</h4>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                            <button type="button" class="btn btn-primary" ng-click="deleteUetMan(confirmDeleteId)">Xóa</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="delete_unit">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_modal_delete"><span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel2">Bạn có chắc muốn xóa đơn vị theo dõi {{confirmDeleteName}}</h4>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                            <button type="button" class="btn btn-primary" ng-click="deleteUnitName(confirmDeleteId, false)">Xóa</button>
+                        </div>
                     </div>
                 </div>
             </div>

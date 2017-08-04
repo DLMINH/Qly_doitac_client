@@ -1,0 +1,100 @@
+<div class="clearfix"></div>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <!-- <div class="x_panel"> -->
+        <div class="x_title">
+            <!-- <h2>Hợp Đồng</h2> -->
+            <!-- <ul class="nav navbar-right panel_toolbox">
+                <li class="dropdown">
+                    <a class="dropdown-toggle cursor" data-toggle="dropdown" role="button" aria-expanded="false">
+                            Thêm
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <a data-toggle="collapse" data-target="#add_annual_activity" class="cursor"> Thêm hoạt động </a>
+                        </li>
+                        <li>
+                            <a class="cursor" ng-click="exportData()"> Xuất hợp đồng thành excel</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul> -->
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <div class="alert alert-warning" ng-if="warning">
+                <strong>{{warningMessage}}</strong>
+            </div>
+            <div class="alert alert-success" ng-if="success">
+                <strong>{{successMessage}}</strong>
+            </div>
+            <div class="alert alert-danger" ng-if="danger">
+                <strong>{{errorMessage}}</strong>
+            </div>
+            <div class="table-responsive">
+                <!-- <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="noOfPages" items-per-page="entryLimit"></ul> -->
+                <table class="table table-striped jambo_table bulk_action" id="tableExcel">
+                    <thead>
+                        <tr class="headings">
+                            <!-- <th> -->
+                            <!-- <input type="checkbox" id="check-all" class="flat"> -->
+                            <!-- </th> -->
+                            <th class="column-title">Tên hoạt động</th>
+                            <th class="column-title">Nội dung hoạt động</th>
+                            <th class="column-title">Kinh phí</th>
+                            <th class="column-title">Ngày ký</th>
+                            <th class="column-title">Sửa</th>
+                            <th class="column-title">Xóa</th>
+                            <th class="column-title">
+                                <i class="fa fa-chevron-down cursor" data-toggle="collapse" data-target="#export_xcel"></i>
+                            </th>
+                            <!-- <th class="column-title no-link last"><span class="nobr">Action</span> -->
+                            <!-- </th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="even pointer" ng-repeat="activity in allAnnaulActivityOfPartner" id="annualActivity_{{activity.id}}">
+                            <td class=" " id="activityName_{{activity.id}}">{{activity.activityName}}</td>
+                            <td class=" " ng-bind-html="activity.content" id="content_{{activity.id}}"></td>
+                            <td class=" " id="funding_{{activity.id}}">{{activity.funding}}</td>
+                            <td class=" " id="date_{{activity.id}}">{{activity.date | date:'dd/MM/yyyy'}}</td>
+                            <td class="cursor ">
+                                <i id="edit_activity_{{activity.id}}" class="fa fa-edit cursor" ng-click="editAnnualActivity(activity.id, activity.content); edit_activity = true"></i>
+                                <i id="save_edit_activity_{{activity.id}}" class="fa fa-save cursor" ng-click="saveEditAnnualActivity(activity.id)" ng-if="edit_activity"></i>
+                            </td>
+                            <!-- <td id="confirm_delete_activity_{{activity.id}}">
+                                <i id="i_confirm_delete_activity_{{activity.id}}" class="fa fa-trash cursor" ng-click="confirmDeleteActivity(activity.id); deleteActivityValue = true"></i>
+                                <button id="button_confirm_delete_activity_{{activity.id}}" ng-if="deleteActivityValue" type="button" class="btn btn-default btn-xs" ng-click="cancerDeleteActivity(activity.id)">Hủy</button>
+                                <button id="button_delete_activity_{{activity.id}}" ng-if="deleteActivityValue" type="button" class="btn btn-success btn-xs" ng-click="deleteAnnualActivity(activity.id)">Xác nhận</button>
+                            </td> -->
+                            <td class=" ">
+                                <a class="cursor" ng-click="confirmDelete(activity.id, activity.activityName)" data-toggle="modal" data-target="#delete_activity_"><i class="fa fa-trash"></i></a>
+                            </td>
+                            <td class="a-center ">
+                                <input type="checkbox" class="flat" name="table_records" ng-click="selectContract(contract); contract.checked = !contract.checked" ng-checked="contract.checked">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="noOfPages" items-per-page="entryLimit"></ul> -->
+            </div>
+            <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="false" id="delete_activity_">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" ng-click="closeModal('delete_activity_')" id="close_modal_delete"><span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel2">Bạn có chắc muốn xóa hoạt động {{confirmDeleteName}}</h4>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" ng-click="closeModal('delete_activity_')">Hủy</button>
+                            <button type="button" class="btn btn-primary" ng-click="deleteAnnualActivity(confirmDeleteId, false)">Xóa</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- </div> -->
+    </div>
+</div>

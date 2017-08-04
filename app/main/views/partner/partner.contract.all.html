@@ -188,7 +188,7 @@
                                         <i class="fa fa-edit"></i>
                                     </a>
                                 </td>
-                                <td class=" " ng-click="comfirmDelete(contract.id)">
+                                <td class=" " ng-click="confirmDelete(contract.id)">
                                     <a class="cursor" data-toggle="modal" data-target="#delete_contract"><i class="fa fa-trash"></i></a>
                                 </td>
                                 <td class="a-center ">
@@ -242,7 +242,7 @@
                                                             <i id="edit_activity_{{activity.id}}" class="fa fa-edit cursor" ng-click="editActivity(activity.id); edit_activity = true"></i>
                                                             <i id="save_edit_activity_{{activity.id}}" class="fa fa-save cursor" ng-click="saveEditActivity(activity.id)" ng-if="edit_activity"></i>
                                                         </th>
-                                                        <th><i class="fa fa-trash cursor" data-toggle="modal" data-target="#delete_activity" ng-click="comfirmDelete(activity.id)"></i></th>
+                                                        <th><i class="fa fa-trash cursor" data-toggle="modal" data-target="#delete_activity" ng-click="confirmDelete(activity.id)"></i></th>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -269,13 +269,13 @@
                                     <div class="form-group">
                                         <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Ngày ký: </label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input type="date" class="form-control col-md-7 col-xs-12" ng-model="editContractData.startDate">
+                                            <input type="date" class="form-control col-md-7 col-xs-12" ng-model="editContractData.startDate" value="{{editContractData.startDate}}">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Ngày hết hiệu lựu: </label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input type="date" class="form-control col-md-7 col-xs-12" ng-model="editContractData.endDate">
+                                            <input type="date" class="form-control col-md-7 col-xs-12" ng-model="editContractData.endDate" value="{{editContractData.endDate}}">
                                         </div>
                                     </div>
                                 </form>
@@ -417,7 +417,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-                                <button type="button" class="btn btn-primary" ng-click="deleteActivity(comfirmDeleteId)">Xóa</button>
+                                <button type="button" class="btn btn-primary" ng-click="deleteActivity(confirmDeleteId)">Xóa</button>
                             </div>
                         </div>
                     </div>
