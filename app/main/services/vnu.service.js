@@ -28,8 +28,16 @@
             importExcel: importExcel,
             editActivity: editActivity,
             deleteActivity: deleteActivity,
-            createAccount: createAccount
+            createAccount: createAccount,
+            getAllContractOfPartner: getAllContractOfPartner
         };
+
+        function getAllContractOfPartner(partnerId) {
+            return $http({
+                url: $rootScope.serverAdd + '/partner/' + partnerId +'/contract/',
+                method: 'GET'
+            })
+        }
 
         function createAccount(data, unitNameId) {
             return $http({

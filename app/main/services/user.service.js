@@ -14,7 +14,7 @@
 
         function login(data){
             return $http({
-                url:$rootScope.serverAdd + '/login',
+                url:$rootScope.serverAdd + '/admin/login',
                 method: 'POST',
                 data: data
             })

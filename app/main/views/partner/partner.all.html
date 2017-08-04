@@ -1,54 +1,44 @@
 <script src="bower_components/gentelella/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js">
 </script>
-<div class="page-title" ng-init="getAllPartner()">
-    <div class="title_left">
-        <h3>Đối tác</h3>
-    </div>
-    <div class="title_right">
-        <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search for..." ng-model="search">
-                <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="clearfix"></div>
-<div class="row">
-    <div class="col-md-12 col-sm-12 col-xs-12">
-        <div class="x_panel">
-            <div class="x_title" ng-init="editInfo = false">
-                <h2 ng-click="editInfo = !editInfo">Đối tác</h2>
-                <ul class="nav navbar-right panel_toolbox">
-                    <li class="dropdown">
-                        <a class="dropdown-toggle cursor" data-toggle="dropdown" role="button" aria-expanded="false">
+<div class="row" ng-controller="nationCtrl">
+    <div class="col-md-12 col-sm-12 col-xs-12" ng-init="getAllPartner()">
+        <!-- <div class="x_panel"> -->
+        <div class="x_title" ng-init="editInfo = false">
+            <!-- <h2 ng-click="editInfo = !editInfo">Đối tác</h2> -->
+            <ul class="nav navbar-right panel_toolbox">
+                <li class="dropdown">
+                    <a class="dropdown-toggle cursor" data-toggle="dropdown" role="button" aria-expanded="false">
                             Thêm
                             <i class="fa fa-wrench"></i>
                         </a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a data-toggle="collapse" data-target="#add_partner" class="cursor"> Thêm Đối tác </a>
-                            </li>
-                            <li><a data-toggle="collapse" data-target="#create_partner_contact" class="cursor"> Thêm liên hệ của Đối tác </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-                <div class="clearfix"></div>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a data-toggle="collapse" data-target="#add_partner" class="cursor"> Thêm Đối tác </a>
+                        </li>
+                        <li><a data-toggle="collapse" data-target="#create_partner_contact" class="cursor"> Thêm liên hệ của Đối tác </a>
+                        </li>
+                        <!-- <li><a data-toggle="collapse" data-target="#add_annual_activity" class="cursor"> Thêm hoạt động của Đối tác </a>
+                        </li> -->
+                    </ul>
+                </li>
+            </ul>
+            <div class="input-group pull-right">
+                <input type="text" class="form-control" placeholder="Search for..." ng-model="search" style="border-radius:25px; border: 1px solid rgba(221,226,232,.49); box-shadow: inset 0 1px 0 rgba(0,0,0,.075);">
             </div>
-            <div class="x_content">
-                <div class="alert alert-success" ng-if="success">
-                    <strong>{{successMessage}}</strong>
-                </div>
-                <div class="alert alert-danger" ng-if="danger">
-                    <strong>{{errorMessage}}</strong>
-                </div>
-                <!-- form tao partner -->
-                <div class="form_wizard wizard_horizontal collapse" id="add_partner">
-                    <ul class="wizard_steps">
-                        <li>
-                            <a class="cursor" id="a_step_1">
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <div class="alert alert-success" ng-if="success">
+                <strong>{{successMessage}}</strong>
+            </div>
+            <div class="alert alert-danger" ng-if="danger">
+                <strong>{{errorMessage}}</strong>
+            </div>
+            <!-- form tao partner -->
+            <div class="form_wizard wizard_horizontal collapse" id="add_partner">
+                <ul class="wizard_steps">
+                    <li>
+                        <a class="cursor" id="a_step_1">
                                 <span class="step_no">1</span>
                                 <span class="step_descr">
                                     Bước 1
@@ -56,9 +46,9 @@
                                     <small>Tạo các thông tin cơ bản</small>
                                 </span>
                             </a>
-                        </li>
-                        <li>
-                            <a class="cursor" class="disabled" id="a_step_2">
+                    </li>
+                    <li>
+                        <a class="cursor" class="disabled" id="a_step_2">
                                 <span class="step_no">2</span>
                                 <span class="step_descr">
                                     Bước 2
@@ -66,8 +56,8 @@
                                     <small>Thêm thông tin của Đối tác</small>
                                 </span>
                             </a>
-                        </li>
-                        <!-- <li>
+                    </li>
+                    <!-- <li>
                             <a class="cursor" class="disabled" id="a_step_3">
                                 <span class="step_no">3</span>
                                 <span class="step_descr">
@@ -77,156 +67,242 @@
                                 </span>
                             </a>
                         </li> -->
-                    </ul>
-                    <div id="step-1" ng-if="editInfo != true">
-                        <form class="form-horizontal form-label-left" ng-init="getAllContinent()">
-                            <ul class="nav navbar-right panel_toolbox">
-                                <li><a data-toggle="collapse" data-target="#add_partner" class="cursor"><i class="fa fa-chevron-up"></i></a>
-                                </li>
-                            </ul>
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên Đối tác</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" name="country" id="autocomplete-custom-append" class="form-control col-md-10" ng-model="input.partnerName" required />
-                                </div>
+                </ul>
+                <div id="step-1" ng-if="editInfo != true">
+                    <form class="form-horizontal form-label-left" ng-init="getAllContinent()">
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a data-toggle="collapse" data-target="#add_partner" class="cursor"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                        </ul>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên Đối tác</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="text" name="country" id="autocomplete-custom-append" class="form-control col-md-10" ng-model="input.partnerName" required />
                             </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Châu Lục</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <select class="form-control" ng-model="input.continent" ng-change="showNation(input.continent)">
-                                        <option ng-repeat="continent in allContinent" value="{{continent.nation}}">
-                                            {{continent.continentName}}
-                                        </option>
-                                    </select>
-                                    <!-- <p ng-if="input.continentId >= 0" ng-init="init()">{{input.continentId}}</p> -->
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Quốc Gia</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <select class="form-control" ng-model="input.nationId">
-                                        <option ng-repeat="nation in Nations" value="{{nation}}">
-                                            {{nation.nationName}}
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-4">
-                                    <button type="submit" class="btn btn-success" ng-click="createPartner()">Tạo</button>
-                                </div>
-                            </div>
-                            <div class="divider-dashed"></div>
-                        </form>
-                    </div>
-                    <div id="step-2" ng-if="editInfo">
-                        <div class="alert alert-danger" ng-if="danger_edit">
-                            <strong>{{errorMessage}}</strong>
                         </div>
-                        <div class="alert alert-success" ng-if="successdelete_edit">
-                            <strong>{{successMessage}}</strong>
+                        <!-- <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Châu Lục</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <select class="form-control" ng-model="input.continent" ng-change="showNation(input.continent)">
+                                    <option ng-repeat="continent in allContinent" value="{{continent.nation}}">
+                                        {{continent.continentName}}
+                                    </option>
+                                </select>
+                            </div>
                         </div>
-                        <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
-                            <ul class="nav navbar-right panel_toolbox">
-                                <li><a class="cursor" ng-click="close()"><i class="fa fa-close"></i></a>
-                                </li>
-                            </ul>
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-4 col-xs-12" for="last-name">Tên cơ quan hợp tác: </label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" id="last-name" name="last-name" class="form-control col-md-7 col-xs-12" ng-model="Partner.partnerName">
-                                </div>
+                        {{allContinent}} -->
+                        <div class="form-group" ng-init="getAllNation()">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Quốc Gia</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <select class="form-control" ng-model="input.nationId">
+                                    <option ng-repeat="nation in allNations" value="{{nation}}">
+                                        {{nation.nationName}}
+                                    </option>
+                                </select>
                             </div>
-                            <div class="form-group">
-                                <label for="middle-name" class="control-label col-md-3 col-sm-4 col-xs-12">Quốc Gia: </label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name" ng-model="Partner.nation.nationName">
-                                </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-4 col-xs-12" for="last-name">Tên cơ quan hợp tác: </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="text" id="last-name" name="last-name" class="form-control col-md-7 col-xs-12" ng-model="Partner.partnerName">
                             </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-4 col-xs-12">Châu Lục</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <select class="form-control" ng-model="input.continent" ng-change="showNation(input.continent)">
-                                        <option value="" selected="selected">
-                                            -- Chọn châu lục --
-                                        </option>
-                                        <option ng-repeat="continent in allContinent" value="{{continent.nation}}">
-                                            {{continent.continentName}}
-                                        </option>
-                                    </select>
-                                </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="middle-name" class="control-label col-md-3 col-sm-4 col-xs-12">Quốc Gia: </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input id="middle-name" readonly="readonly" class="form-control col-md-7 col-xs-12" type="text" name="middle-name" ng-model="Partner.nation.nationName">
                             </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-4 col-xs-12">Quốc Gia</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <select class="form-control" ng-model="Partner.nationId">
-                                        <option value="" selected="selected">
-                                            -- Chọn quốc gia --
-                                        </option>
-                                        <option ng-repeat="nation in Nations" value="{{nation.id}}">
-                                            {{nation.nationName}}
-                                        </option>
-                                    </select>
-                                </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-4 col-xs-12">Châu Lục</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <select class="form-control" ng-model="input.continent" ng-change="showNation(input.continent)">
+                                    <option value="" selected="selected">
+                                        -- Chọn châu lục --
+                                    </option>
+                                    <option ng-repeat="continent in allContinent" value="{{continent.nation}}">
+                                        {{continent.continentName}}
+                                    </option>
+                                </select>
                             </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-4 col-xs-12">Giám đốc</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.director">
-                                </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-4 col-xs-12">Quốc Gia</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <select class="form-control" ng-model="Partner.nationId">
+                                    <option value="" selected="selected">
+                                        -- Chọn quốc gia --
+                                    </option>
+                                    <option ng-repeat="nation in allNations" value="{{nation.id}}">
+                                        {{nation.nationName}}
+                                    </option>
+                                </select>
                             </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-4 col-xs-12">Email</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.email">
-                                </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-4 col-xs-12">Giám đốc</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.director">
                             </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-4 col-xs-12" for="last-name">Website</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" id="last-name" name="last-name" class="form-control col-md-7 col-xs-12" ng-model="Partner.website">
-                                </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-4 col-xs-12">Email</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.email">
                             </div>
-                            <div class="form-group">
-                                <label for="middle-name" class="control-label col-md-3 col-sm-4 col-xs-12">Số điện thoại</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name" ng-model="Partner.phone">
-                                </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-4 col-xs-12" for="last-name">Website</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="text" id="last-name" name="last-name" class="form-control col-md-7 col-xs-12" ng-model="Partner.website">
                             </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-4 col-xs-12">Đại chỉ</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.address">
-                                </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="middle-name" class="control-label col-md-3 col-sm-4 col-xs-12">Số điện thoại</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name" ng-model="Partner.phone">
                             </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-4 col-xs-12">Mô tả</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.description">
-                                </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-4 col-xs-12">Đại chỉ</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.address">
                             </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-4 col-xs-12">Mã số thuế</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.taxCode">
-                                </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-4 col-xs-12">Mô tả</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.description">
                             </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-4 col-xs-12">Lĩnh vực làm việc</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.fieldWork">
-                                </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-4 col-xs-12">Mã số thuế</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.taxCode">
                             </div>
-                            <div class="form-group">
-                                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-4" ng-init="done = false">
-                                    <button type="submit" class="buttonFinish btn btn-default" ng-click="close()" ng-if="done == true">Hoàn thành</button>
-                                    <button type="submit" class="btn btn-primary" ng-click="done()" ng-if="done == false">Để sau</button>
-                                    <button type="submit" class="btn btn-success" ng-click="editPartnerInfo(); done = true;">Tạo</button>
-                                </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-4 col-xs-12">Lĩnh vực làm việc</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.fieldWork">
                             </div>
-                        </form>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-4">
+                                <button type="submit" class="btn btn-success" ng-click="createPartner()">Tạo</button>
+                            </div>
+                        </div>
+                        <div class="divider-dashed"></div>
+                    </form>
+                </div>
+                <div id="step-2" ng-if="editInfo">
+                    <div class="alert alert-danger" ng-if="danger_edit">
+                        <strong>{{errorMessage}}</strong>
                     </div>
-                    <!-- <div id="step-3" ng-if="addPartnerContact == true">
+                    <div class="alert alert-success" ng-if="successdelete_edit">
+                        <strong>{{successMessage}}</strong>
+                    </div>
+                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="cursor" ng-click="close()"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-4 col-xs-12" for="last-name">Tên cơ quan hợp tác: </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="text" id="last-name" name="last-name" class="form-control col-md-7 col-xs-12" ng-model="Partner.partnerName">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="middle-name" class="control-label col-md-3 col-sm-4 col-xs-12">Quốc Gia: </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input id="middle-name" readonly="readonly" class="form-control col-md-7 col-xs-12" type="text" name="middle-name" ng-model="Partner.nation.nationName">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-4 col-xs-12">Châu Lục</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <select class="form-control" ng-model="input.continent" ng-change="showNation(input.continent)">
+                                    <option value="" selected="selected">
+                                        -- Chọn châu lục --
+                                    </option>
+                                    <option ng-repeat="continent in allContinent" value="{{continent.nation}}">
+                                        {{continent.continentName}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-4 col-xs-12">Quốc Gia</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <select class="form-control" ng-model="Partner.nationId">
+                                    <option value="" selected="selected">
+                                        -- Chọn quốc gia --
+                                    </option>
+                                    <option ng-repeat="nation in allNations" value="{{nation.id}}">
+                                        {{nation.nationName}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-4 col-xs-12">Giám đốc</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.director">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-4 col-xs-12">Email</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-4 col-xs-12" for="last-name">Website</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="text" id="last-name" name="last-name" class="form-control col-md-7 col-xs-12" ng-model="Partner.website">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="middle-name" class="control-label col-md-3 col-sm-4 col-xs-12">Số điện thoại</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name" ng-model="Partner.phone">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-4 col-xs-12">Đại chỉ</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.address">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-4 col-xs-12">Mô tả</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.description">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-4 col-xs-12">Mã số thuế</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.taxCode">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-4 col-xs-12">Lĩnh vực làm việc</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.fieldWork">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-4" ng-init="done = false">
+                                <button type="submit" class="buttonFinish btn btn-default" ng-click="close()" ng-if="done == true">Hoàn thành</button>
+                                <button type="submit" class="btn btn-primary" ng-click="done()" ng-if="done == false">Để sau</button>
+                                <button type="submit" class="btn btn-success" ng-click="editPartnerInfo(false); done = true;">Tạo</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- <div id="step-3" ng-if="addPartnerContact == true">
                         <div class="alert alert-danger" ng-if="danger_edit">
                             <strong>{{errorMessage}}</strong>
                         </div>
@@ -289,319 +365,482 @@
                             <div class="divider-dashed"></div>
                         </form>
                     </div> -->
-                </div>
-                <!-- end form tao partner -->
-                <!-- create partner contact -->
-                <form class="form-horizontal form-label-left collapse" id="create_partner_contact" ng-init="getAllContinent()">
+            </div>
+            <!-- end form tao partner -->
+            <!-- annual activity -->
+            <!-- <div class="collapse" id="add_annual_activity">
+                <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
                     <ul class="nav navbar-right panel_toolbox">
-                        <li><a data-toggle="collapse" data-target="#create_partner_contact" class="cursor"><i class="fa fa-chevron-up"></i></a>
+                        <li><a data-toggle="collapse" data-target="#add_annual_activity" class="cursor"><i class="fa fa-chevron-up"></i></a>
                         </li>
                     </ul>
                     <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên Đối tác: </label>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên cơ quan hợp tác: </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <select class="form-control" ng-model="input.partnerContact.partnerId">
-                                <option value="" selected="selected">
-                                    -- Chọn Đối tác --
-                                </option>
-                                <option ng-repeat="partner in allPartner" value="{{partner.id}}">
-                                    {{partner.partnerName}}
-                                </option>
-                            </select>
-                            <!-- <p ng-if="input.continentId >= 0" ng-init="init()">{{input.continentId}}</p> -->
+                            <input type="text" class="form-control col-md-7 col-xs-12" readonly="readonly" ng-model="Partner.partnerName">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên liên hệ: </label>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Tên hoạt động: </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" name="country" id="autocomplete-custom-append" class="form-control col-md-10" ng-model="input.partnerContact.contactName" required />
+                            <input type="text" class="form-control col-md-7 col-xs-12" ng-model="annualActivity.activityName">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Email: </label>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Nội dung hoạt động: </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" name="country" id="autocomplete-custom-append" class="form-control col-md-10" ng-model="input.partnerContact.email" />
+                            <textarea class="form-control" rows="5" ng-model="annualActivity.content"></textarea>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Phone: </label>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Kinh phí: </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" name="country" id="autocomplete-custom-append" class="form-control col-md-10" ng-model="input.partnerContact.phone" />
+                            <input type="text" class="form-control col-md-7 col-xs-12" ng-model="annualActivity.funding">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Chức vụ: </label>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Ngày: </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" name="country" id="autocomplete-custom-append" class="form-control col-md-10" ng-model="input.partnerContact.about" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Skype: </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" name="country" id="autocomplete-custom-append" class="form-control col-md-10" ng-model="input.partnerContact.skype" />
+                            <input type="date" class="form-control col-md-7 col-xs-12" ng-model="annualActivity.date">
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-4">
-                            <button type="submit" class="btn btn-success" ng-click="createPartnerContact()">Tạo</button>
+                            <button type="submit" class="btn btn-success" ng-click="createAnnaulActivity()">Tạo hợp đồng</button>
                         </div>
                     </div>
-                    <div class="divider-dashed"></div>
                 </form>
-                <!-- end create partner contact -->
-                <div class="clearfix"></div>
-                <div class="table-responsive">
-                    <table class="table table-striped jambo_table bulk_action">
-                        <thead>
-                            <tr class="headings">
-                                <!-- <th> -->
-                                <!-- <input type="checkbox" id="check-all" class="flat"> -->
-                                <!-- </th> -->
-                                <th class="column-title">Đối tác </th>
-                                <th class="column-title">Quốc Gia </th>
-                                <th class="column-title">Giám đốc </th>
-                                <th class="column-title">Email </th>
-                                <th class="column-title">Website </th>
-                                <th class="column-title">Số điện thoại </th>
-                                <th class="column-title">Địa chỉ </th>
-                                <th class="column-title">Mô tả </th>
-                                <th class="column-title">Mã số thuế</th>
-                                <th class="column-title">Lĩnh vực làm việc</th>
-                                <th class="column-title">Liên hệ</th>
-                                <th class="column-title">Sửa </th>
-                                <th class="column-title">Xóa </th>
-                                <!-- <th class="column-title no-link last"><span class="nobr">Action</span> -->
-                                <!-- </th> -->
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="even pointer" ng-repeat="partner in filtered = allPartner | filter : search |
+            </div> -->
+            <!-- end annual activity -->
+            <!-- create partner contact -->
+            <form class="form-horizontal form-label-left collapse" id="create_partner_contact">
+                <ul class="nav navbar-right panel_toolbox">
+                    <li><a data-toggle="collapse" data-target="#create_partner_contact" class="cursor"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                </ul>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên Đối tác: </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select class="form-control" ng-model="input.partnerContact.partnerId">
+                            <option value="" selected="selected">
+                                -- Chọn Đối tác --
+                            </option>
+                            <option ng-repeat="partner in allPartner" value="{{partner.id}}">
+                                {{partner.partnerName}}
+                            </option>
+                        </select>
+                        <!-- <p ng-if="input.continentId >= 0" ng-init="init()">{{input.continentId}}</p> -->
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên liên hệ: </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" name="country" id="autocomplete-custom-append" class="form-control col-md-10" ng-model="input.partnerContact.contactName" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Email: </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" name="country" id="autocomplete-custom-append" class="form-control col-md-10" ng-model="input.partnerContact.email" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Phone: </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" name="country" id="autocomplete-custom-append" class="form-control col-md-10" ng-model="input.partnerContact.phone" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Chức vụ: </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" name="country" id="autocomplete-custom-append" class="form-control col-md-10" ng-model="input.partnerContact.about" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Skype: </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" name="country" id="autocomplete-custom-append" class="form-control col-md-10" ng-model="input.partnerContact.skype" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-4">
+                        <button type="submit" class="btn btn-success" ng-click="createPartnerContact()">Tạo</button>
+                    </div>
+                </div>
+                <div class="divider-dashed"></div>
+            </form>
+            <!-- end create partner contact -->
+            <div class="clearfix"></div>
+            <div class="table-responsive">
+                <table class="table table-striped jambo_table bulk_action">
+                    <thead>
+                        <tr class="headings">
+                            <!-- <th> -->
+                            <!-- <input type="checkbox" id="check-all" class="flat"> -->
+                            <!-- </th> -->
+                            <th class="column-title">Đối tác </th>
+                            <th class="column-title">Hợp đồng</th>
+                            <th class="column-title">Liên hệ</th>
+                            <th class="column-title">Hoạt động</th>
+                            <th class="column-title">Sửa </th>
+                            <th class="column-title">Xóa </th>
+                            <!-- <th class="column-title no-link last"><span class="nobr">Action</span> -->
+                            <!-- </th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="even pointer" ng-repeat="partner in filtered = allPartner | filter : search |
                                 startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
-                                <!-- <td class="a-center "> -->
-                                <!-- <input type="checkbox" class="flat" name="table_records"> -->
-                                <!-- </td> -->
-                                <td class=" ">{{partner.partnerName}}</td>
-                                <td class=" ">{{partner.nation.nationName}}</td>
-                                <td class=" ">{{partner.director}}</td>
-                                <td class=" ">{{partner.email}}</td>
-                                <td class=" ">{{partner.website}}</td>
-                                <td class=" ">{{partner.phone}}</td>
-                                <td class=" ">{{partner.address}}</td>
-                                <td class=" ">{{partner.description}}</td>
-                                <td class=" ">{{partner.taxCode}}</td>
-                                <td class=" ">{{partner.fieldWork}}</td>
-                                <td class=" ">
-                                    <a class="cursor" data-toggle="modal" data-target="#view_contact" ng-click="showContact(partner)">
-                                        {{partner.partnerContacts.length}}
+                            <!-- <td class="a-center "> -->
+                            <!-- <input type="checkbox" class="flat" name="table_records"> -->
+                            <!-- </td> -->
+                            <td>
+                                <a class="cursor" data-toggle="modal" data-target="#show_partner_details" ng-click="editPartner(partner, false); click('information-tab')">
+                                        {{partner.partnerName}}
                                     </a>
-                                </td>
-                                <td class=" ">
-                                    <a data-toggle="modal" data-target="#edit_partnerInfo" ng-click="editPartner(partner)">
+                            </td>
+                            <td>
+                                <a class="cursor" data-toggle="modal" data-target="#show_partner_details" ng-click="editPartner(partner); getAllContractOfPartner(); click('contract-tab')">
+                                        Chi Tiết
+                                    </a>
+                            </td>
+                            <td>
+                                <a class="cursor" data-toggle="modal" data-target="#show_partner_details" ng-click="editPartner(partner); click('contact-tab')">
+                                        Chi Tiết
+                                    </a>
+                            </td>
+                            <td class=" ">
+                                <a data-toggle="modal" class="cursor" data-target="#show_partner_details" ng-click="editPartner(partner); getAllAnnualActivityOfPartner(); click('activity-tab')">
+                                    Chi Tiết
+                                </a>
+                            </td>
+                            <td class=" ">
+                                <a data-toggle="modal" data-target="#show_partner_details" ng-click="editPartner(partner, true); click('information-tab')">
                                         <i class="fa fa-edit cursor"></i>
                                     </a>
-                                </td>
-                                <td class=" "><a class="cursor" data-toggle="modal" data-target="#delete_partner" ng-click="comfirmDelete(partner.id)"><i class="fa fa-trash"></i></a></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="noOfPages" items-per-page="entryLimit"></ul>
-                </div>
-                <!-- edit partner info -->
-                <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="edit_partnerInfo">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" id="close_modal"><span aria-hidden="true">×</span>
-                                </button>
-                                <h4 class="modal-title" id="myModalLabel">Chỉnh sửa thông tin Đối tác</h4>
+                            </td>
+                            <td class=" "><a class="cursor" data-toggle="modal" data-target="#delete_partner" ng-click="confirmDelete(partner.id)"><i class="fa fa-trash"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="noOfPages" items-per-page="entryLimit"></ul>
+            </div>
+            <!-- edit partner info -->
+            <!-- <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="edit_partnerInfo">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" id="close_modal"><span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">Chỉnh sửa thông tin Đối tác</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="alert alert-danger" ng-if="danger_edit">
+                                <strong>{{errorMessage}}</strong>
                             </div>
-                            <div class="modal-body">
-                                <div class="alert alert-danger" ng-if="danger_edit">
-                                    <strong>{{errorMessage}}</strong>
+                            <div class="alert alert-success" ng-if="successdelete_edit">
+                                <strong>{{successMessage}}</strong>
+                            </div>
+                            <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">{{edit}}Tên cơ quan hợp tác: </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="text" id="last-name" name="last-name" class="form-control col-md-7 col-xs-12" ng-model="Partner.partnerName">
+                                    </div>
                                 </div>
-                                <div class="alert alert-success" ng-if="successdelete_edit">
-                                    <strong>{{successMessage}}</strong>
+                                <div class="form-group">
+                                    <label for="middle-name" class="control-label col-md-4 col-sm-4 col-xs-12">Quốc Gia: </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name" ng-model="Partner.nation.nationName">
+                                    </div>
                                 </div>
-                                <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Tên cơ quan hợp tác: </label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input type="text" id="last-name" name="last-name" class="form-control col-md-7 col-xs-12" ng-model="Partner.partnerName">
-                                        </div>
+                                <div class="form-group" ng-show="edit == true">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12">Châu Lục</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <select class="form-control" ng-model="input.continent" ng-change="showNation(input.continent)">
+                                            <option value="" selected="selected">
+                                                -- Chọn châu lục --
+                                            </option>
+                                            <option ng-repeat="continent in allContinent" value="{{continent.nation}}">
+                                                {{continent.continentName}}
+                                            </option>
+                                        </select>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="middle-name" class="control-label col-md-4 col-sm-4 col-xs-12">Quốc Gia: </label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name" ng-model="Partner.nation.nationName">
-                                        </div>
+                                </div>
+                                <div class="form-group" ng-show="edit == true">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12">Quốc Gia</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <select class="form-control" ng-model="Partner.nationId">
+                                            <option value="" selected="selected">
+                                                -- Chọn quốc gia --
+                                            </option>
+                                            <option ng-repeat="nation in Nations" value="{{nation.id}}">
+                                                {{nation.nationName}}
+                                            </option>
+                                        </select>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Châu Lục</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <select class="form-control" ng-model="input.continent" ng-change="showNation(input.continent)">
-                                                <option value="" selected="selected">
-                                                    -- Chọn châu lục --
-                                                </option>
-                                                <option ng-repeat="continent in allContinent" value="{{continent.nation}}">
-                                                    {{continent.continentName}}
-                                                </option>
-                                            </select>
-                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12">Giám đốc</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input class="form-control col-md-7 col-xs-12" type="text" ng-model="Partner.director">
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Quốc Gia</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <select class="form-control" ng-model="Partner.nationId">
-                                                <option value="" selected="selected">
-                                                    -- Chọn quốc gia --
-                                                </option>
-                                                <option ng-repeat="nation in Nations" value="{{nation.id}}">
-                                                    {{nation.nationName}}
-                                                </option>
-                                            </select>
-                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12">Email</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input class="form-control col-md-7 col-xs-12" type="text" ng-model="Partner.email">
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Giám đốc</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.director">
-                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Website</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="text" id="last-name" name="last-name" class="form-control col-md-7 col-xs-12" ng-model="Partner.website">
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Email</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.email">
-                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="middle-name" class="control-label col-md-4 col-sm-4 col-xs-12">Số điện thoại</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name" ng-model="Partner.phone">
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Website</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input type="text" id="last-name" name="last-name" class="form-control col-md-7 col-xs-12" ng-model="Partner.website">
-                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12">Đại chỉ</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.address">
                                     </div>
-                                    <div class="form-group">
-                                        <label for="middle-name" class="control-label col-md-4 col-sm-4 col-xs-12">Số điện thoại</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name" ng-model="Partner.phone">
-                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12">Mô tả</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.description">
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Đại chỉ</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.address">
-                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12">Mã số thuế</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.taxCode">
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Mô tả</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.description">
-                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12">Lĩnh vực làm việc</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.fieldWork">
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Mã số thuế</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.taxCode">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Lĩnh vực làm việc</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.fieldWork">
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" ng-click="editPartnerInfo()">Lưu thay đổi</button>
-                            </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" ng-click="editPartnerInfo()">Lưu thay đổi</button>
                         </div>
                     </div>
                 </div>
-                <!-- end edit partner info -->
-                <!-- partner contacts -->
-                <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="view_contact">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" id="close_modal"><span aria-hidden="true">×</span>
-                                </button>
-                                <h4 class="modal-title" id="myModalLabel">Thông tin liên lạc {{PartnerContacts.partnerName}}</h4>
-                            </div>
-                            <div class="modal-body">
-                                <div class="alert alert-danger" ng-if="danger_edit">
-                                    <strong>{{errorMessage}}</strong>
-                                </div>
-                                <div class="alert alert-success" ng-if="successdelete_edit">
-                                    <strong>{{successMessage}}</strong>
-                                </div>
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <!-- <th>#</th> -->
-                                            <th>Tên liên hệ</th>
-                                            <th>Email</th>
-                                            <th>Phone</th>
-                                            <th>Skype</th>
-                                            <th>Chức vụ</th>
-                                            <th>Sửa</th>
-                                            <th>Xóa</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr ng-repeat="contact in PartnerContacts.partnerContacts" id="tr_contact_{{contact.id}}">
-                                            <!-- <th scope="row">{{typeContract.id}}</th> -->
-                                            <td id="contactName_{{contact.id}}">{{contact.contactName}}</td>
-                                            <td id="email_{{contact.id}}">{{contact.email}}</td>
-                                            <td id="phone_{{contact.id}}">{{contact.phone}}</td>
-                                            <td id="skype_{{contact.id}}">{{contact.skype}}</td>
-                                            <td id="about_{{contact.id}}">{{contact.about}}</td>
-                                            <th>
-                                                <i id="edit_contact_{{contact.id}}" class="fa fa-edit cursor" ng-click="editContact(contact.id); edit_contact = true"></i>
-                                                <i id="save_edit_contact_{{contact.id}}" class="fa fa-save cursor" ng-click="saveEditContact(contact.id)" ng-if="edit_contact"></i>
-                                            </th>
-                                            <th><i class="fa fa-trash cursor" data-toggle="modal" data-target="#delete_partner_contact" ng-click="comfirmDelete(contact.id)"></i></th>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- <div class="modal-footer"> -->
-                            <!-- </div> -->
+            </div> -->
+            <!-- end edit partner info -->
+            <!-- partner contacts -->
+            <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="show_partner_details">
+                <div class="modal-dialog" style="width: 80vw;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" id="close_modal_show_partner_details"><span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">Thông tin liên lạc {{PartnerContacts.partnerName}}</h4>
                         </div>
+                        <div class="modal-body">
+                            <div class="alert alert-danger" ng-if="danger_edit">
+                                <strong>{{errorMessage}}</strong>
+                            </div>
+                            <div class="alert alert-success" ng-if="successdelete_edit">
+                                <strong>{{successMessage}}</strong>
+                            </div>
+                            <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                                <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                    <li role="presentation"><a class="cursor" data-target="#contract" ng-click="getAllContractOfPartner()" role="tab" id="contract-tab" data-toggle="tab" aria-expanded="false">Hợp đồng</a>
+                                    </li>
+                                    <li role="presentation"><a data-target="#information" class="cursor" id="information-tab" role="tab" data-toggle="tab" aria-expanded="true">Thông tin đối tác</a>
+                                    </li>
+                                    <li role="presentation"><a data-target="#activity" ng-click="getAllAnnualActivityOfPartner()" class="cursor" id="activity-tab" role="tab" data-toggle="tab" aria-expanded="true">Hoạt động</a>
+                                    </li>
+                                    <li role="presentation"><a data-target="#contact" ng-click="showContact(Partner)" class="cursor" id="contact-tab" role="tab" data-toggle="tab" aria-expanded="true">Liên hệ</a>
+                                    </li>
+                                </ul>
+                                <div id="myTabContent" class="tab-content">
+                                    <div role="tabpanel" class="tab-pane fade" id="information" aria-labelledby="information-tab">
+                                        <form class="form-horizontal form-label-left">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Tên cơ quan hợp tác: </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input type="text" id="last-name" name="last-name" class="form-control col-md-7 col-xs-12" ng-model="Partner.partnerName">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="middle-name" class="control-label col-md-4 col-sm-4 col-xs-12">Quốc Gia: </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name" readonly="readonly" ng-model="Partner.nation.nationName">
+                                                </div>
+                                            </div>
+                                            <!-- <div class="form-group">
+                                                <label class="control-label col-md-4 col-sm-4 col-xs-12">Châu Lục</label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <select class="form-control" ng-model="input.continent" ng-change="showNation(input.continent)">
+                                                        <option value="" selected="selected">
+                                                            -- Chọn châu lục --
+                                                        </option>
+                                                        <option ng-repeat="continent in allContinent" value="{{continent.nation}}">
+                                                            {{continent.continentName}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div> -->
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4 col-sm-4 col-xs-12">Quốc Gia</label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <select class="form-control" ng-model="Partner.nationId">
+                                                        <option value="" selected="selected">
+                                                            -- Chọn quốc gia --
+                                                        </option>
+                                                        <option ng-repeat="nation in allNations" value="{{nation.id}}">
+                                                            {{nation.nationName}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4 col-sm-4 col-xs-12">Giám đốc</label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input class="form-control col-md-7 col-xs-12" type="text" ng-model="Partner.director">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4 col-sm-4 col-xs-12">Email</label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input class="form-control col-md-7 col-xs-12" type="text" ng-model="Partner.email">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Website</label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input type="text" id="last-name" name="last-name" class="form-control col-md-7 col-xs-12" ng-model="Partner.website">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="middle-name" class="control-label col-md-4 col-sm-4 col-xs-12">Số điện thoại</label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name" ng-model="Partner.phone">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4 col-sm-4 col-xs-12">Đại chỉ</label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.address">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4 col-sm-4 col-xs-12">Mô tả</label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.description">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4 col-sm-4 col-xs-12">Mã số thuế</label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.taxCode">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4 col-sm-4 col-xs-12">Lĩnh vực làm việc</label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="Partner.fieldWork">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-md-8 col-sm-6 col-xs-12">
+                                                </div>
+                                                <div class="col-md-4 col-sm-6 col-xs-12">
+                                                    <button type="button" class="btn btn-primary" ng-click="editPartnerInfo(true)">Lưu thay đổi</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane fade" id="contract" aria-labelledby="contract-tab">
+                                        <div ui-view="contract"></div>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane fade" id="activity" aria-labelledby="activity-tab">
+                                        <div ui-view="activity"></div>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane fade" id="contact" aria-labelledby="contact-tab">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <!-- <th>#</th> -->
+                                                    <th>Tên liên hệ</th>
+                                                    <th>Email</th>
+                                                    <th>Phone</th>
+                                                    <th>Skype</th>
+                                                    <th>Chức vụ</th>
+                                                    <th>Sửa</th>
+                                                    <th>Xóa</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="contact in Partner.partnerContacts" id="tr_contact_{{contact.id}}">
+                                                    <!-- <th scope="row">{{typeContract.id}}</th> -->
+                                                    <td id="contactName_{{contact.id}}">{{contact.contactName}}</td>
+                                                    <td id="email_{{contact.id}}">{{contact.email}}</td>
+                                                    <td id="phone_{{contact.id}}">{{contact.phone}}</td>
+                                                    <td id="skype_{{contact.id}}">{{contact.skype}}</td>
+                                                    <td id="about_{{contact.id}}">{{contact.about}}</td>
+                                                    <th>
+                                                        <i id="edit_contact_{{contact.id}}" class="fa fa-edit cursor" ng-click="editContact(contact.id); edit_contact = true"></i>
+                                                        <i id="save_edit_contact_{{contact.id}}" class="fa fa-save cursor" ng-click="saveEditContact(contact.id)" ng-if="edit_contact"></i>
+                                                    </th>
+                                                    <th><i class="fa fa-trash cursor" data-toggle="modal" data-target="#delete_partner_contact" ng-click="confirmDelete(contact.id)"></i></th>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="modal-footer"> -->
+                        <!-- </div> -->
                     </div>
                 </div>
-                <!-- end partner contacts -->
-                <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="delete_partner">
-                    <div class="modal-dialog modal-sm">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_modal_delete_partner"><span aria-hidden="true">×</span>
-                                </button>
-                                <h4 class="modal-title" id="myModalLabel2">Bạn có chắc muốn xóa Đối tác này này?</h4>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-                                <button type="button" class="btn btn-primary" ng-click="deletePartner(comfirmDeleteId)">Xóa</button>
-                            </div>
+            </div>
+            <!-- end partner contacts -->
+            <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="delete_partner">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_modal_delete_partner"><span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel2">Bạn có chắc muốn xóa Đối tác này này?</h4>
                         </div>
-                    </div>
-                </div>
-                <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="delete_partner_contact">
-                    <div class="modal-dialog modal-sm">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_modal_delete_partner_contact"><span aria-hidden="true">×</span>
-                                </button>
-                                <h4 class="modal-title" id="myModalLabel2">Bạn có chắc muốn xóa liên hệ của Đối tác này này?</h4>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-                                <button type="button" class="btn btn-primary" ng-click="deletePartnerContact(comfirmDeleteId)">Xóa</button>
-                            </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                            <button type="button" class="btn btn-primary" ng-click="deletePartner(confirmDeleteId)">Xóa</button>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="delete_partner_contact">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_modal_delete_partner_contact"><span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel2">Bạn có chắc muốn xóa liên hệ của Đối tác này này?</h4>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                            <button type="button" class="btn btn-primary" ng-click="deletePartnerContact(confirmDeleteId)">Xóa</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
+        <!-- </div> -->
     </div>
 </div>

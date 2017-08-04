@@ -1,0 +1,293 @@
+<div class="clearfix"></div>
+<div class="row" ng-controller="vnuCtrl">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <!-- <div class="x_panel"> -->
+        <div class="x_title">
+            <!-- <h2>Hợp Đồng</h2> -->
+            <!-- <ul class="nav navbar-right panel_toolbox">
+                <li class="dropdown">
+                    <a class="dropdown-toggle cursor" data-toggle="dropdown" role="button" aria-expanded="false">
+                            Thêm
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <a data-toggle="collapse" data-target="#add_contract" class="cursor"> Thêm hợp đồng </a>
+                        </li>
+                        <li>
+                            <a class="cursor" ng-click="exportData()"> Xuất hợp đồng thành excel</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul> -->
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <div class="alert alert-warning" ng-if="warning">
+                <strong>{{warningMessage}}</strong>
+            </div>
+            <div class="alert alert-success" ng-if="success">
+                <strong>{{successMessage}}</strong>
+            </div>
+            <div class="alert alert-danger" ng-if="danger">
+                <strong>{{errorMessage}}</strong>
+            </div>
+            <!-- form tao unit -->
+            <div class="collapse" id="add_contract">
+                <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" ng-init="getAllUnitName(); getAllUetMan();">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a data-toggle="collapse" data-target="#add_contract" class="cursor"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                    </ul>
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Tên cơ quan hợp tác: </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" class="form-control col-md-7 col-xs-12" readonly="readonly" ng-model="Partner.partnerName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Người ký hợp đồng (đối tác): </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select class="form-control" ng-model="input.partnerContactId">
+                                <option ng-repeat="contact in Partner.partnerContacts" value="{{contact.id}}">
+                                    {{contact.contactName}} - {{contact.email}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-if="role == 'ADMIN'">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Đơn vị theo dõi: </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select class="form-control" ng-model="input.unitNameId">
+                                <option ng-repeat="unit in allUnit" value="{{unit.id}}">
+                                    {{unit.unitName}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Người ký hợp đồng (VNU-UET): </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select class="form-control" ng-model="input.uetManId">
+                                <option ng-repeat="uetMan in allUetMan" value="{{uetMan.id}}">
+                                    {{uetMan.uetManName}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Nội dung hợp tác chính: </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <textarea class="form-control" rows="5" ng-model="input.contentContract"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Kinh phí: </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" class="form-control col-md-7 col-xs-12" ng-model="input.funding">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Lưu ý: </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" class="form-control col-md-7 col-xs-12" ng-model="input.notice">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Ngày ký: </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="date" class="form-control col-md-7 col-xs-12" ng-model="input.startDate">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Ngày hết hiệu lựu: </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="date" class="form-control col-md-7 col-xs-12" ng-model="input.endDate">
+                        </div>
+                    </div>
+                </form>
+                <button type="button" class="btn btn-primary" ng-click="createContract()">Tạo hợp đồng</button>
+            </div>
+            <div class="table-responsive">
+                <!-- <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="noOfPages" items-per-page="entryLimit"></ul> -->
+                <table class="table table-striped jambo_table bulk_action" id="tableExcel">
+                    <thead>
+                        <tr class="headings">
+                            <!-- <th> -->
+                            <!-- <input type="checkbox" id="check-all" class="flat"> -->
+                            <!-- </th> -->
+                            <th class="column-title">Tên cơ quan hợp tác</th>
+                            <th class="column-title">Người ký (VNU-UET)</th>
+                            <th class="column-title">Người ký (Đối tác)</th>
+                            <th class="column-title">Nội dung hợp tác chính</th>
+                            <th class="column-title">Kinh phí</th>
+                            <th class="column-title">Ngày ký</th>
+                            <th class="column-title">Ngày hết hiệu lực</th>
+                            <th class="column-title">Đơn vị theo dõi</th>
+                            <th class="column-title">Hiệu quả hợp tác</th>
+                            <th class="column-title">Lưu ý</th>
+                            <th class="column-title">Sửa</th>
+                            <th class="column-title">Xóa</th>
+                            <th class="column-title">
+                                <i class="fa fa-chevron-down cursor" data-toggle="collapse" data-target="#export_xcel"></i>
+                            </th>
+                            <!-- <th class="column-title no-link last"><span class="nobr">Action</span> -->
+                            <!-- </th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="even pointer" ng-repeat="contract in allContract">
+                            <td class=" ">{{contract.partner.partnerName}}</td>
+                            <td class=" ">{{contract.uetMan.uetManName}}</td>
+                            <td class=" ">{{contract.partnerContact.contactName}}
+                                <br /> {{contract.partnerContact.about}}</td>
+                            <td class=" " ng-bind-html="contract.contentContract"></td>
+                            <td class=" ">{{contract.funding}}</td>
+                            <td class=" ">{{contract.startDate | date:'dd/MM/yyyy'}}</td>
+                            <td class=" ">{{contract.endDate | date:'dd/MM/yyyy'}}</td>
+                            <td class=" ">{{contract.unitName.unitName}}</td>
+                            <td class=" ">{{contract.result}}</td>
+                            <td class=" ">{{contract.notice}}</td>
+                            <td class="cursor ">
+                                <a data-toggle="modal" data-target="#edit_contract" class="" ng-click="setEditContract(contract)">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                            </td>
+                            <td class=" " ng-click="confirmDelete(contract.id)">
+                                <a class="cursor" data-toggle="modal" data-target="#delete_contract"><i class="fa fa-trash"></i></a>
+                            </td>
+                            <td class="a-center ">
+                                <input type="checkbox" class="flat" name="table_records" ng-click="selectContract(contract); contract.checked = !contract.checked" ng-checked="contract.checked">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="noOfPages" items-per-page="entryLimit"></ul> -->
+            </div>
+            <!-- edit partner info -->
+            <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="edit_contract">
+                <div class="modal-dialog modal-lg" style="height: 80vh; position: fixed;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" ng-click="closeModal('edit_contract')"><span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">Chỉnh sửa hợp đồng</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="alert alert-danger" ng-if="danger_edit">
+                                <strong>{{errorMessage}}</strong>
+                            </div>
+                            <div class="alert alert-success" ng-if="successdelete_edit">
+                                <strong>{{successMessage}}</strong>
+                            </div>
+                            <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Nội dung hợp tác: </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <!-- <textarea class="form-control" rows="7" ng-model="editContractData.contentContract"></textarea> -->
+                                        <ul class="nav navbar-right panel_toolbox">
+                                            <li>
+                                                <a data-toggle="collapse" data-target="#add_activity" class="cursor">
+                                                    Thêm hoạt động hợp tác
+                                                    <i class="fa fa-plus-circle"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <!-- <input  class="form-control col-md-7 col-xs-12" type="text" ng-model="editContractData.cooperateActivityValue"> -->
+                                        <textarea id="add_activity" class="form-control collapse" rows="7" ng-model="editContractData.cooperateActivityValue"></textarea>
+                                        <br />
+                                        <table class="table table-striped">
+                                            <tbody>
+                                                <tr ng-repeat="activity in editContractData.cooperateActivity" id="tr_activity_{{activity.id}}">
+                                                    <!-- <th scope="row">{{typeContract.id}}</th> -->
+                                                    <td id="activity{{activity.id}}">{{activity.cooperateActivity}}</td>
+                                                    <th>
+                                                        <i id="edit_activity_{{activity.id}}" class="fa fa-edit cursor" ng-click="editActivity(activity.id); edit_activity = true"></i>
+                                                        <i id="save_edit_activity_{{activity.id}}" class="fa fa-save cursor" ng-click="saveEditActivity(activity.id)" ng-if="edit_activity"></i>
+                                                    </th>
+                                                    <th><i class="fa fa-trash cursor" data-toggle="modal" data-target="#delete_activity" ng-click="confirmDelete(activity.id)"></i></th>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="middle-name" class="control-label col-md-4 col-sm-4 col-xs-12">Kinh phí: </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name" ng-model="editContractData.funding">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="middle-name" class="control-label col-md-4 col-sm-4 col-xs-12">Lưu ý: </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name" ng-model="editContractData.notice">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="middle-name" class="control-label col-md-4 col-sm-4 col-xs-12">Kết quả hợp tác: </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name" ng-model="editContractData.result">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Ngày ký: </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="date" class="form-control col-md-7 col-xs-12" ng-model="editContractData.startDate">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Ngày hết hiệu lựu: </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="date" class="form-control col-md-7 col-xs-12" ng-model="editContractData.endDate">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" ng-click="closeModal('edit_contract')">Hủy</button>
+                            <button type="button" class="btn btn-primary" ng-click="editContract()">Lưu thay đổi</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end edit partner info -->
+            <!-- them hop dong -->
+            <!-- end them hop dong -->
+            <!-- confirm delete cotnract -->
+            <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="delete_contract">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" ng-click="close('delete_contract')" aria-label="Close" id="close_modal_delete"><span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel2">Bạn có chắc muốn xóa hợp đồng này</h4>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" ng-click="close('delete_contract')">Hủy</button>
+                            <button type="button" class="btn btn-primary" ng-click="deleteContract()">Xóa</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end confirm delete contract -->
+            <!-- comfirm delete activity -->
+            <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="delete_activity">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" ng-click="close('delete_activity')" aria-label="Close" id="close_modal_delete_activity"><span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel2">Bạn có chắc muốn xóa hoạt động này?</h4>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" ng-click="close('delete_activity')">Hủy</button>
+                            <button type="button" class="btn btn-primary" ng-click="deleteActivity(confirmDeleteId)">Xóa</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end confirm delte activity -->
+        </div>
+        <!-- </div> -->
+    </div>
+</div>
