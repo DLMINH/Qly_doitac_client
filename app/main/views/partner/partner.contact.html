@@ -1,0 +1,29 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <!-- <th>#</th> -->
+            <th>Tên liên hệ</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Skype</th>
+            <th>Chức vụ</th>
+            <th>Sửa</th>
+            <th>Xóa</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="contact in Partner.partnerContacts" id="tr_contact_{{contact.id}}">
+            <!-- <th scope="row">{{typeContract.id}}</th> -->
+            <td id="contactName_{{contact.id}}">{{contact.contactName}}</td>
+            <td id="email_{{contact.id}}">{{contact.email}}</td>
+            <td id="phone_{{contact.id}}">{{contact.phone}}</td>
+            <td id="skype_{{contact.id}}">{{contact.skype}}</td>
+            <td id="about_{{contact.id}}">{{contact.about}}</td>
+            <th>
+                <i id="edit_contact_{{contact.id}}" class="fa fa-edit cursor" ng-click="editContact(contact.id); edit_contact = true"></i>
+                <i id="save_edit_contact_{{contact.id}}" class="fa fa-save cursor" ng-click="saveEditContact(contact.id)" ng-if="edit_contact"></i>
+            </th>
+            <th><i class="fa fa-trash cursor" data-toggle="modal" data-target="#delete_partner_contact" ng-click="confirmDelete(contact.id)"></i></th>
+        </tr>
+    </tbody>
+</table>

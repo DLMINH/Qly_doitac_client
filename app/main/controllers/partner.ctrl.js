@@ -7,6 +7,39 @@
             $scope.annualActivity = {};
             $scope.edit = false;
 
+            // console.log(1);
+            // DANG KIEM TRA AN ESC THI CLOSE MODAL
+
+            // $('#show_partner_details').modal({  // dung cai nay khi ma click
+            //     backdrop: 'static',
+            //     keyboard: false
+            // })
+
+            $("#show_partner_details").keypress(function($event) {
+                console.log("Handler for .keypress() called.");
+                console.log($event);
+            });
+            $(document).keyup(function(e) {
+                if (e.keyCode === 13) $('.save').click(); // enter
+                if (e.keyCode === 27) {
+                    console.log(1234);
+                    if ($('#show_partner_details').is(':visible')) {
+                        console.log(123234);
+                        $('#show_partner_details').modal('hide');
+                    }
+                } // esc
+            });
+
+            $scope.checkModal = function() {
+
+                console.log($('#show_partner_details').is(':visible'));
+            }
+
+            $scope.checkModal();
+
+
+            //  END // DANG KIEM TRA AN ESC THI CLOSE MODAL
+
             $scope.paginate = function() {
                 // console.log($scope.entry);
                 if ($scope.entry != '') {
@@ -126,12 +159,17 @@
 
                 $('#edit_activity_' + annualActivityId).hide();
                 $('#save_edit_activity_' + annualActivityId).show();
+                $('#button_cancel_edit_activity_' + annualActivityId).show();
             }
 
             $scope.saveEditAnnualActivity = function(annualActivityId) {
                 var content = $('#content_value_' + annualActivityId).val().replace(/(?:\r\n|\r|\n)/g, '<br />');
                 var activityName = $('#activityName_value_' + annualActivityId).val();
-                var date = new Date($('#date_value_' + annualActivityId).val()).getTime();
+                if ($('#date_value_' + annualActivityId).val() != "") {
+                    var date = new Date($('#date_value_' + annualActivityId).val()).getTime();
+                } else {
+                    date = "";
+                }
                 var funding = $('#funding_value_' + annualActivityId).val();
                 // console.log(v);
                 $scope.request = {
@@ -146,13 +184,16 @@
                     .then(function() {
                         $('#edit_activity_' + annualActivityId).show();
                         $('#save_edit_activity_' + annualActivityId).hide();
+                        $('#button_cancel_edit_activity_' + annualActivityId).hide();
                         $('#content_' + annualActivityId).html(content);
                         $('#activityName_' + annualActivityId).html(activityName);
-                        date = new Date(date);
-                        var curr_date = date.getDate();
-                        var curr_month = date.getMonth() + 1; //Months are zero based
-                        var curr_year = date.getFullYear();
-                        date = curr_date + "/" + curr_month + "/" + curr_year;
+                        if (date != "") {
+                            date = new Date(date);
+                            var curr_date = date.getDate();
+                            var curr_month = date.getMonth() + 1; //Months are zero based
+                            var curr_year = date.getFullYear();
+                            date = curr_date + "/" + curr_month + "/" + curr_year;
+                        }
                         $('#date_' + annualActivityId).html(date);
                         $('#funding_' + annualActivityId).html(funding);
                         $scope.alertSuccess('Sửa hoạt động thành công!', '');
@@ -162,6 +203,22 @@
                         console.log(error);
                         $scope.alertDanger(error.data.message, 'danger');
                     })
+            }
+
+            $scope.cancelEditActivity = function(activityId, activity) {
+                console.log(activity);
+                $('#edit_activity_' + activityId).show();
+                $('#button_cancel_edit_activity_' + activityId).hide();
+                $('#save_edit_activity_' + activityId).hide();
+                $('#content_' + activityId).html(activity.content);
+                $('#activityName_' + activityId).html(activity.activityName);
+                date = new Date(activity.date);
+                var curr_date = date.getDate();
+                var curr_month = date.getMonth() + 1; //Months are zero based
+                var curr_year = date.getFullYear();
+                date = curr_date + "/" + curr_month + "/" + curr_year;
+                $('#date_' + activityId).html(date);
+                $('#funding_' + activityId).html(activity.funding);
             }
 
             $scope.confirmDeleteActivity = function(activityId) {

@@ -76,11 +76,19 @@ config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProv
                         },
                         'contract@/partner.information': {
                             templateUrl: 'main/views/partner/partner.contract.html',
-                            controller: 'partnerCtrl'
+                            // controller: 'partnerCtrl'
                         },
                         'activity@/partner.information': {
                             templateUrl: 'main/views/partner/partner.annualActivity.html',
-                            controller: 'partnerCtrl'
+                            // controller: 'partnerCtrl'
+                        },
+                        'information@/partner.information': {
+                            templateUrl: 'main/views/partner/partner.information.html',
+                            // controller: 'partnerCtrl'
+                        },
+                        'contact@/partner.information': {
+                            templateUrl: 'main/views/partner/partner.contact.html',
+                            // controller: 'partnerCtrl'
                         }
                     }
                 })
