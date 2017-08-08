@@ -133,21 +133,16 @@
                                     <th scope="row">{{uetMan.id}}</th>
                                     <td id="uetMan_{{uetMan.id}}">{{uetMan.uetManName}}</td>
                                     <th>
-                                        <i id="edit_uetMan_{{uetMan.id}}" class="fa fa-edit cursor" ng-click="editUetMan(uetMan.id); edit_uetMan = true"></i>
-                                        <i id="save_edit_uetMan_{{uetMan.id}}" class="fa fa-save cursor" ng-click="saveEditUetMan(uetMan.id)" ng-if="edit_uetMan"></i>
+                                        <i id="edit_uetMan_{{uetMan.id}}" class="fa fa-edit cursor" ng-click="editUetMan(uetMan.id, uetMan.content); edit_uetMan = true"></i>
+                                        <button id="button_cancel_edit_uetMan_{{uetMan.id}}" ng-if="edit_uetMan" type="button" class="btn btn-default btn-xs" ng-click="cancelEditUetMan(uetMan)">Hủy</button>
+                                        <button id="save_edit_uetMan_{{uetMan.id}}" ng-if="edit_uetMan" type="button" class="btn btn-success btn-xs" ng-click="saveEditUetMan(uetMan.id)">Xác nhận</button>
                                     </th>
-                                    <!-- <th id="confirm_delete_uetMan_{{uetMan.id}}">
-                                        <i id="i_confirm_delete_uetMan_{{uetMan.id}}" class="fa fa-trash cursor" ng-click="confirmDeleteUetMan(uetMan.id); deleteUetManValue = true"></i>
-                                        <button id="button_confirm_delete_uetMan_{{uetMan.id}}" ng-if="deleteUetManValue" type="button" class="btn btn-default btn-xs" ng-click="cancerDeleteUetMan(uetMan.id)">Hủy</button>
-                                        <button id="button_delete_uetMan_{{uetMan.id}}" ng-if="deleteUetManValue" type="button" class="btn btn-success btn-xs" ng-click="deleteUetMan(uetMan.id)">Xác nhận</button>
-                                    </th> -->
                                     <td class=" ">
                                         <a class="cursor" ng-click="confirmDelete(uetMan.id, uetMan.uetManName)" data-toggle="modal" data-target="#delete_uet_man"><i class="fa fa-trash"></i></a>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-                        <!-- <ul uib-pagination total-items="uetMan_totalItems" ng-model="uetMan_currentPage" max-size="uetMan_noOfPages" items-per-page="uetMan_entryLimit"></ul> -->
                     </div>
                 </div>
             </div>
@@ -179,21 +174,19 @@
                                     <td id="unitName_{{unitName.id}}">{{unitName.unitName}}</td>
                                     <td id="username_{{unitName.id}}">{{unitName.user.userName}}</td>
                                     <th>
-                                        <i id="edit_unitName_{{unitName.id}}" class="fa fa-edit cursor" ng-click="editUnitName(unitName.id); edit_unitName = true"></i>
-                                        <i id="save_edit_unitName_{{unitName.id}}" class="fa fa-save cursor" ng-click="saveEditUnitName(unitName.id)" ng-if="edit_unitName"></i>
+                                        <!-- <i id="edit_unitName_{{unitName.id}}" class="fa fa-edit cursor" ng-click="editUnitName(unitName.id); edit_unitName = true"></i>
+                                        <i id="save_edit_unitName_{{unitName.id}}" class="fa fa-save cursor" ng-click="saveEditUnitName(unitName.id)" ng-if="edit_unitName"></i> -->
+
+                                        <i id="edit_unitName_{{unitName.id}}" class="fa fa-edit cursor" ng-click="editUnitName(unitName.id, unitName.content); edit_unitName = true"></i>
+                                        <button id="button_cancel_edit_unitName_{{unitName.id}}" ng-if="edit_unitName" type="button" class="btn btn-default btn-xs" ng-click="cancelEditUnitName(unitName)">Hủy</button>
+                                        <button id="save_edit_unitName_{{unitName.id}}" ng-if="edit_unitName" type="button" class="btn btn-success btn-xs" ng-click="saveEditUnitName(unitName.id)">Xác nhận</button>
                                     </th>
-                                    <!-- <th id="confirm_delete_unitName_{{unitName.id}}">
-                                        <i id="i_confirm_delete_unitName_{{unitName.id}}" class="fa fa-trash cursor" ng-click="confirmDeleteUnitName(unitName.id); deleteUnitNameValue = true"></i>
-                                        <button id="button_confirm_delete_unitName_{{unitName.id}}" ng-if="deleteUnitNameValue" type="button" class="btn btn-default btn-xs" ng-click="cancerDeleteUnitName(unitName.id)">Hủy</button>
-                                        <button id="button_delete_unitName_{{unitName.id}}" ng-if="deleteUnitNameValue" type="button" class="btn btn-success btn-xs" ng-click="deleteUnitName(unitName.id)">Xác nhận</button>
-                                    </th> -->
                                     <td class=" ">
                                         <a class="cursor" ng-click="confirmDelete(unitName.id, unitName.unitName)" data-toggle="modal" data-target="#delete_unit"><i class="fa fa-trash"></i></a>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-                        <!-- <ul uib-pagination total-items="allUnit_totalItems" ng-model="allUnit_currentPage" max-size="allUnit_noOfPages" items-per-page="allUnit_entryLimit"></ul> -->
                     </div>
                 </div>
             </div>

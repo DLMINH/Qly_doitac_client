@@ -976,6 +976,15 @@
                 $('#uetMan_' + uetManId).html('<input id="uetMan_value_' + uetManId + '" value="' + uetMan + '" style="border-radius:3px; border: 1px solid;" required/>')
                 $('#edit_uetMan_' + uetManId).hide();
                 $('#save_edit_uetMan_' + uetManId).show();
+                $('#button_cancel_edit_uetMan_' + uetManId).show();
+            }
+
+            $scope.cancelEditUetMan = function(uetMan) {
+                console.log(uetMan);
+                $('#edit_uetMan_' + uetMan.id).show();
+                $('#save_edit_uetMan_' + uetMan.id).hide();
+                $('#button_cancel_edit_uetMan_' + uetMan.id).hide();
+                $('#uetMan_' + uetMan.id).html(uetMan.uetManName);
             }
 
             $scope.saveEditUetMan = function(uetManId) {
@@ -991,9 +1000,10 @@
                     vnuService.editUetMan($scope.request)
                         .then(function() {
                             $('#edit_uetMan_' + uetManId).show();
-                            $('#save_edit_uetMan_' + uetManId).hide();
                             $('#uetMan_' + uetManId).html(uetManName);
-                            $scope.alertSuccess('Sửa loại hợp đồng thành công!', '');
+                            $('#save_edit_uetMan_' + uetManId).hide();
+                            $('#button_cancel_edit_uetMan_' + uetManId).hide();
+                            $scope.alertSuccess('Sửa người kí kết (VNU-UET) thành công!', '');
                         }, function(error) {
                             console.log(error);
                             $scope.alertDanger(error.data.message, 'danger');
@@ -1016,7 +1026,7 @@
             $scope.deleteUetMan = function(uetManId) {
                 vnuService.deleteUetMan(uetManId)
                     .then(function() {
-                        $scope.alertSuccess("Xóa loại hợp đồng thành công!", '');
+                        $scope.alertSuccess("Xóa người kí kết (VNU-UET) thành công!", '');
                         $('#delete_uet_man').modal('hide');
                         $scope.getAllUetMan();
                     }, function(error) {
@@ -1030,6 +1040,15 @@
                 $('#unitName_' + unitNameId).html('<input id="unitName_value_' + unitNameId + '" value="' + unitName + '" style="border-radius:3px; border: 1px solid;" required/>')
                 $('#edit_unitName_' + unitNameId).hide();
                 $('#save_edit_unitName_' + unitNameId).show();
+                $('#button_cancel_edit_unitName_' + unitNameId).show();
+            }
+
+            $scope.cancelEditUnitName = function(unitName) {
+                console.log(unitName);
+                $('#edit_unitName_' + unitName.id).show();
+                $('#save_edit_unitName_' + unitName.id).hide();
+                $('#button_cancel_edit_unitName_' + unitName.id).hide();
+                $('#unitName_' + unitName.id).html(unitName.unitName);
             }
 
             $scope.saveEditUnitName = function(unitNameId) {
@@ -1045,9 +1064,10 @@
                     vnuService.editUnitName($scope.request)
                         .then(function() {
                             $('#edit_unitName_' + unitNameId).show();
-                            $('#save_edit_unitName_' + unitNameId).hide();
                             $('#unitName_' + unitNameId).html(unitName);
-                            $scope.alertSuccess('Sửa loại hợp đồng thành công!', '');
+                            $('#save_edit_unitName_' + unitNameId).hide();
+                            $('#button_cancel_edit_unitName_' + unitNameId).hide();
+                            $scope.alertSuccess('Sửa Đơn vị theo dõi thành công!', '');
                         }, function(error) {
                             console.log(error);
                             $scope.alertDanger(error.data.message, 'danger');
@@ -1070,7 +1090,7 @@
             $scope.deleteUnitName = function(unitNameId) {
                 vnuService.deleteUnitName(unitNameId)
                     .then(function() {
-                        $scope.alertSuccess("Xóa loại hợp đồng thành công!", '');
+                        $scope.alertSuccess("Xóa Đơn vị theo dõi công!", '');
                         $('#delete_unit').modal('hide');
                         $scope.getAllUnitName();
                     }, function(error) {

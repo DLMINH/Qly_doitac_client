@@ -38,13 +38,13 @@ config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProv
                 .state('/settings', {
                     url: '/settings',
                     templateUrl: 'main/views/settings/settings.html',
-                    controller: function($state, $rootScope) {
-                        console.log($state);
-                        if ($state.current.url == "/settings") {
-                            $state.go('.vnu');
-                        }
-                        $rootScope.currentUrl = $state.current.url;
-                    }
+                    // controller: function($state, $rootScope) {
+                    //     console.log($state);
+                    //     if ($state.current.url == "/settings") {
+                    //         $state.go('.vnu');
+                    //     }
+                    //     $rootScope.currentUrl = $state.current.url;
+                    // }
                 })
                 .state('/settings.vnu', {
                     url: '/vnu',
