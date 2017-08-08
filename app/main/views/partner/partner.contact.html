@@ -20,8 +20,11 @@
             <td id="skype_{{contact.id}}">{{contact.skype}}</td>
             <td id="about_{{contact.id}}">{{contact.about}}</td>
             <th>
-                <i id="edit_contact_{{contact.id}}" class="fa fa-edit cursor" ng-click="editContact(contact.id); edit_contact = true"></i>
-                <i id="save_edit_contact_{{contact.id}}" class="fa fa-save cursor" ng-click="saveEditContact(contact.id)" ng-if="edit_contact"></i>
+                <!-- <i id="edit_contact_{{contact.id}}" class="fa fa-edit cursor" ng-click="editContact(contact.id); edit_contact = true"></i> -->
+                <!-- <i id="save_edit_contact_{{contact.id}}" class="fa fa-save cursor" ng-click="saveEditContact(contact.id)" ng-if="edit_contact"></i> -->
+                <i id="edit_contact_{{contact.id}}" class="fa fa-edit cursor" ng-click="editContact(contact.id, contact.content); edit_contact = true"></i>
+                <button id="button_cancel_edit_contact_{{contact.id}}" ng-if="edit_contact" type="button" class="btn btn-default btn-xs" ng-click="cancelEditContact(contact)">Hủy</button>
+                <button id="save_edit_contact_{{contact.id}}" ng-if="edit_contact" type="button" class="btn btn-success btn-xs" ng-click="saveEditContact(contact.id)">Xác nhận</button>
             </th>
             <th><i class="fa fa-trash cursor" data-toggle="modal" data-target="#delete_partner_contact" ng-click="confirmDelete(contact.id)"></i></th>
         </tr>

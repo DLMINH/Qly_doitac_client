@@ -110,7 +110,7 @@
             </div>
             <div class="table-responsive">
                 <!-- <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="noOfPages" items-per-page="entryLimit"></ul> -->
-                <table class="table table-striped jambo_table bulk_action" id="tableExcel">
+                <table class="table table-striped jambo_table bulk_action">
                     <thead>
                         <tr class="headings">
                             <!-- <th> -->
@@ -126,7 +126,7 @@
                             <th class="column-title">Đơn vị theo dõi</th>
                             <th class="column-title">Hiệu quả hợp tác</th>
                             <th class="column-title">Lưu ý</th>
-                            <th class="column-title">Sửa</th>
+                            <!-- <th class="column-title">Sửa</th> -->
                             <th class="column-title">Xóa</th>
                             <th class="column-title">
                                 <i class="fa fa-chevron-down cursor" data-toggle="collapse" data-target="#export_xcel"></i>
@@ -136,7 +136,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="even pointer" ng-repeat="contract in allContract">
+                        <tr class="even pointer" ng-repeat="contract in Partner.contracts">
                             <td class=" ">{{contract.partner.partnerName}}</td>
                             <td class=" ">{{contract.uetMan.uetManName}}</td>
                             <td class=" ">{{contract.partnerContact.contactName}}
@@ -148,11 +148,11 @@
                             <td class=" ">{{contract.unitName.unitName}}</td>
                             <td class=" ">{{contract.result}}</td>
                             <td class=" ">{{contract.notice}}</td>
-                            <td class="cursor ">
+                            <!-- <td class="cursor ">
                                 <a data-toggle="modal" data-target="#edit_contract" class="" ng-click="setEditContract(contract)">
                                         <i class="fa fa-edit"></i>
                                     </a>
-                            </td>
+                            </td> -->
                             <td class=" " ng-click="confirmDelete(contract.id)">
                                 <a class="cursor" data-toggle="modal" data-target="#delete_contract"><i class="fa fa-trash"></i></a>
                             </td>
@@ -166,7 +166,7 @@
             </div>
             <!-- edit partner info -->
             <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="edit_contract">
-                <div class="modal-dialog modal-lg" style="height: 80vh; position: fixed;">
+                <div class="modal-dialog modal-lg" style="height: 80vh; position: fixed; left: 13%;">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" ng-click="closeModal('edit_contract')"><span aria-hidden="true">×</span>
@@ -209,6 +209,7 @@
                                                 </tr>
                                             </tbody>
                                         </table>
+                                        
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -253,23 +254,6 @@
             <!-- end edit partner info -->
             <!-- them hop dong -->
             <!-- end them hop dong -->
-            <!-- confirm delete cotnract -->
-            <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="delete_contract">
-                <div class="modal-dialog modal-sm">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" ng-click="close('delete_contract')" aria-label="Close" id="close_modal_delete"><span aria-hidden="true">×</span>
-                            </button>
-                            <h4 class="modal-title" id="myModalLabel2">Bạn có chắc muốn xóa hợp đồng này</h4>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" ng-click="close('delete_contract')">Hủy</button>
-                            <button type="button" class="btn btn-primary" ng-click="deleteContract()">Xóa</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- end confirm delete contract -->
             <!-- comfirm delete activity -->
             <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="delete_activity">
                 <div class="modal-dialog modal-sm">

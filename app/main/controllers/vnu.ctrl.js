@@ -790,7 +790,9 @@
                 $scope.editContractData = contract;
                 console.log(contract);
                 // $scope.editContractData.startDate = null;
-                $scope.editContractData.startDate = new Date($scope.editContractData.startDate)
+                if ($scope.editContractData.startDate != null) {
+                    $scope.editContractData.startDate = new Date($scope.editContractData.startDate)
+                }
                 // var curr_date = $scope.editContractData.startDate.getDate();
                 // // console.log(curr_date.length());
                 // if (curr_date.length == 1) {
@@ -804,8 +806,9 @@
                 // $scope.editContractData.startDate = curr_year + "-" + curr_month + "-" + curr_date;
                 // console.log($scope.editContractData.startDate);
 
-
-                $scope.editContractData.endDate = new Date($scope.editContractData.endDate)
+                if ($scope.editContractData.endDate != null) {
+                    $scope.editContractData.endDate = new Date($scope.editContractData.endDate)
+                }
                 // var curr_date = $scope.editContractData.endDate.getDate();
                 // if (curr_date.length == 1) {
                 //     curr_date = '0' + curr_date;
@@ -894,10 +897,15 @@
                 vnuService.deleteContract($scope.confirmDeleteId)
                     .then(function() {
                         $scope.alertSuccess("Xóa hợp đồng thành công!", "");
-                        if ($scope.Partner != undefined) {
+                        if ($state.current.url == '/information') {
                             $('#delete_contract').modal('hide');
-                            $scope.getAllContractOfPartner();
-                        } else {
+                            var index = $scope.Partner.contracts.findIndex(x => x.id === $scope.confirmDeleteId);
+                            console.log(index);
+                            if (index != -1) {
+                                $scope.Partner.contracts.splice(index, 1);
+                            }
+                            // $scope.getAllContractOfPartner();
+                        } else if ($state.current.url == '/contract') {
                             $scope.getAllContract();
                             $("#close_modal_delete").trigger('click');
                         }
