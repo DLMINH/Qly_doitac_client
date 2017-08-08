@@ -34,7 +34,7 @@
             </div>
             <div class="table-responsive">
                 <!-- <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="noOfPages" items-per-page="entryLimit"></ul> -->
-                <table class="table table-striped jambo_table bulk_action" id="tableExcel">
+                <table class="table table-striped jambo_table bulk_action">
                     <thead>
                         <tr class="headings">
                             <!-- <th> -->
@@ -54,20 +54,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="even pointer" ng-repeat="activity in allAnnaulActivityOfPartner" id="annualActivity_{{activity.id}}">
+                        <tr class="even pointer" ng-repeat="activity in Partner.annualActivity" id="annualActivity_{{activity.id}}">
                             <td class=" " id="activityName_{{activity.id}}">{{activity.activityName}}</td>
                             <td class=" " ng-bind-html="activity.content" id="content_{{activity.id}}"></td>
                             <td class=" " id="funding_{{activity.id}}">{{activity.funding}}</td>
                             <td class=" " id="date_{{activity.id}}">{{activity.date | date:'dd/MM/yyyy'}}</td>
                             <td class="cursor ">
                                 <i id="edit_activity_{{activity.id}}" class="fa fa-edit cursor" ng-click="editAnnualActivity(activity.id, activity.content); edit_activity = true"></i>
-                                <i id="save_edit_activity_{{activity.id}}" class="fa fa-save cursor" ng-click="saveEditAnnualActivity(activity.id)" ng-if="edit_activity"></i>
+                                <button id="button_cancel_edit_activity_{{activity.id}}" ng-if="edit_activity" type="button" class="btn btn-default btn-xs" ng-click="cancelEditActivity(activity.id, activity)">Hủy</button>
+                                <button id="save_edit_activity_{{activity.id}}" ng-if="edit_activity" type="button" class="btn btn-success btn-xs" ng-click="saveEditAnnualActivity(activity.id)">Xác nhận</button>
                             </td>
-                            <!-- <td id="confirm_delete_activity_{{activity.id}}">
-                                <i id="i_confirm_delete_activity_{{activity.id}}" class="fa fa-trash cursor" ng-click="confirmDeleteActivity(activity.id); deleteActivityValue = true"></i>
-                                <button id="button_confirm_delete_activity_{{activity.id}}" ng-if="deleteActivityValue" type="button" class="btn btn-default btn-xs" ng-click="cancerDeleteActivity(activity.id)">Hủy</button>
-                                <button id="button_delete_activity_{{activity.id}}" ng-if="deleteActivityValue" type="button" class="btn btn-success btn-xs" ng-click="deleteAnnualActivity(activity.id)">Xác nhận</button>
-                            </td> -->
                             <td class=" ">
                                 <a class="cursor" ng-click="confirmDelete(activity.id, activity.activityName)" data-toggle="modal" data-target="#delete_activity_"><i class="fa fa-trash"></i></a>
                             </td>
@@ -78,21 +74,6 @@
                     </tbody>
                 </table>
                 <!-- <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="noOfPages" items-per-page="entryLimit"></ul> -->
-            </div>
-            <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="false" id="delete_activity_">
-                <div class="modal-dialog modal-sm">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" ng-click="closeModal('delete_activity_')" id="close_modal_delete"><span aria-hidden="true">×</span>
-                            </button>
-                            <h4 class="modal-title" id="myModalLabel2">Bạn có chắc muốn xóa hoạt động {{confirmDeleteName}}</h4>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" ng-click="closeModal('delete_activity_')">Hủy</button>
-                            <button type="button" class="btn btn-primary" ng-click="deleteAnnualActivity(confirmDeleteId, false)">Xóa</button>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
         <!-- </div> -->

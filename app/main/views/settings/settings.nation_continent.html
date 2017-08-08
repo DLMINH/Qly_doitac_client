@@ -91,16 +91,20 @@
                             <!-- <td class="a-center "> -->
                             <!-- <input type="checkbox" class="flat" name="table_records"> -->
                             <!-- </td> -->
-                            <td class=" " id="continent_{{continent.id}}">{{nation.nationName}}</td>
+                            <td class=" " id="nation_{{nation.id}}">{{nation.nationName}}</td>
                             <td>
                                 {{nation.continent.continentName}}
                             </td>
                             <td class=" ">
-                                <i id="edit_continent_{{continent.id}}" class="fa fa-edit cursor" ng-click="editContinent(continent.id); edit_continent = true"></i>
-                                <i id="save_edit_continent_{{natcontinention.id}}" class="fa fa-save cursor" ng-click="saveEditContinent(continent.id)" ng-if="edit_continent"></i>
+                                <!-- <i id="edit_continent_{{continent.id}}" class="fa fa-edit cursor" ng-click="editContinent(continent.id); edit_continent = true"></i>
+                                <i id="save_edit_continent_{{natcontinention.id}}" class="fa fa-save cursor" ng-click="saveEditContinent(continent.id)" ng-if="edit_continent"></i> -->
+
+                                <i id="edit_nation_{{nation.id}}" class="fa fa-edit cursor" ng-click="editNation(nation.id, nation.content); edit_nation = true"></i>
+                                <button id="button_cancel_edit_nation_{{nation.id}}" ng-if="edit_nation" type="button" class="btn btn-default btn-xs" ng-click="cancelEditNation(nation)">Hủy</button>
+                                <button id="save_edit_nation_{{nation.id}}" ng-if="edit_nation" type="button" class="btn btn-success btn-xs" ng-click="saveEditNation(nation.id)">Xác nhận</button>
                             </td>
                             <td class=" ">
-                                <i class="fa fa-trash cursor" data-toggle="modal" data-target="#delete_continent" ng-click="comfirmDelete(continent.id)"></i>
+                                <i class="fa fa-trash cursor" data-toggle="modal" data-target="#delete_nation" ng-click="confirmDelete(nation.id, nation.nation.nationName)"></i>
                             </td>
                         </tr>
                     </tbody>
@@ -138,7 +142,7 @@
                                             <i id="edit_nation_{{nation.id}}" class="fa fa-edit cursor" ng-click="editNation(nation.id); edit_nation = true"></i>
                                             <i id="save_edit_nation_{{nation.id}}" class="fa fa-save cursor" ng-click="saveEditNation(nation.id)" ng-if="edit_nation"></i>
                                         </th>
-                                        <th><i class="fa fa-trash cursor" data-toggle="modal" data-target="#delete_nation" ng-click="comfirmDelete(nation.id)"></i></th>
+                                        <th><i class="fa fa-trash cursor" data-toggle="modal" data-target="#delete_nation" ng-click="confirmDelete(nation.id)"></i></th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -152,11 +156,11 @@
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_modal_delete_nation"><span aria-hidden="true">×</span>
                             </button>
-                            <h4 class="modal-title" id="myModalLabel2">Bạn có chắc muốn xóa quốc gia này?</h4>
+                            <h4 class="modal-title" id="myModalLabel2">Bạn có chắc muốn xóa quốc gia {{confirmDeleteName}}?</h4>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-                            <button type="button" class="btn btn-primary" ng-click="deleteNation(comfirmDeleteId)">Xóa</button>
+                            <button type="button" class="btn btn-primary" ng-click="deleteNation(confirmDeleteId)">Xóa</button>
                         </div>
                     </div>
                 </div>
@@ -171,7 +175,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-                            <button type="button" class="btn btn-primary" ng-click="deleteContinent(comfirmDeleteId)">Xóa</button>
+                            <button type="button" class="btn btn-primary" ng-click="deleteContinent(confirmDeleteId)">Xóa</button>
                         </div>
                     </div>
                 </div>

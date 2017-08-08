@@ -38,13 +38,13 @@ config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProv
                 .state('/settings', {
                     url: '/settings',
                     templateUrl: 'main/views/settings/settings.html',
-                    controller: function($state, $rootScope) {
-                        console.log($state);
-                        if ($state.current.url == "/settings") {
-                            $state.go('.vnu');
-                        }
-                        $rootScope.currentUrl = $state.current.url;
-                    }
+                    // controller: function($state, $rootScope) {
+                    //     console.log($state);
+                    //     if ($state.current.url == "/settings") {
+                    //         $state.go('.vnu');
+                    //     }
+                    //     $rootScope.currentUrl = $state.current.url;
+                    // }
                 })
                 .state('/settings.vnu', {
                     url: '/vnu',
@@ -59,28 +59,37 @@ config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProv
                 .state('/partner', {
                     url: '/partner',
                     templateUrl: 'main/views/partner/partner.html',
-                    controller: function($state, $rootScope) {
-                        console.log($state);
-                        if ($state.current.url == "/partner") {
-                            $state.go('.contract');
-                        }
-                        $rootScope.currentUrl = $state.current.url;
-                    }
+                    controller: 'partnerCtrl'
+                    // controller: function($state, $rootScope) {
+                    //     console.log($state);
+                    //     if ($state.current.url == "/partner") {
+                    //         $state.go('.contract');
+                    //     }
+                    //     $rootScope.currentUrl = $state.current.url;
+                    // }
                 })
                 .state('/partner.information', {
                     url: '/information',
                     views: {
                         '': {
                             templateUrl: 'main/views/partner/partner.all.html',
-                            controller: 'partnerCtrl'
+                            // controller: 'partnerCtrl'
                         },
                         'contract@/partner.information': {
                             templateUrl: 'main/views/partner/partner.contract.html',
-                            controller: 'partnerCtrl'
+                            // controller: 'partnerCtrl'
                         },
                         'activity@/partner.information': {
                             templateUrl: 'main/views/partner/partner.annualActivity.html',
-                            controller: 'partnerCtrl'
+                            // controller: 'partnerCtrl'
+                        },
+                        'information@/partner.information': {
+                            templateUrl: 'main/views/partner/partner.information.html',
+                            // controller: 'partnerCtrl'
+                        },
+                        'contact@/partner.information': {
+                            templateUrl: 'main/views/partner/partner.contact.html',
+                            // controller: 'partnerCtrl'
                         }
                     }
                 })
@@ -93,7 +102,7 @@ config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProv
                 .state('/partner.activity', {
                     url: '/activity',
                     templateUrl: 'main/views/partner/partner.annualActivity.all.html',
-                    controller: 'partnerCtrl'
+                    // controller: 'partnerCtrl'
                 })
                 .state('/partner.contract', {
                     url: '/contract',

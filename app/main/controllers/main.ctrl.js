@@ -10,13 +10,29 @@
                     $rootScope.id = sessionStorage["id"];
                 }
 
-                $scope.logout = function (){
+                $(document).ready(function() {
+                    if (!$('.modal').is(':visible')) {
+                        console.log(15);
+                        $('.modal-backdrop').remove();
+                    }
+                });
+                $('.modal').on('hidden.bs.modal', function() {
+                    // do something…
+                    console.log(21);
+                    if (!$('.modal').is(':visible')) {
+                        console.log(15);
+                        $('.modal-backdrop').remove();
+                    }
+                })
+
+                $scope.logout = function() {
                     userService.logout()
-                        .then(function (){
+                        .then(function() {
                             sessionStorage.clear();
                             $window.location.href = $rootScope.clientAdd;
                         })
                 }
+
             }
         ])
 }());

@@ -101,16 +101,20 @@
                 $scope.Continent = continent;
             }
 
-            $scope.comfirmDelete = function(id) {
-                $scope.comfirmDeleteId = id;
+            $scope.confirmDelete = function(id, name) {
+                $scope.confirmDeleteId = id;
+                $scope.confirmDeleteName = name;
             }
 
             $scope.deleteNation = function(nationId) {
                 nationService.deleteNation(nationId)
                     .then(function() {
-                        $scope.alertSuccess('Xóa Quốc gia thành công!', 'successdelete_edit');
-                        $scope.getAllContinent();
-                        $('#tr_nation_' + nationId).remove();
+                        $scope.alertSuccess('Xóa Quốc gia thành công!', '');
+                        // $('#tr_nation_' + nationId).remove();
+                        var index = $scope.allNations.findIndex(x => x.id === nationId);
+                        if(index != -1){
+                            $scope.allNations.splice(index, 1);
+                        }
                         $('#close_modal_delete_nation').trigger('click');
                     }, function(error) {
                         console.log(error);
@@ -141,6 +145,33 @@
                 $('#nation_' + nationId).html('<input id="nation_value_' + nationId + '" value="' + nationName + '" style="border-radius:3px; border: 1px solid;"/>');
                 $('#edit_nation_' + nationId).hide();
                 $('#save_edit_nation_' + nationId).show();
+                $('#button_cancel_edit_nation_' + nationId).show();
+            }
+
+            $scope.cancelEditNation = function(nation) {
+                console.log(nation);
+                $('#edit_nation_' + nation.id).show();
+                $('#save_edit_nation_' + nation.id).hide();
+                $('#button_cancel_edit_nation_' + nation.id).hide();
+                $('#nation_' + nation.id).html(nation.nationName);
+            }
+
+            $scope.cancelEditContact = function(contact) {
+                console.log(activity);
+                $scope.editInLine--;
+                $scope.editContactCount--;
+                if ($scope.editInLine == 0) {
+                    $('#show_partner_details').removeClass('backdrop-data');
+                }
+                console.log($scope.editInLine);
+                $('#edit_contact_' + contact.id).show();
+                $('#button_cancel_edit_contact_' + contact.id).hide();
+                $('#save_edit_contact_' + contact.id).hide();
+                $('#contactName_' + contact.id).html(contact.contactName);
+                $('#email_' + contact.id).html(contact.email);
+                $('#phone_' + contact.id).html(contact.phone);
+                $('#skype_' + contact.id).html(contact.skype);
+                $('#about_' + contact.id).html(contact.about);
             }
 
             $scope.saveEditNation = function(nationId) {
@@ -156,9 +187,10 @@
                     .then(function() {
                         $('#edit_nation_' + nationId).show();
                         $('#save_edit_nation_' + nationId).hide();
+                        $('#button_cancel_edit_nation_' + nationId).hide();
                         $('#nation_' + nationId).html(nationName);
-                        $scope.alertSuccess('Sửa tên quốc gia thành công!', 'successdelete_edit');
-                        $scope.getAllContinent();
+                        $scope.alertSuccess('Sửa tên quốc gia thành công!', '');
+                        // $scope.getAllContinent();
                     }, function(error) {
                         console.log(error);
                         $scope.alertDanger(error.data.message, 'danger');
