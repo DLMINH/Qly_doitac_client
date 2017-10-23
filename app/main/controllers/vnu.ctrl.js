@@ -1,59 +1,27 @@
 (function() {
     var app = angular.module("vnu", []);
-    app.controller('vnuCtrl', ['$scope', 'vnuService', '$location', '$rootScope', '$window', '$timeout', 'partnerService', 'filterFilter', 'md5', '$state',
-        function($scope, vnuService, $location, $rootScope, $window, $timeout, partnerService, filterFilter, md5, $state) {
+    app.controller('vnuCtrl', ['$scope', 'vnuService', '$location', '$rootScope', '$window', '$timeout', 'partnerService', 'filterFilter', 'md5', '$state', '$sce',
+        function($scope, vnuService, $location, $rootScope, $window, $timeout, partnerService, filterFilter, md5, $state, $sce) {
             $rootScope.currentUrl = $state.current.url;
-            $scope.alertWarning = function(warning, timeout) {
-                $scope.warningMessage = warning;
-                $scope.warning = true;
-                $timeout(function() {
-                    // 
-                    $(".alert").fadeTo(500, 0).slideUp(500, function() {
-                        $scope.warning = false;
-                        $scope.warningMessage = "";
+
+            var handleFileSelect = function(evt) {
+                var file = evt.currentTarget.files[0];
+                console.log(evt.currentTarget.files);
+                $scope.message.fileName = evt.currentTarget.files[0].name;
+                $scope.message.fileType = evt.currentTarget.files[0].name.split('.').pop();
+                var reader = new FileReader();
+                reader.onload = function(evt) {
+                    $scope.$apply(function($scope) {
+                        $scope.message.attachFile = evt.target.result.split(',').pop();
                     });
-                }, timeout);
+                };
+                reader.readAsDataURL(file);
+            };
+            angular.element(document.querySelector('#baocao')).on('change', handleFileSelect);
 
-            }
-            $scope.alertDanger = function(error, danger) {
-                $scope.errorMessage = error;
-                if (danger == 'danger') {
-                    $scope.danger_edit = true;
-                    $timeout(function() {
-                        $(".alert").fadeTo(500, 0).slideUp(500, function() {
-                            $scope.danger_edit = false;
-                        });
-                    }, 6000);
-                } else {
-                    $scope.danger = true;
-                    $timeout(function() {
-                        // 
-                        $(".alert").fadeTo(500, 0).slideUp(500, function() {
-                            $scope.danger = false;
-                            $scope.errorMessage = "";
-                        });
-                    }, 6000);
-                }
-            }
-
-            $scope.alertSuccess = function(string, success) {
-                $scope.successMessage = string;
-                if (success == 'successdelete_edit') {
-                    $scope.successdelete_edit = true;
-                    $timeout(function() {
-                        $(".alert").fadeTo(500, 0).slideUp(500, function() {
-                            $scope.successdelete_edit = false;
-                        });
-                    }, 3000);
-                } else {
-                    $scope.success = true;
-                    $timeout(function() {
-                        $(".alert").fadeTo(500, 0).slideUp(500, function() {
-                            $scope.success = false;
-                        });
-                    }, 3000);
-                }
-
+            $scope.getLinkFile = function(attachFileAdd) {
+                // attachFileAdd = "http://www.pdf995.com/samples/pdf.pdf";
+                $rootScope.modalFileLink = $sce.trustAs($sce.RESOURCE_URL, "https://docs.google.com/gview?url=" + $rootScope.clientAdd + attachFileAdd + "&embedded=true");
             }
 
             $scope.exportData = function() {
@@ -1105,6 +1073,58 @@
 
             $scope.selectContract = function(contract) {
                 // console.log(contract);
+            }
+            $scope.alertWarning = function(warning, timeout) {
+                $scope.warningMessage = warning;
+                $scope.warning = true;
+                $timeout(function() {
+                    // 
+                    $(".alert").fadeTo(500, 0).slideUp(500, function() {
+                        $scope.warning = false;
+                        $scope.warningMessage = "";
+                    });
+                }, timeout);
+
+            }
+            $scope.alertDanger = function(error, danger) {
+                $scope.errorMessage = error;
+                if (danger == 'danger') {
+                    $scope.danger_edit = true;
+                    $timeout(function() {
+                        $(".alert").fadeTo(500, 0).slideUp(500, function() {
+                            $scope.danger_edit = false;
+                        });
+                    }, 6000);
+                } else {
+                    $scope.danger = true;
+                    $timeout(function() {
+                        // 
+                        $(".alert").fadeTo(500, 0).slideUp(500, function() {
+                            $scope.danger = false;
+                            $scope.errorMessage = "";
+                        });
+                    }, 6000);
+                }
+            }
+
+            $scope.alertSuccess = function(string, success) {
+                $scope.successMessage = string;
+                if (success == 'successdelete_edit') {
+                    $scope.successdelete_edit = true;
+                    $timeout(function() {
+                        $(".alert").fadeTo(500, 0).slideUp(500, function() {
+                            $scope.successdelete_edit = false;
+                        });
+                    }, 3000);
+                } else {
+                    $scope.success = true;
+                    $timeout(function() {
+                        $(".alert").fadeTo(500, 0).slideUp(500, function() {
+                            $scope.success = false;
+                        });
+                    }, 3000);
+                }
+
             }
         }
     ])

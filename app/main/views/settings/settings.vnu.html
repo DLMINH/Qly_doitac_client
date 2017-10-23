@@ -11,13 +11,13 @@
                             <i class="fa fa-wrench"></i>
                         </a>
                     <ul class="dropdown-menu" role="menu">
-                        <li ng-if="role == 'ADMIN'"><a data-toggle="collapse" data-target="#add_unit" class="cursor"> Thêm đơn vị theo dõi </a>
+                        <li ng-if="role == 'ADMIN_UNIT'"><a data-toggle="collapse" data-target="#add_unit" class="cursor"> Thêm đơn vị theo dõi </a>
                         </li>
                         <li><a data-toggle="collapse" data-target="#add_uet_man" class="cursor"> Thêm người kí kết (VNU-UET) </a>
                         </li>
                         <!-- <li><a data-toggle="collapse" data-target="#add_type_contract" class="cursor"> Thêm loại hợp đồng </a>
                             </li> -->
-                        <li ng-if="role == 'ADMIN'"><a data-toggle="collapse" data-target="#create_account" class="cursor"> Tạo tài khoản cho đơn vị theo dõi </a>
+                        <li ng-if="role == 'ADMIN_UNIT'"><a data-toggle="collapse" data-target="#create_account" class="cursor"> Tạo tài khoản cho đơn vị theo dõi </a>
                         </li>
                     </ul>
                 </li>
@@ -146,7 +146,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-sm-6 col-xs-12" ng-init="getAllUnitName()" ng-if="role == 'ADMIN'">
+            <div class="col-md-6 col-sm-6 col-xs-12" ng-init="getAllUnitName()" ng-if="role == 'ADMIN_UNIT'">
                 <div class="x_panel">
                     <div class="x_title">
                         <h2>Đơn vị theo dõi</h2>

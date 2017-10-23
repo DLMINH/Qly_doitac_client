@@ -116,6 +116,7 @@
                                 <th class="column-title">Tự động renew</th>
                                 <th class="column-title">Hiệu quả hợp tác</th>
                                 <th class="column-title">Lưu ý</th>
+                                <th class="column-title">Biên bản ghi nhớ</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -135,6 +136,13 @@
                                 <td id="">{{contract.renew}}</td>
                                 <td id="">{{contract.result}}</td>
                                 <td id="">{{contract.notice}}</td>
+                                <td id="">
+                                    <label for="input_file_pdf" class="cursor">
+                                        <!-- <i class="fa fa-file-pdf-o"></i> -->
+                                        Chọn file
+                                    </label>
+                                    <input type="file" name="input_file_pdf" id="input_file_pdf" ng-show="show">
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -149,7 +157,7 @@
                             <!-- <input type="checkbox" id="check-all" class="flat"> -->
                             <!-- </th> -->
                             <th class="column-title">Tên cơ quan hợp tác</th>
-                            <th class="column-title">Quốc Gia</th>
+                            <!-- <th class="column-title">Quốc Gia</th> -->
                             <th class="column-title">Người ký (VNU-UET)</th>
                             <th class="column-title">Người ký (Đối tác)</th>
                             <th class="column-title">Nội dung hợp tác chính</th>
@@ -159,6 +167,7 @@
                             <th class="column-title">Đơn vị theo dõi</th>
                             <th class="column-title">Hiệu quả hợp tác</th>
                             <th class="column-title">Lưu ý</th>
+                            <th class="column-title">Biên bản</th>
                             <th class="column-title">Sửa</th>
                             <th class="column-title">Xóa</th>
                             <th class="column-title">
@@ -172,7 +181,7 @@
                         <tr class="even pointer" ng-repeat="contract in filtered = allContract | filter : search |
                                 startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
                             <td class=" ">{{contract.partner.partnerName}}</td>
-                            <td class=" ">{{contract.partner.nation.nationName}}</td>
+                            <!-- <td class=" ">{{contract.partner.nation.nationName}}</td> -->
                             <td class=" ">{{contract.uetMan.uetManName}}</td>
                             <td class=" ">{{contract.partnerContact.contactName}}
                                 <br /> {{contract.partnerContact.about}}</td>
@@ -183,15 +192,20 @@
                             <td class=" ">{{contract.unitName.unitName}}</td>
                             <td class=" ">{{contract.result}}</td>
                             <td class=" ">{{contract.notice}}</td>
-                            <td class="cursor ">
-                                <a data-toggle="modal" data-target="#edit_contract" class="" ng-click="setEditContract(contract)">
+                            <td class=" ">
+                                <a class="cursor" data-toggle="modal" data-target="#view_file" class="" ng-click="getLinkFile(contract.attachFileAdd)">
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </a>
+                            </td>
+                            <td class=" ">
+                                <a class="cursor" data-toggle="modal" data-target="#edit_contract" class="" ng-click="setEditContract(contract)">
                                         <i class="fa fa-edit"></i>
                                     </a>
                             </td>
                             <td class=" " ng-click="confirmDelete(contract.id)">
                                 <a class="cursor" data-toggle="modal" data-target="#delete_contract"><i class="fa fa-trash"></i></a>
                             </td>
-                            <td class="a-center ">
+                            <td class="a-center">
                                 <input type="checkbox" class="flat" name="table_records" ng-click="selectContract(contract); contract.checked = !contract.checked" ng-checked="contract.checked">
                             </td>
                         </tr>
@@ -200,6 +214,19 @@
                 <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="noOfPages" items-per-page="entryLimit"></ul>
             </div>
             <div ui-view></div>
+            <!-- modal doc -->
+            <div class="modal fade" tabindex="-1" role="dialog" id="view_file">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div style="text-align: center;">
+                                <iframe src="{{modalFileLink}}" style="width:100%; height:85vh;" frameborder="0"></iframe>
+                            </div>
+                            <!-- {{modalFileLink}} -->
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- edit partner info -->
             <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="edit_contract">
                 <div class="modal-dialog modal-lg">
