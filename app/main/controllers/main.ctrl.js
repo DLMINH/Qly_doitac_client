@@ -3,7 +3,7 @@
         .controller('mainCtrl', ['$scope', '$rootScope', '$location', '$window', 'userService',
             function($scope, $rootScope, $location, $window, userService) {
                 $rootScope.serverAdd = "http://128.199.155.163:8080";
-                $rootScope.clientAdd = "http://112.137.130.47:8100";
+                $rootScope.clientAdd = "http://128.199.155.163:8100";
                 if(sessionStorage['User-Data']){
                     $rootScope.loggedIn = true;
                     $rootScope.role = sessionStorage["role"];
