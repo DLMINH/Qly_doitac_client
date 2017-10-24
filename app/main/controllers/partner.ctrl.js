@@ -64,14 +64,17 @@
             }
 
             $(document).keyup(function(e) {
-                if (e.keyCode === 27) {
-                    $scope.checkEditInline();
-                    // if ($scope.editInLine == 0) {
-                    //     // console.log(123234);
-                    //     $('#show_partner_details').modal('hide');
-                    // } else {
-                    //     $('#confirm_close_modal').modal('show');
-                    // }
+                // console.log($('#confirm_close_modal').is(':visible'));
+                if (!$('#confirm_close_modal').is(':visible')) {
+                    if (e.keyCode === 27) {
+                        $scope.checkEditInline();
+                        // if ($scope.editInLine == 0) {
+                        //     // console.log(123234);
+                        //     $('#show_partner_details').modal('hide');
+                        // } else {
+                        //     $('#confirm_close_modal').modal('show');
+                        // }
+                    }
                 } // esc
             });
 

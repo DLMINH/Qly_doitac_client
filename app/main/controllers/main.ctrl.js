@@ -2,8 +2,8 @@
     angular.module('myApp')
         .controller('mainCtrl', ['$scope', '$rootScope', '$location', '$window', 'userService',
             function($scope, $rootScope, $location, $window, userService) {
-                $rootScope.serverAdd = "http://128.199.155.163:8080";
-                $rootScope.clientAdd = "http://128.199.155.163:8100";
+                $rootScope.serverAdd = "http://128.199.155.163:8180";
+                $rootScope.clientAdd = "http://128.199.155.163:8080";
                 if(sessionStorage['User-Data']){
                     $rootScope.loggedIn = true;
                     $rootScope.role = sessionStorage["role"];
