@@ -16,7 +16,7 @@ angular.module('myApp', [
     'angular-md5'
 ]).
 config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProvider', function($locationProvider, $routeProvider, $stateProvider, $urlRouterProvider) {
-        $locationProvider.hashPrefix('');
+        $locationProvider.html5Mode(false).hashPrefix('');
 
         if (sessionStorage["User-Data"] == null) {
             $routeProvider

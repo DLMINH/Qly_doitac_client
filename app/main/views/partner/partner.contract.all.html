@@ -137,11 +137,11 @@
                                 <td id="">{{contract.result}}</td>
                                 <td id="">{{contract.notice}}</td>
                                 <td id="">
-                                    <label for="input_file_pdf" class="cursor">
+                                    <label for="contract-excel-{{contract.STT}}" class="cursor">
                                         <!-- <i class="fa fa-file-pdf-o"></i> -->
                                         Chọn file
                                     </label>
-                                    <input type="file" name="input_file_pdf" id="input_file_pdf" ng-show="show">
+                                    <input class="attach-file" type="file" name="input_file_pdf" id="contract-excel-{{contract.STT}}" accept=".doc, .docx, .pdf" ng-show="show">
                                 </td>
                             </tr>
                         </tbody>
@@ -180,29 +180,29 @@
                     <tbody>
                         <tr class="even pointer" ng-repeat="contract in filtered = allContract | filter : search |
                                 startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
-                            <td class=" ">{{contract.partner.partnerName}}</td>
-                            <!-- <td class=" ">{{contract.partner.nation.nationName}}</td> -->
-                            <td class=" ">{{contract.uetMan.uetManName}}</td>
-                            <td class=" ">{{contract.partnerContact.contactName}}
+                            <td class="">{{contract.partner.partnerName}}</td>
+                            <!-- <td class="">{{contract.partner.nation.nationName}}</td> -->
+                            <td class="">{{contract.uetMan.uetManName}}</td>
+                            <td class="">{{contract.partnerContact.contactName}}
                                 <br /> {{contract.partnerContact.about}}</td>
-                            <td class=" " ng-bind-html="contract.contentContract"></td>
-                            <td class=" ">{{contract.funding}}</td>
-                            <td class=" ">{{contract.startDate | date:'dd/MM/yyyy'}}</td>
-                            <td class=" ">{{contract.endDate | date:'dd/MM/yyyy'}}</td>
-                            <td class=" ">{{contract.unitName.unitName}}</td>
-                            <td class=" ">{{contract.result}}</td>
-                            <td class=" ">{{contract.notice}}</td>
-                            <td class=" ">
-                                <a class="cursor" data-toggle="modal" data-target="#view_file" class="" ng-click="getLinkFile(contract.attachFileAdd)">
+                            <td class="" ng-bind-html="contract.contentContract"></td>
+                            <td class="">{{contract.funding}}</td>
+                            <td class="">{{contract.startDate | date:'dd/MM/yyyy'}}</td>
+                            <td class="">{{contract.endDate | date:'dd/MM/yyyy'}}</td>
+                            <td class="">{{contract.unitName.unitName}}</td>
+                            <td class="">{{contract.result}}</td>
+                            <td class="">{{contract.notice}}</td>
+                            <td class="">
+                                <a ng-if="contract.attachFileAdd != null" class="cursor" data-toggle="modal" data-target="#view_file" class="" ng-click="getLinkFile(contract.attachFileAdd)">
                                         <i class="fa fa-file-pdf-o"></i>
                                     </a>
                             </td>
-                            <td class=" ">
+                            <td class="">
                                 <a class="cursor" data-toggle="modal" data-target="#edit_contract" class="" ng-click="setEditContract(contract)">
                                         <i class="fa fa-edit"></i>
                                     </a>
                             </td>
-                            <td class=" " ng-click="confirmDelete(contract.id)">
+                            <td class="" ng-click="confirmDelete(contract.id)">
                                 <a class="cursor" data-toggle="modal" data-target="#delete_contract"><i class="fa fa-trash"></i></a>
                             </td>
                             <td class="a-center">
@@ -304,6 +304,14 @@
                                         <input type="date" class="form-control col-md-7 col-xs-12" ng-model="editContractData.endDate" value="{{editContractData.endDate}}">
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12">
+                                        <b>Biên bản ghi nhớ:</b>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="file" class="form-control col-md-7 col-xs-12 attach-file" name="file" id="contract-edit" accept=".doc, .docx, .pdf">
+                                    </div>
+                                </div>
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -345,7 +353,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group" ng-if="role == 'ADMIN'">
+                                <div class="form-group" ng-if="role=='ADMIN_UNIT'">
                                     <label class="control-label col-md-4 col-sm-4 col-xs-12">Đơn vị theo dõi: </label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <select class="form-control" ng-model="input.unitNameId">
@@ -403,6 +411,14 @@
                                     <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Ngày hết hiệu lựu: </label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <input type="date" class="form-control col-md-7 col-xs-12" ng-model="input.endDate">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12">
+                                        <b>Biên bản ghi nhớ:</b>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="file" class="form-control col-md-7 col-xs-12 attach-fiale" name="file" id="contract-create" accept=".doc, .docx, .pdf">
                                     </div>
                                 </div>
                             </form>

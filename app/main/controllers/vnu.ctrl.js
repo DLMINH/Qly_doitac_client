@@ -4,25 +4,7 @@
         function($scope, vnuService, $location, $rootScope, $window, $timeout, partnerService, filterFilter, md5, $state, $sce) {
             $rootScope.currentUrl = $state.current.url;
 
-            var handleFileSelect = function(evt) {
-                var file = evt.currentTarget.files[0];
-                console.log(evt.currentTarget.files);
-                $scope.message.fileName = evt.currentTarget.files[0].name;
-                $scope.message.fileType = evt.currentTarget.files[0].name.split('.').pop();
-                var reader = new FileReader();
-                reader.onload = function(evt) {
-                    $scope.$apply(function($scope) {
-                        $scope.message.attachFile = evt.target.result.split(',').pop();
-                    });
-                };
-                reader.readAsDataURL(file);
-            };
-            angular.element(document.querySelector('#baocao')).on('change', handleFileSelect);
 
-            $scope.getLinkFile = function(attachFileAdd) {
-                // attachFileAdd = "http://www.pdf995.com/samples/pdf.pdf";
-                $rootScope.modalFileLink = $sce.trustAs($sce.RESOURCE_URL, "https://docs.google.com/gview?url=" + $rootScope.clientAdd + attachFileAdd + "&embedded=true");
-            }
 
             $scope.exportData = function() {
                 // $scope.exportDataExcel = $scope.allContract;
@@ -718,6 +700,48 @@
                     }, function(error) {
                         console.log(error);
                     })
+            }
+
+            $scope.addAttachFileToScope = function(fileName, fileType, attachFile, elementId){
+                console.log(706)
+                if(elementId == 'contract-edit'){
+                    $scope.editContractData.fileName = fileName;
+                    $scope.editContractData.fileType =fileType;
+                    $scope.editContractData.attachFile = attachFile;
+                    $scope.editContractData.attachFileAdd = 'edited';
+                } else if(elementId == 'contract-create'){
+                    $scope.input.fileName = fileName;
+                    $scope.input.fileType = fileType;
+                    $scope.input.attachFile = attachFile;
+                } else if(elementId.indexOf("contract-excel-")){
+                    // console.log($(".attach-file").attr('id').split("-").pop());
+                }
+            }
+
+            var handleFileSelect = function(evt) {
+                var file = evt.currentTarget.files[0];
+                console.log(evt.currentTarget.files);
+                var id = evt.target.id;
+                var fileName = evt.currentTarget.files[0].name;
+                var fileType = evt.currentTarget.files[0].name.split('.').pop();
+                var reader = new FileReader();
+                reader.onload = function(evt) {
+                    $scope.$apply(function($scope) {
+                        var attachFile = evt.target.result.split(',').pop();
+                        $scope.addAttachFileToScope(fileName, fileType, attachFile, id);
+                    });
+                };
+                
+                // if($(".attach-file").attr('id') == 'attach-file-modal'){
+                //     $scope.editContractData.fileName = 
+                // }
+                reader.readAsDataURL(file);
+            };
+            angular.element(document.querySelector('.attach-file')).on('change', handleFileSelect);
+            // hiện tại, class nhưng chỉ nhận 1 input
+            $scope.getLinkFile = function(attachFileAdd) {
+                // attachFileAdd = "http://www.pdf995.com/samples/pdf.pdf";
+                $rootScope.modalFileLink = $sce.trustAs($sce.RESOURCE_URL, "https://docs.google.com/gview?url=" + $rootScope.clientAdd + attachFileAdd + "&embedded=true");
             }
 
             $scope.createContract = function() {
