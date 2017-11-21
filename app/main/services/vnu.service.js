@@ -29,8 +29,17 @@
             editActivity: editActivity,
             deleteActivity: deleteActivity,
             createAccount: createAccount,
-            getAllContractOfPartner: getAllContractOfPartner
+            getAllContractOfPartner: getAllContractOfPartner,
+            shareContract: shareContract
         };
+
+        function shareContract(data) {
+            return $http({
+                url: $rootScope.serverAdd + '/contract/share/create',
+                method: 'POST',
+                data: data
+            })
+        }
 
         function getAllContractOfPartner(partnerId) {
             return $http({
