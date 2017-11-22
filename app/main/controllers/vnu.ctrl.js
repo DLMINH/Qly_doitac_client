@@ -867,7 +867,7 @@
             // hiện tại, class nhưng chỉ nhận 1 input
             $scope.getLinkFile = function(attachFileAdd) {
                 // attachFileAdd = "http://www.pdf995.com/samples/pdf.pdf";
-                $rootScope.modalFileLink = $sce.trustAs($sce.RESOURCE_URL, "https://docs.google.com/gview?url=" + $rootScope.clientAdd + attachFileAdd + "&embedded=true");
+                $rootScope.modalFileLink = $sce.trustAs($sce.RESOURCE_URL, "https://docs.google.com/gview?url=" + $rootScope.srcAdd + attachFileAdd + "&embedded=true");
             }
 
             $scope.$watch('selectedPartner', function() {
