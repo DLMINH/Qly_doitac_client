@@ -13,7 +13,8 @@ angular.module('myApp', [
     'vnu',
     'ngSanitize',
     'contract',
-    'angular-md5'
+    'angular-md5',
+    'angucomplete-alt'
 ]).
 config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProvider', function($locationProvider, $routeProvider, $stateProvider, $urlRouterProvider) {
         $locationProvider.html5Mode(true).hashPrefix('');
@@ -38,13 +39,6 @@ config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProv
                 .state('/settings', {
                     url: '/settings',
                     templateUrl: 'main/views/settings/settings.html',
-                    // controller: function($state, $rootScope) {
-                    //     console.log($state);
-                    //     if ($state.current.url == "/settings") {
-                    //         $state.go('.vnu');
-                    //     }
-                    //     $rootScope.currentUrl = $state.current.url;
-                    // }
                 })
                 .state('/settings.vnu', {
                     url: '/vnu',
@@ -105,9 +99,32 @@ config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProv
                     // controller: 'partnerCtrl'
                 })
                 .state('/partner.contract', {
+                    // url: '/contract',
+                    // templateUrl: 'main/views/partner/partner.contract.all.html',
+                    // controller: 'vnuCtrl'
                     url: '/contract',
-                    templateUrl: 'main/views/partner/partner.contract.all.html',
-                    controller: 'vnuCtrl'
+                    views: {
+                        '': {
+                            templateUrl: 'main/views/partner/partner.contract.all.html',
+                            controller: 'vnuCtrl'
+                        },
+                        'contract@/partner.contract': {
+                            templateUrl: 'main/views/partner/partner.contract.html',
+                            // controller: 'partnerCtrl'
+                        },
+                        'activity@/partner.contract': {
+                            templateUrl: 'main/views/partner/partner.annualActivity.html',
+                            // controller: 'partnerCtrl'
+                        },
+                        'information@/partner.contract': {
+                            templateUrl: 'main/views/partner/partner.information.html',
+                            // controller: 'partnerCtrl'
+                        },
+                        'contact@/partner.contract': {
+                            templateUrl: 'main/views/partner/partner.contact.html',
+                            // controller: 'partnerCtrl'
+                        }
+                    }
                 });
                 // .state('/activity', {
                 //     url: '/activity',

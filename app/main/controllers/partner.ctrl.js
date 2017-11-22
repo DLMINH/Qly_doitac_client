@@ -100,7 +100,7 @@
             $scope.getPartnerAndId = function() {
                 partnerService.getPartnerAndId()
                     .then(function(response) {
-                        console.log(response.data);
+                        // console.log(response.data);
                         $scope.allPartnerNameId = response.data;
                     }, function(error) {
                         console.log(error);
@@ -136,14 +136,14 @@
 
             $scope.createAnnaulActivity = function(modalPartner) {
                 //chua co partner id
-                console.log(modalPartner);
+                // console.log(modalPartner);
                 if ($scope.annualActivity.activityName != "" && $scope.annualActivity.content != "" && $scope.annualActivity.partnerId != "") {
                     // $scope.annualActivity.partnerId = $scope.Partner.id;
                     $scope.annualActivity.content = $scope.annualActivity.content.replace(/(?:\r\n|\r|\n)/g, '<br />');
                     if ($scope.annualActivity.date) {
                         $scope.annualActivity.date = $scope.annualActivity.date.getTime();
                     }
-                    console.log($scope.annualActivity);
+                    // console.log($scope.annualActivity);
                     partnerService.createAnnaulActivity($scope.annualActivity)
                         .then(function(response) {
                             if (modalPartner == true) {
@@ -159,7 +159,7 @@
                             $scope.annualActivity = {};
                         })
                 }
-                console.log($scope.annualActivity);
+                // console.log($scope.annualActivity);
             }
 
 
@@ -204,10 +204,10 @@
                 if ($scope.allAnnaulActivityOfPartner == undefined) {
                     partnerService.getAllAnnualActivityOfPartner($scope.Partner.id)
                         .then(function(response) {
-                            console.log(response.data);
+                            // console.log(response.data);
                             $scope.allAnnaulActivityOfPartner = response.data;
                             $scope.Partner.annualActivity = response.data;
-                            console.log($scope.Partner);
+                            // console.log($scope.Partner);
                             // return response.data;
                         }, function(error) {
                             console.log(error);
@@ -218,7 +218,7 @@
             $scope.getAllContractOfPartner = function() {
                 partnerService.getAllContractOfPartner($scope.Partner.id)
                     .then(function(response) {
-                        console.log(response);
+                        // console.log(response);
                         $scope.allContract = response.data;
                         angular.forEach($scope.allContract, function(contract) {
                             contract.checked = false;
@@ -315,7 +315,7 @@
 
             $scope.showNation = function(continent) {
                 // $scope.show_nation = true;
-                console.log(continent);
+                // console.log(continent);
                 if (continent != "") {
                     $scope.Nations = JSON.parse(continent);
                 } else {
@@ -352,7 +352,7 @@
                         var index = $scope.allPartner.findIndex(x => x.id === $scope.Partner.id);
                         index = $scope.allPartner[index].partnerContacts.findIndex(x => x.id === contactId);
                         $scope.allPartner[index].partnerContacts.splice(index, 1);
-                        console.log(index);
+                        // console.log(index);
                     }, function(error) {
                         $('#close_modal_delete_partner_contact').trigger('click');
                         $scope.alertDanger(error.data.message, 'danger');
@@ -360,43 +360,25 @@
             }
 
             $scope.createPartner = function() {
-                // $('#step-1').css("display","none");
-
                 if ($scope.input.nationId != null && $scope.input.partnerName != null) {
-                    $scope.nation_ = JSON.parse($scope.input.nationId);
-                    $scope.request = {
-                        nationId: $scope.nation_.id,
-                        partnerName: $scope.input.partnerName
-                    }
-
-                    console.log($scope.nation_);
-                    partnerService.createPartner($scope.request)
+                    var nation = $scope.input.nationId;
+                    nation = JSON.parse(nation);
+                    $scope.input.nationId = nation.id;
+                    // $scope.request = {
+                    //     nationId: $scope.nation_.id,
+                    //     partnerName: $scope.input.partnerName
+                    // }
+                    console.log($scope.input);
+                    partnerService.createPartner($scope.input)
                         .then(function(response) {
-                            // $('#step-1').fadeTo(500, 0);
-                            console.log(response);
-                            // $scope.editInfo = true;
-                            // $('#step-2').hide();
-                            // $('#step-2').fadeIn("slow");
-                            // $('#a_step_1').addClass("done");
-                            // $('#a_step_2').removeClass("disabled");
-                            // $scope.getAllPartner();
-                            $scope.allPartner.push(response.data);
-                            $scope.input.partnerName = "";
-                            $scope.input.continent = null;
-                            $scope.Nations = null;
-                            // $("#add_partner").fadeTo(500, 0).slideUp(500, function() {
-                            //     // $(this).remove();
-                            // });
-                            $scope.Partner = {};
-                            $scope.Partner.id = response.data.id;
-                            // $scope.Partner = {};
-                            $scope.Partner.partnerName = $scope.request.partnerName;
-                            $scope.Partner.nation = {};
-
-                            $scope.Partner.nation.nationName = $scope.nation_.nationName;
+                            // console.log(response);
+                            // $scope.allPartner.push(response.data);
+                            $scope.input = {};
+                            // if($scope)
+                            $scope.alertSuccess("Tạo đối tác thành công", "");
                         }, function(error) {
                             console.log(error);
-                            $scope.alertDanger("Có lỗi xảy ra, hãy thử reload lại trang và tạo tạo lại!", '');
+                            $scope.alertDanger("Có lỗi xảy ra, hãy thử reload lại trang và tạo lại!", '');
                         })
                 }
             }
@@ -412,7 +394,7 @@
 
             $scope.createPartnerContact = function() {
                 if ($scope.input.partnerContact.partnerId != null && $scope.input.partnerContact.contactName != null) {
-                    console.log($scope.input.partnerContact);
+                    // console.log($scope.input.partnerContact);
                     partnerService.createPartnerContact($scope.input.partnerContact, $scope.input.partnerContact.partnerId)
                         .then(function(response) {
                             // $scope.getAllPartner();
@@ -443,8 +425,8 @@
                 $timeout(function() {
                     $('#' + id).trigger('click');
 
-                    console.log(id);
-                    console.log($scope.Partner);
+                    // console.log(id);
+                    // console.log($scope.Partner);
                 });
             }
 
@@ -463,7 +445,7 @@
             }
 
             $scope.editPartnerInfo = function(modal) {
-                console.log($scope.Partner);
+                // console.log($scope.Partner);
                 $scope.Partner.partnerId = $scope.Partner.id;
                 // $scope.Partner.partnerInfo.nationId = $scope.Partner.id;
                 partnerService.editPartnerInfo($scope.Partner)
