@@ -30,8 +30,16 @@
             deleteActivity: deleteActivity,
             createAccount: createAccount,
             getAllContractOfPartner: getAllContractOfPartner,
-            shareContract: shareContract
+            shareContract: shareContract,
+            getAllContractShareOfContract: getAllContractShareOfContract
         };
+
+        function getAllContractShareOfContract(contractId) {
+            return $http({
+                url: $rootScope.serverAdd + '/contract/share/contract/' + contractId,
+                method: 'GET'
+            })
+        }
 
         function shareContract(data) {
             return $http({

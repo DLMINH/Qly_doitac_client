@@ -281,7 +281,7 @@
             $scope.getAllPartner = function() {
                 partnerService.getAllPartner()
                     .then(function(response) {
-                        // console.log(response.data);
+                        console.log(response.data);
                         $scope.allPartner = response.data;
                         $scope.currentPage = 1;
                         $scope.totalItems = response.data.length;
@@ -361,25 +361,21 @@
 
             $scope.createPartner = function() {
                 if ($scope.input.nationId != null && $scope.input.partnerName != null) {
-                    $scope.nation_ = JSON.parse($scope.input.nationId);
-                    $scope.request = {
-                        nationId: $scope.nation_.id,
-                        partnerName: $scope.input.partnerName
-                    }
-                    partnerService.createPartner($scope.request)
+                    var nation = $scope.input.nationId;
+                    nation = JSON.parse(nation);
+                    $scope.input.nationId = nation.id;
+                    // $scope.request = {
+                    //     nationId: $scope.nation_.id,
+                    //     partnerName: $scope.input.partnerName
+                    // }
+                    console.log($scope.input);
+                    partnerService.createPartner($scope.input)
                         .then(function(response) {
                             // console.log(response);
-                            $scope.allPartner.push(response.data);
-                            $scope.input.partnerName = "";
-                            $scope.input.continent = null;
-                            $scope.Nations = null;
-                            $scope.Partner = {};
-                            $scope.Partner.id = response.data.id;
-                            // $scope.Partner = {};
-                            $scope.Partner.partnerName = $scope.request.partnerName;
-                            $scope.Partner.nation = {};
-                            $scope.Partner.nation.nationName = $scope.nation_.nationName;
-                            
+                            // $scope.allPartner.push(response.data);
+                            $scope.input = {};
+                            // if($scope)
+                            $scope.alertSuccess("Tạo đối tác thành công", "");
                         }, function(error) {
                             console.log(error);
                             $scope.alertDanger("Có lỗi xảy ra, hãy thử reload lại trang và tạo lại!", '');

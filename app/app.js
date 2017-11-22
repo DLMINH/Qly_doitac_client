@@ -13,7 +13,8 @@ angular.module('myApp', [
     'vnu',
     'ngSanitize',
     'contract',
-    'angular-md5'
+    'angular-md5',
+    'angucomplete-alt'
 ]).
 config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProvider', function($locationProvider, $routeProvider, $stateProvider, $urlRouterProvider) {
         $locationProvider.html5Mode(false).hashPrefix('');
@@ -61,31 +62,31 @@ config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProv
                     //     $rootScope.currentUrl = $state.current.url;
                     // }
                 })
-                // .state('/partner.information', {
-                //     url: '/information',
-                //     views: {
-                //         '': {
-                //             templateUrl: 'main/views/partner/partner.all.html',
-                //             // controller: 'partnerCtrl'
-                //         },
-                //         'contract@/partner.information': {
-                //             templateUrl: 'main/views/partner/partner.contract.html',
-                //             // controller: 'partnerCtrl'
-                //         },
-                //         'activity@/partner.information': {
-                //             templateUrl: 'main/views/partner/partner.annualActivity.html',
-                //             // controller: 'partnerCtrl'
-                //         },
-                //         'information@/partner.information': {
-                //             templateUrl: 'main/views/partner/partner.information.html',
-                //             // controller: 'partnerCtrl'
-                //         },
-                //         'contact@/partner.information': {
-                //             templateUrl: 'main/views/partner/partner.contact.html',
-                //             // controller: 'partnerCtrl'
-                //         }
-                //     }
-                // })
+                .state('/partner.information', {
+                    url: '/information',
+                    views: {
+                        '': {
+                            templateUrl: 'main/views/partner/partner.all.html',
+                            // controller: 'partnerCtrl'
+                        },
+                        'contract@/partner.information': {
+                            templateUrl: 'main/views/partner/partner.contract.html',
+                            // controller: 'partnerCtrl'
+                        },
+                        'activity@/partner.information': {
+                            templateUrl: 'main/views/partner/partner.annualActivity.html',
+                            // controller: 'partnerCtrl'
+                        },
+                        'information@/partner.information': {
+                            templateUrl: 'main/views/partner/partner.information.html',
+                            // controller: 'partnerCtrl'
+                        },
+                        'contact@/partner.information': {
+                            templateUrl: 'main/views/partner/partner.contact.html',
+                            // controller: 'partnerCtrl'
+                        }
+                    }
+                })
                 // .state('/partner.information.contract', {
                 //     url: '/contract',
                 //     templateUrl: 'main/views/contract/contract.html',
