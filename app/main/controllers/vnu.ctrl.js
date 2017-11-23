@@ -5,10 +5,25 @@
             $rootScope.currentUrl = $state.current.url;
             $scope.count;
             $scope.or_count;
-
-            $scope.clearAngucompleteAltInput = function(id){
+            // $scope.input = [];
+            $scope.clearAngucompleteAltInput = function(id) {
                 $scope.$broadcast('angucomplete-alt:clearInput', id)
             }
+
+            $scope.$watch('selectedContractAnnual', function() {
+                // console.log($scope.selectedContract);
+                // angular.forEach($rootScope.allUnit, function(c) {
+                //     c.checked = false;
+                // })
+                // $timeout(function() {
+                // $scope.$apply();
+                // });
+                if ($scope.selectedContractAnnual != undefined || $scope.selectedContractAnnual != null) {
+                    // $scope.annualActivity.contractId = $scope.selectedContract.originalObject.id;
+                    sessionStorage.setItem("contractId", $scope.selectedContractAnnual.originalObject.id);
+                    // $scope.getAllContractShareOfContract($scope.selectedContract.originalObject.id);
+                }
+            });
 
             $scope.$watch('selectedContract', function() {
                 // console.log($scope.selectedContract);
@@ -16,7 +31,7 @@
                     c.checked = false;
                 })
                 // $timeout(function() {
-                    // $scope.$apply();
+                // $scope.$apply();
                 // });
                 if ($scope.selectedContract != undefined || $scope.selectedContract != null) {
                     $scope.getAllContractShareOfContract($scope.selectedContract.originalObject.id);
@@ -884,19 +899,74 @@
                 }
             });
 
+            $scope.initTag = function() {
+                let $ = s => [].slice.call(document.querySelectorAll(s));
+
+                // log events as they happen:
+                let t = $('#tags')[0];
+                t.addEventListener('input', log);
+                t.addEventListener('change', log);
+
+                function log(e) {
+                    $scope.tags = `${this.value.replace(/,/g,', ')}`;
+                    // alert(`${e.type}`);
+                    if (`${e.type}` == 'input') {
+                        // console.log(`${this.value.replace(/,/g,', ')}`);
+                        $scope.array = [];
+                        $scope.array = `${this.value.replace(/,/g,', ')}`.split(', ');
+                        // console.log(array);
+                        var i = $scope.array.length;
+                        $scope.lastTag = $scope.array[i - 1];
+                        console.log($scope.lastTag);
+                    }
+                    // $('#out')[0].textContent = `${this.value.replace(/,/g,', ')}`;
+                }
+
+                // hook 'em up:
+                $('input[type="tags"]').forEach(tagsInput);
+            }
+
+            $scope.selectTag = function(tag) {
+                var i = array.length;
+                array[i - 1] = tag;
+            }
+
             $scope.createContract = function() {
+                var count = 0;
+                $scope.unitNames = [];
+                $scope.uetManList = [];
+                // console.log($rootScope.allUnit);
                 if ($scope.Partner != undefined) {
                     $scope.input.partnerId = $scope.Partner.id;
                     var Partner = true;
                 }
+                // if($scope.input.partnerContactId == -1){
+                //     $scope.
+                // }
                 if ($rootScope.role == 'UNIT') {
                     $scope.input.unitNameId = $rootScope.id;
                 }
                 if ($scope.input.partnerId != null && $scope.input.partnerId != undefined &&
-                    $scope.input.partnerContactId != null && $scope.input.partnerContactId  != undefined &&
-                    $scope.input.unitNameId != null && $scope.input.unitNameId  != undefined &&
-                    $scope.input.uetManId != null && $scope.input.uetManId  != undefined &&
-                    $scope.input.contentContract != null && $scope.input.contentContract  != undefined ) {
+                    $scope.input.partnerContactId != null && $scope.input.partnerContactId != undefined &&
+                    // $scope.input.unitNameId != null && $scope.input.unitNameId != undefined &&
+                    // $scope.input.uetManId != null && $scope.input.uetManId != undefined &&
+                    $scope.input.contentContract != null && $scope.input.contentContract != undefined) {
+                    angular.forEach($rootScope.allUnit, function(unit) {
+                        if (unit.checked == true) {
+                            $scope.unitNames.push(unit);
+                        }
+                    })
+                    if ($scope.unitNames.length != 0) {
+                        $scope.input.unitNames = $scope.unitNames;
+                    }
+                    angular.forEach($scope.allUetMan, function(uetMan) {
+                        if (uetMan.checked == true) {
+                            $scope.uetManList.push(uetMan);
+                        }
+                    })
+                    if ($scope.uetManList.length != 0) {
+                        $scope.input.uetManList = $scope.uetManList;
+                    }
                     if ($scope.input.startDate) {
                         $scope.input.startDate = $scope.input.startDate.getTime();
                     }
@@ -916,7 +986,15 @@
                                 $("#close_modal_create").trigger('click');
                                 $scope.getAllContract();
                             }
-
+                            angular.forEach($rootScope.allUnit, function(unit) {
+                                unit.checked = false;
+                            })
+                            angular.forEach($scope.allUetMan, function(uetMan) {
+                                uetMan.checked = false;
+                            })
+                            if($scope.input.partnerContactId == -1){
+                                $scope.getAllPartner();
+                            }
                         }, function(error) {
                             console.log(error);
                         })

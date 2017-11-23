@@ -96,7 +96,7 @@ config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProv
                 .state('/partner.activity', {
                     url: '/activity',
                     templateUrl: 'main/views/partner/partner.annualActivity.all.html',
-                    // controller: 'partnerCtrl'
+                    controller: 'vnuCtrl'
                 })
                 .state('/partner.contract', {
                     // url: '/contract',

@@ -17,12 +17,12 @@
                         <li>
                             <a data-toggle="modal" data-target="#add_contract" class="cursor"> Thêm hợp đồng </a>
                         </li>
-                        <li>
+                        <!-- <li>
                             <a data-toggle="collapse" data-target="#insert_excel" class="cursor"> Thêm hợp đồng từ excel (nước ngoài)</a>
                         </li>
                         <li>
                             <a data-toggle="collapse" data-target="#insert_excel_in" class="cursor"> Thêm hợp đồng từ excel (trong nước)</a>
-                        </li>
+                        </li> -->
                         <li>
                             <a class="cursor" ng-click="exportData()"> Xuất hợp đồng thành excel</a>
                         </li>
@@ -239,7 +239,7 @@
                             <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12"></label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <!-- <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name" ng-model="input.phone"> -->
-                                <h4 class="control-label col-md-7 col-xs-12 cursor" data-toggle="collapse" data-target="#add_contact"> Thêm đầu mối liên hệ</h4>
+                                <h4 class="control-label col-md-7 col-xs-12 cursor" data-toggle="collapse" data-target="#add_contact"> Thêm đầu mối đối tác</h4>
                             </div>
                         </div>
                         <div class="collapse" id="add_contact">
@@ -248,7 +248,7 @@
                                 </li>
                             </ul>
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên liên hệ: <span class="required">*</span></label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên: <span class="required">*</span></label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <input type="text" name="country" class="form-control col-md-10" ng-model="input.partnerContact.contactName" required />
                                 </div>
@@ -411,21 +411,31 @@
                     <tbody>
                         <tr class="even pointer" ng-repeat="contract in filtered = allContract | filter : search |
                                 startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
-                            <td class="cursor" data-toggle="modal" data-target="#show_partner_details" ng-click="editPartner(contract.partner, false); click('information-tab')">
+                            <td class="cursor" data-toggle="modal" data-target="#show_partner_details" ng-click="editPartner(contract.partner, false, contract); click('information-tab')">
                                 <!-- {{contract.partner.partnerName}} -->
                                 <a>
                                         {{contract.partner.partnerName}}
                                     </a>
                             </td>
                             <!-- <td class="">{{contract.partner.nation.nationName}}</td> -->
-                            <td class="cursor" data-toggle="modal" data-target="#show_partner_details" ng-click="editPartner(contract.partner, false); click('information-tab')">{{contract.uetMan.uetManName}}</td>
-                            <td class="cursor" data-toggle="modal" data-target="#show_partner_details" ng-click="editPartner(contract.partner, false); click('information-tab')">{{contract.partnerContact.contactName}}
+                            <td>
+                                <a ng-repeat="u in contract.uetMan">
+                                    {{u.uetManName}}
+                                    <br>
+                                </a>
+                            </td>
+                            <td>{{contract.partnerContact.contactName}}
                                 <br /> {{contract.partnerContact.about}}</td>
-                            <td class="cursor" data-toggle="modal" data-target="#show_partner_details" ng-click="editPartner(contract.partner, false); click('information-tab')" ng-bind-html="contract.contentContract"></td>
+                            <td ng-bind-html="contract.contentContract"></td>
                             <!-- <td class="">{{contract.funding}}</td> -->
-                            <td class="cursor" data-toggle="modal" data-target="#show_partner_details" ng-click="editPartner(contract.partner, false); click('information-tab')">{{contract.startDate | date:'dd/MM/yyyy'}}</td>
-                            <td class="cursor" data-toggle="modal" data-target="#show_partner_details" ng-click="editPartner(contract.partner, false); click('information-tab')">{{contract.endDate | date:'dd/MM/yyyy'}}</td>
-                            <td class="cursor" data-toggle="modal" data-target="#show_partner_details" ng-click="editPartner(contract.partner, false); click('information-tab')">{{contract.unitName.unitName}}</td>
+                            <td>{{contract.startDate | date:'dd/MM/yyyy'}}</td>
+                            <td>{{contract.endDate | date:'dd/MM/yyyy'}}</td>
+                            <td>{{contract.unitName}}
+                                <a ng-repeat="u in contract.contractShares">
+                                    {{u.unitName.unitName}}
+                                    <br>
+                                </a>
+                            </td>
                             <!-- <td class="">{{contract.result}}</td> -->
                             <!-- <td class="">{{contract.notice}}</td> -->
                             <td class="">
@@ -572,7 +582,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-4 col-sm-4 col-xs-12">Tên cơ quan hợp tác: </label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <angucomplete-alt id="findpartner" placeholder="Tìm kiếm hợp đồng" pause="100" selected-object="selectedPartner" local-data="allPartner" search-fields="partnerName" title-field="partnerName" minlength="1" input-class="form-control" />
+                                        <angucomplete-alt id="findpartner" placeholder="Tìm kiếm đối tác" pause="100" selected-object="selectedPartner" local-data="allPartner" search-fields="partnerName" title-field="partnerName" minlength="1" input-class="form-control" />
                                         <!-- <select class="form-control" ng-model="input.partnerId" ng-change="getPartnerContact(input.partnerId)">
                                             <option ng-repeat="partner in allPartner" value="{{partner.id}}">
                                                 {{partner.partnerName}}
@@ -588,29 +598,110 @@
                                             <option ng-repeat="contact in selectedPartner.originalObject.partnerContacts" value="{{contact.id}}">
                                                 {{contact.contactName}} - {{contact.email}}
                                             </option>
+                                            <option value="-1"> - Chưa có - </option>
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-if="input.partnerContactId == '-1'">
+                                    <div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12">Tên: <span class="required">*</span></label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="text" name="country" class="form-control col-md-10" ng-model="input.partnerContact.contactName" required />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12">Chức vụ: </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="text" name="country" class="form-control col-md-10" ng-model="input.partnerContact.about" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12">Email: </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="text" name="country" class="form-control col-md-10" ng-model="input.partnerContact.email" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12">Phone: </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="text" name="country" class="form-control col-md-10" ng-model="input.partnerContact.phone" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12">Skype: </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="text" name="country" class="form-control col-md-10" ng-model="input.partnerContact.skype" />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group" ng-if="role=='ADMIN_UNIT'">
-                                    <label class="control-label col-md-4 col-sm-4 col-xs-12">Đơn vị theo dõi: </label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <select class="form-control" ng-model="input.unitNameId">
-                                            <option ng-repeat="unit in allUnit" value="{{unit.id}}">
-                                                {{unit.unitName}}
-                                            </option>
-                                        </select>
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12">
+                                        <!-- Đơn vị theo dõi:  -->
+                                    </label>
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th> Đơn vị theo dõi </th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="unitName in allUnit" class="cursor" ng-click="unitName.checked = !unitName.checked" id="unitName_share_contract_{{unitName.id}}" style="background-color: white;">
+                                                    <!-- <th scope="row">{{unitName.id}}</th> -->
+                                                    <td>{{unitName.unitName}}</td>
+                                                    <td class="a-center unitName_share_contract_{{unitName.id}}">
+                                                        <i class="fa fa-check-circle-o" ng-if="unitName.checked == true"></i>
+                                                        <i class="fa fa-circle-o" ng-if="unitName.checked != true"></i>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-md-4 col-sm-4 col-xs-12">Người ký hợp đồng (VNU-UET): </label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <select class="form-control" ng-model="input.uetManId">
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th> Người ký (VNU-UET) </th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="uetMan in allUetMan" class="cursor" ng-click="uetMan.checked = !uetMan.checked" id="uetMan_share_contract_{{uetMan.id}}" style="background-color: white;">
+                                                    <!-- <th scope="row">{{unitName.id}}</th> -->
+                                                    <td>{{uetMan.uetManName}}</td>
+                                                    <td class="a-center uetMan_share_contract_{{uetMan.id}}">
+                                                        <i class="fa fa-check-circle-o" ng-if="uetMan.checked == true"></i>
+                                                        <i class="fa fa-circle-o" ng-if="uetMan.checked != true"></i>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <!-- <select class="form-control" ng-model="input.uetManId">
                                             <option ng-repeat="uetMan in allUetMan" value="{{uetMan.id}}">
                                                 {{uetMan.uetManName}}
                                             </option>
-                                        </select>
+                                        </select> -->
                                     </div>
                                 </div>
+                                <!-- <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12">Người ký hợp đồng (VNU-UET): </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <table class="table table-striped">
+                                            <tbody>
+                                                <tr ng-repeat="uetMan in allUetMan" class="cursor" ng-click="uetMan.checked = !uetMan.checked" id="uetMan_share_contract_{{uetMan.id}}" style="background-color: white;">
+                                                    <td>{{uetMan.uetManName}}</td>
+                                                    <td class="a-center uetMan_share_contract_{{uetMan.id}}">
+                                                        <i class="fa fa-check-circle-o" ng-if="uetMan.checked == true"></i>
+                                                        <i class="fa fa-circle-o" ng-if="uetMan.checked != true"></i>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div> -->
                                 <!-- <div class="form-group">
                                         <label class="control-label col-md-4 col-sm-4 col-xs-12">Loại hợp đồng: </label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -628,15 +719,16 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Kinh phí: </label>
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Lưu ý: </label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input type="text" class="form-control col-md-7 col-xs-12" ng-model="input.funding">
+                                        <!-- <input type="text" class="form-control col-md-7 col-xs-12" ng-model="input.notice"> -->
+                                        <textarea class="form-control" rows="8" ng-model="input.notice"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Lưu ý: </label>
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Giá trị HĐ: </label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input type="text" class="form-control col-md-7 col-xs-12" ng-model="input.notice">
+                                        <input type="text" class="form-control col-md-7 col-xs-12" ng-model="input.funding">
                                     </div>
                                 </div>
                                 <div class="form-group">

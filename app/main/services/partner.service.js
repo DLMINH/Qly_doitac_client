@@ -23,7 +23,8 @@
             getAllContractOfPartner: getAllContractOfPartner,
             getAllAnnualActivityOfPartner: getAllAnnualActivityOfPartner,
             getAllAnnualActivity: getAllAnnualActivity,
-            getPartnerAndId: getPartnerAndId
+            getPartnerAndId: getPartnerAndId,
+            getAllAnnualActivityOfContract: getAllAnnualActivityOfContract
         };
 
         function getPartnerAndId(type) {
@@ -43,6 +44,13 @@
         function getAllAnnualActivity() {
             return $http({
                 url: $rootScope.serverAdd + '/annualActivity',
+                method: 'GET'
+            })
+        }
+
+        function getAllAnnualActivityOfContract(contractId) {
+            return $http({
+                url: $rootScope.serverAdd + '/contract/annualActivity/' + contractId,
                 method: 'GET'
             })
         }
