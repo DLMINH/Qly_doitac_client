@@ -3,7 +3,7 @@
     <div class="col-md-12 col-sm-12 col-xs-12" ng-init="getAllContract(); getAllPartner()">
         <!-- <div class="x_panel"> -->
         <div class="x_title">
-            <!-- <h2>Hợp Đồng</h2> -->
+            <!-- <h2>Thỏa thuận hợp tác</h2> -->
             <ul class="nav navbar-right panel_toolbox">
                 <li class="dropdown">
                     <a class="dropdown-toggle cursor" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -15,19 +15,19 @@
                             <a data-toggle="collapse" data-target="#add_partner" class="cursor"> Thêm Đối tác </a>
                         </li>
                         <li>
-                            <a data-toggle="modal" data-target="#add_contract" class="cursor"> Thêm hợp đồng </a>
+                            <a data-toggle="modal" data-target="#add_contract" class="cursor"> Thêm Thỏa thuận hợp tác </a>
                         </li>
                         <!-- <li>
-                            <a data-toggle="collapse" data-target="#insert_excel" class="cursor"> Thêm hợp đồng từ excel (nước ngoài)</a>
+                            <a data-toggle="collapse" data-target="#insert_excel" class="cursor"> Thêm Thỏa thuận hợp tác từ excel (nước ngoài)</a>
                         </li>
                         <li>
-                            <a data-toggle="collapse" data-target="#insert_excel_in" class="cursor"> Thêm hợp đồng từ excel (trong nước)</a>
+                            <a data-toggle="collapse" data-target="#insert_excel_in" class="cursor"> Thêm Thỏa thuận hợp tác từ excel (trong nước)</a>
                         </li> -->
                         <li>
-                            <a class="cursor" ng-click="exportData()"> Xuất hợp đồng thành excel</a>
+                            <a class="cursor" ng-click="exportData()"> Xuất Thỏa thuận hợp tác thành excel</a>
                         </li>
                         <li>
-                            <a data-toggle="modal" data-target="#share_contract" class="cursor" ng-click="clearAngucompleteAltInput(findContract)"> Quản lý chia sẻ hợp đồng </a>
+                            <a data-toggle="modal" data-target="#share_contract" class="cursor" ng-click="clearAngucompleteAltInput(findContract)"> Quản lý chia sẻ Thỏa thuận hợp tác </a>
                         </li>
                     </ul>
                 </li>
@@ -53,7 +53,7 @@
                     <li><a data-toggle="collapse" data-target="#insert_excel" class="cursor" id="close_insert_excel"><i class="fa fa-chevron-up"></i></a>
                     </li>
                 </ul>
-                <h2>Thêm hợp đồng từ excel (nước ngoài)</h2>
+                <h2>Thêm Thỏa thuận hợp tác từ excel (nước ngoài)</h2>
                 <input type="file" name="xlfile" id="xlf" ng-init="convert()">
                 <button ng-click="setExcelTable()">Kiểm tra dữ liệu</button>
                 <button ng-click="importExcel()" ng-if="checkContractValue">Import</button>
@@ -102,7 +102,7 @@
                     <li><a data-toggle="collapse" data-target="#insert_excel_in" class="cursor" id="close_insert_excel_in"><i class="fa fa-chevron-up"></i></a>
                     </li>
                 </ul>
-                <h2>Thêm hợp đồng từ excel (trong nước)</h2>
+                <h2>Thêm Thỏa thuận hợp tác từ excel (trong nước)</h2>
                 <input type="file" name="xlfile" id="xlfIn" ng-init="convertIn()">
                 <button ng-click="setExcelTableIn()">Kiểm tra dữ liệu</button>
                 <button ng-click="importExcel()" ng-if="checkContractValue">Import</button>
@@ -187,6 +187,18 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Giám đốc: </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="input.director">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Ngày thành lập: </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="input.birthday">
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Số điện thoại: </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name" ng-model="input.phone">
@@ -208,12 +220,6 @@
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Website: </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <input type="text" id="last-name" name="last-name" class="form-control col-md-7 col-xs-12" ng-model="input.website">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Giám đốc: </label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="input.director">
                             </div>
                         </div>
                         <!-- <div class="form-group">
@@ -480,7 +486,7 @@
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" id="close_modal_edit"><span aria-hidden="true">×</span>
                             </button>
-                            <h4 class="modal-title" id="myModalLabel">Chỉnh sửa hợp đồng</h4>
+                            <h4 class="modal-title" id="myModalLabel">Chỉnh sửa Thỏa thuận hợp tác</h4>
                         </div>
                         <div class="modal-body">
                             <div class="alert alert-danger" ng-if="danger_edit">
@@ -575,7 +581,7 @@
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" id="close_modal_create"><span aria-hidden="true">×</span>
                             </button>
-                            <h4 class="modal-title" id="myModalLabel">Thêm hợp đồng</h4>
+                            <h4 class="modal-title" id="myModalLabel">Thêm Thỏa thuận hợp tác</h4>
                         </div>
                         <div class="modal-body">
                             <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
@@ -592,7 +598,7 @@
                                 </div>
                                 <!-- {{selectedPartner.originalObject}} -->
                                 <div class="form-group">
-                                    <label class="control-label col-md-4 col-sm-4 col-xs-12">Người ký hợp đồng (đối tác): </label>
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12">Người ký Thỏa thuận hợp tác (đối tác): </label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <select class="form-control" ng-model="input.partnerContactId">
                                             <option ng-repeat="contact in selectedPartner.originalObject.partnerContacts" value="{{contact.id}}">
@@ -687,7 +693,7 @@
                                     </div>
                                 </div>
                                 <!-- <div class="form-group">
-                                    <label class="control-label col-md-4 col-sm-4 col-xs-12">Người ký hợp đồng (VNU-UET): </label>
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12">Người ký Thỏa thuận hợp tác (VNU-UET): </label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <table class="table table-striped">
                                             <tbody>
@@ -703,7 +709,7 @@
                                     </div>
                                 </div> -->
                                 <!-- <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Loại hợp đồng: </label>
+                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Loại Thỏa thuận hợp tác: </label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <select class="form-control" ng-model="input.typeContractId">
                                                 <option ng-repeat="typeContract in allTypeContract" value="{{typeContract.id}}">
@@ -755,7 +761,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" ng-click="createContract()">Tạo hợp đồng</button>
+                            <button type="button" class="btn btn-primary" ng-click="createContract()">Tạo Thỏa thuận hợp tác</button>
                         </div>
                     </div>
                 </div>
@@ -768,7 +774,7 @@
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_modal_delete"><span aria-hidden="true">×</span>
                             </button>
-                            <h4 class="modal-title">Bạn có chắc muốn xóa hợp đồng của {{confirmDeleteName}}</h4>
+                            <h4 class="modal-title">Bạn có chắc muốn xóa Thỏa thuận hợp tác của {{confirmDeleteName}}</h4>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
@@ -802,7 +808,7 @@
                         <div class="modal-header">
                             <!-- <button type="button" class="close" data-dismiss="modal" id="close_modal_show_partner_details"><span aria-hidden="true">×</span>
                             </button> -->
-                            <h4 class="modal-title" id="myModalLabel">Thông tin liên lạc {{PartnerContacts.partnerName}}</h4>
+                            <h4 class="modal-title" id="myModalLabel">Thông tin {{Partner.partnerName}}</h4>
                         </div>
                         <div class="modal-body">
                             <div class="alert alert-danger" ng-if="danger_edit">
@@ -815,7 +821,7 @@
                                 <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                                     <li role="presentation"><a data-target="#information" class="cursor" id="information-tab" role="tab" data-toggle="tab" aria-expanded="true">Thông tin đối tác</a>
                                     </li>
-                                    <!-- <li role="presentation"><a class="cursor" data-target="#contract" role="tab" id="contract-tab" data-toggle="tab" aria-expanded="false">Hợp đồng</a>
+                                    <!-- <li role="presentation"><a class="cursor" data-target="#contract" role="tab" id="contract-tab" data-toggle="tab" aria-expanded="false">Thỏa thuận hợp tác</a>
                                     </li> -->
                                     <li role="presentation"><a ng-click="alert()" data-target="#activity" class="cursor" id="activity-tab" role="tab" data-toggle="tab" aria-expanded="true">Hoạt động hợp tác cụ thể<span class="badge bg-red" ng-if="editAnnualActivityCount > 0">{{editAnnualActivityCount}}</span></a>
                                     </li>
@@ -911,7 +917,7 @@
                         <div class="modal-header">
                             <button type="button" class="close" ng-click="close('delete_contract')" id="close_modal_delete"><span aria-hidden="true">×</span>
                             </button>
-                            <h4 class="modal-title">Bạn có chắc muốn xóa hợp đồng này</h4>
+                            <h4 class="modal-title">Bạn có chắc muốn xóa Thỏa thuận hợp tác này</h4>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" ng-click="close('delete_contract')">Hủy</button>
@@ -928,7 +934,7 @@
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_modal_delete"><span aria-hidden="true">×</span>
                             </button>
-                            <h4 class="modal-title">Quản lý chia sẻ hợp đồng</h4>
+                            <h4 class="modal-title">Quản lý chia sẻ Thỏa thuận hợp tác</h4>
                         </div>
                         <!-- <div class="modal-body"> -->
                         <div class="col-sm-12" style="height: 70vh;">
@@ -943,7 +949,7 @@
                                 <div class="col-sm-2">
                                 </div>
                                 <div class="col-sm-8">
-                                    <angucomplete-alt id="findContract" placeholder="Tìm kiếm hợp đồng" pause="100" selected-object="selectedContract" local-data="allContract" search-fields="partner.partnerName" title-field="partner.partnerName" minlength="1" input-class="form-control" />
+                                    <angucomplete-alt id="findContract" placeholder="Tìm kiếm Thỏa thuận hợp tác" pause="100" selected-object="selectedContract" local-data="allContract" search-fields="partner.partnerName" title-field="partner.partnerName" minlength="1" input-class="form-control" />
                                 </div>
                                 <div class="col-sm-2">
                                 </div>
