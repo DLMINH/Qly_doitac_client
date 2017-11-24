@@ -1,6 +1,6 @@
 <div class="clearfix"></div>
 <div class="row">
-    <div class="col-md-12 col-sm-12 col-xs-12" ng-init="getAllAnnualActivity()">
+    <div class="col-md-12 col-sm-12 col-xs-12" ng-init="getAllAnnualActivity(); getAllContract()">
         <!-- <div class="x_panel"> -->
         <div class="x_title" ng-init="getPartnerAndId()">
             <!-- <h2>Hợp Đồng</h2> -->
@@ -48,12 +48,13 @@
                     <div class="form-group">
                         <label class="control-label col-md-4 col-sm-4 col-xs-12">Tên cơ quan hợp tác: </label>
                         <div class="col-md-6 col-sm-6 col-xs-12" ng-init="annualActivity.partnerId = ''">
-                            <select class="form-control" ng-model="annualActivity.partnerId">
+                            <angucomplete-alt id="findContract" placeholder="Tìm kiếm hợp đồng" pause="100" selected-object="selectedContractAnnual" local-data="allContract" search-fields="partner.partnerName" title-field="partner.partnerName" minlength="1" input-class="form-control" />
+                            <!-- <select class="form-control" ng-model="annualActivity.partnerId">
                                 <option value="">-- Chọn tên đối tác --</option>
                                 <option ng-repeat="partner in allPartnerNameId" value="{{partner.partnerId}}">
                                     {{partner.partnerName}}
                                 </option>
-                            </select>
+                            </select> -->
                         </div>
                     </div>
                     <div class="form-group">
@@ -75,9 +76,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Ngày: </label>
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Hiệu lực hợp tác: </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="date" class="form-control col-md-7 col-xs-12" ng-model="annualActivity.date">
+                            <input type="text" class="form-control col-md-7 col-xs-12" ng-model="annualActivity.date">
                         </div>
                     </div>
                 </form>
@@ -109,9 +110,14 @@
                             <td class=" " id="partnerName_{{activity.id}}">{{activity.contract.partner.partnerName}}</td>
                             <td class=" " id="activityName_{{activity.id}}">{{activity.activityName}}</td>
                             <td class=" " ng-bind-html="activity.content" id="content_{{activity.id}}"></td>
-                            <td class=" " id="date_{{activity.id}}">{{activity.date | date:'dd/MM/yyyy'}}</td>
-                            <td class=" " id="funding_{{activity.id}}">{{activity.contract.uetMan}}</td>
-                            <td class=" " id="funding_{{activity.id}}">{{activity.contract.partnerContact}}</td>
+                            <td class=" " id="date_{{activity.id}}">{{activity.date}}</td>
+                            <td class=" " id="funding_{{activity.id}}">
+                                <a ng-repeat="u in activity.contract.uetMan">
+                                    {{u.uetManName}}
+                                    <br>
+                                </a>
+                            </td>
+                            <td class=" " id="funding_{{activity.id}}">{{activity.contract.partnerContact.contactName}}</td>
                             <td class="cursor ">
                                 <i id="edit_activity_{{activity.id}}" class="fa fa-edit cursor" ng-click="editAnnualActivity(activity.id, activity.content); edit_activity = true"></i>
                                 <button id="button_cancel_edit_activity_{{activity.id}}" ng-if="edit_activity" type="button" class="btn btn-default btn-xs" ng-click="cancelEditActivity(activity.id, activity)">Hủy</button>

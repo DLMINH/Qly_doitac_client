@@ -133,16 +133,21 @@
                     })
 
             }
-
+            // $scope.annualActivity
             $scope.createAnnaulActivity = function(modalPartner) {
                 //chua co partner id
-                // console.log(modalPartner);
-                if ($scope.annualActivity.activityName != "" && $scope.annualActivity.content != "" && $scope.annualActivity.partnerId != "") {
+                console.log($scope.annualActivity);
+                if (sessionStorage['contractId']) {
+                    $scope.annualActivity.contractId = sessionStorage['contractId'];
+                } else {
+                    $scope.annualActivity.contractId = "";
+                }
+                if ($scope.annualActivity.activityName != "" && $scope.annualActivity.content != "" && $scope.annualActivity.contractId != "") {
                     // $scope.annualActivity.partnerId = $scope.Partner.id;
                     $scope.annualActivity.content = $scope.annualActivity.content.replace(/(?:\r\n|\r|\n)/g, '<br />');
-                    if ($scope.annualActivity.date) {
-                        $scope.annualActivity.date = $scope.annualActivity.date.getTime();
-                    }
+                    // if ($scope.annualActivity.date) {
+                    //     $scope.annualActivity.date = $scope.annualActivity.date.getTime();
+                    // }
                     // console.log($scope.annualActivity);
                     partnerService.createAnnaulActivity($scope.annualActivity)
                         .then(function(response) {
@@ -430,12 +435,24 @@
                 });
             }
 
-            $scope.editPartner = function(partner, flag) {
+            $scope.getAllAnnualActivityOfContract = function(contractId){
+                partnerService.getAllAnnualActivityOfContract(contractId)
+                    .then(function(response){
+                        console.log(response.data);
+                        $scope.Partner.annualActivity = response.data;
+                    }, function(error){
+                        console.log(error);
+                    })
+            }
+
+            $scope.editPartner = function(partner, flag, contract) {
+                console.log(contract);
                 $scope.Partner = partner;
                 $scope.edit = flag;
                 $scope.showContact();
-                $scope.getAllAnnualActivityOfPartner();
-                $scope.getAllContractOfPartner();
+                $scope.getAllAnnualActivityOfContract(contract.id);
+                // $scope.getAllAnnualActivityOfPartner();
+                // $scope.getAllContractOfPartner();
                 // $scope.Partner.annualActivity  = $scope.getAllAnnualActivityOfPartner();
                 // console.log($scope.getAllAnnualActivityOfPartner());
             }
@@ -537,18 +554,18 @@
                 $('#activityName_' + annualActivityId).html('<input  id="activityName_value_' + annualActivityId + '" value="' + activityName + '" style="border-radius:3px; border: 1px solid;"/>');
                 // $('#activityName_' + annualActivityId).css('width', '50%'); 
 
-                var date = $('#date_' + annualActivityId).text();
-                console.log(date);
-                if (date != "") {
-                    date = date.split("/");
-                    if (date[1].length == 1) {
-                        date[1] = '0' + date[1];
-                    }
-                    if (date[0].length == 1) {
-                        date[0] = '0' + date[0];
-                    }
-                    date = date[2] + "-" + date[1] + "-" + date[0];
-                }
+                // var date = $('#date_' + annualActivityId).text();
+                // console.log(date);
+                // if (date != "") {
+                //     date = date.split("/");
+                //     if (date[1].length == 1) {
+                //         date[1] = '0' + date[1];
+                //     }
+                //     if (date[0].length == 1) {
+                //         date[0] = '0' + date[0];
+                //     }
+                //     date = date[2] + "-" + date[1] + "-" + date[0];
+                // }
 
                 // var curr_date = date.getDate();
                 // var curr_month = date.getMonth() + 1; //Months are zero based
@@ -556,11 +573,11 @@
                 // date = curr_year + "-" + curr_month + "-" + curr_date;
                 // date = date.split("/");
                 // date = $filter("date")(date, 'yyyy-MM-dd');
-                $('#date_' + annualActivityId).html('<input type="date" id="date_value_' + annualActivityId + '" value="' + date + '" style="border-radius:3px; border: 1px solid;"/>');
+                // $('#date_' + annualActivityId).html('<input type="date" id="date_value_' + annualActivityId + '" value="' + date + '" style="border-radius:3px; border: 1px solid;"/>');
 
 
-                var funding = $('#funding_' + annualActivityId).text();
-                $('#funding_' + annualActivityId).html('<input  id="funding_value_' + annualActivityId + '" value="' + funding + '" style="border-radius:3px; border: 1px solid;"/>');
+                var date = $('#date_' + annualActivityId).text();
+                $('#date_' + annualActivityId).html('<input  id="date_value_' + annualActivityId + '" value="' + date + '" style="border-radius:3px; border: 1px solid;"/>');
 
                 $('#edit_activity_' + annualActivityId).hide();
                 $('#save_edit_activity_' + annualActivityId).show();
@@ -570,18 +587,18 @@
             $scope.saveEditAnnualActivity = function(annualActivityId) {
                 var content = $('#content_value_' + annualActivityId).val().replace(/(?:\r\n|\r|\n)/g, '<br />');
                 var activityName = $('#activityName_value_' + annualActivityId).val();
-                if ($('#date_value_' + annualActivityId).val() != "") {
-                    var date = new Date($('#date_value_' + annualActivityId).val()).getTime();
-                } else {
-                    date = "";
-                }
-                var funding = $('#funding_value_' + annualActivityId).val();
+                // if ($('#date_value_' + annualActivityId).val() != "") {
+                //     var date = new Date($('#date_value_' + annualActivityId).val()).getTime();
+                // } else {
+                //     date = "";
+                // }
+                var date = $('#date_value_' + annualActivityId).val();
                 // console.log(v);
                 $scope.request = {
                     content: content,
                     activityName: activityName,
                     date: date,
-                    funding: funding,
+                    // funding: funding,
                     id: annualActivityId
                 }
                 console.log($scope.request);
@@ -592,15 +609,15 @@
                         $('#button_cancel_edit_activity_' + annualActivityId).hide();
                         $('#content_' + annualActivityId).html(content);
                         $('#activityName_' + annualActivityId).html(activityName);
-                        if (date != "") {
-                            date = new Date(date);
-                            var curr_date = date.getDate();
-                            var curr_month = date.getMonth() + 1; //Months are zero based
-                            var curr_year = date.getFullYear();
-                            date = curr_date + "/" + curr_month + "/" + curr_year;
-                        }
+                        // if (date != "") {
+                        //     date = new Date(date);
+                        //     var curr_date = date.getDate();
+                        //     var curr_month = date.getMonth() + 1; //Months are zero based
+                        //     var curr_year = date.getFullYear();
+                        //     date = curr_date + "/" + curr_month + "/" + curr_year;
+                        // }
+                        // $('#date_' + annualActivityId).html(date);
                         $('#date_' + annualActivityId).html(date);
-                        $('#funding_' + annualActivityId).html(funding);
                         $scope.alertSuccess('Sửa hoạt động thành công!', '');
                         if ($state.current.url == '/information') {
                             $scope.editInLine--;
@@ -632,13 +649,13 @@
                 $('#save_edit_activity_' + activityId).hide();
                 $('#content_' + activityId).html(activity.content);
                 $('#activityName_' + activityId).html(activity.activityName);
-                date = new Date(activity.date);
-                var curr_date = date.getDate();
-                var curr_month = date.getMonth() + 1; //Months are zero based
-                var curr_year = date.getFullYear();
-                date = curr_date + "/" + curr_month + "/" + curr_year;
-                $('#date_' + activityId).html(date);
-                $('#funding_' + activityId).html(activity.funding);
+                // date = new Date(activity.date);
+                // var curr_date = date.getDate();
+                // var curr_month = date.getMonth() + 1; //Months are zero based
+                // var curr_year = date.getFullYear();
+                // date = curr_date + "/" + curr_month + "/" + curr_year;
+                // $('#date_' + activityId).html(date);
+                $('#date_' + activityId).html(activity.date);
             }
 
             $scope.editContact = function(contactId) {
