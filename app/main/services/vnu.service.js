@@ -31,8 +31,17 @@
             createAccount: createAccount,
             getAllContractOfPartner: getAllContractOfPartner,
             shareContract: shareContract,
-            getAllContractShareOfContract: getAllContractShareOfContract
+            getAllContractShareOfContract: getAllContractShareOfContract,
+            getContractOfUnit: getContractOfUnit
         };
+
+
+        function getContractOfUnit() {
+            return $http({
+                url: $rootScope.serverAdd + '/unit/contract',
+                method: 'GET'
+            })
+        }
 
         function getAllContractShareOfContract(contractId) {
             return $http({

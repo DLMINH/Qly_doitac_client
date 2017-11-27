@@ -55,7 +55,7 @@
                     <!-- sidebar menu -->
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                         <div class="menu_section">
-                            <!-- <h3>General</h3> -->
+                            <!-- <h3>{{userName}}</h3> -->
                             <ul class="nav side-menu">
                                 <li><a href="/#/settings/nation_continent"><i class="fa fa-gear"></i> Thiết đặt </a></li>
                                 <li ng-class="{active : currentUrl == '/contract'}" ng-click="currentUrl = '/contract'"><a href="/#/partner/contract"><i class="fa fa-archive"></i> Thỏa thuận hợp tác </a></li>
@@ -87,13 +87,14 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <span class=" fa fa-angle-down"></span>
+                                    {{userName}}
+                                    <span class="fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
                                     <li><a ng-click="logout()" class="cursor"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                                 </ul>
                             </li>
-                            <li role="presentation" class="dropdown">
+                            <!-- <li role="presentation" class="dropdown">
                                 <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
                                     <i class="fa fa-envelope-o"></i>
                                     <span class="badge bg-green">6</span>
@@ -130,7 +131,7 @@
                                         </div>
                                     </li>
                                 </ul>
-                            </li>
+                            </li> -->
                         </ul>
                     </nav>
                 </div>
