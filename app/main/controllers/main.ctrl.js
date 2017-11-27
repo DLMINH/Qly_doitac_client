@@ -9,6 +9,7 @@
                     $rootScope.loggedIn = true;
                     $rootScope.role = sessionStorage["role"];
                     $rootScope.id = sessionStorage["id"];
+                    $rootScope.userName = sessionStorage["userName"];
                 }
 
                 $(document).ready(function() {

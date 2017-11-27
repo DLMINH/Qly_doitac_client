@@ -100,23 +100,19 @@
 
             $scope.shareContract = function(contractId) {
                 $scope.request = [];
+                // var index = $rootScope.allUnit.findIndex(x => x.id === $rootScope.id);
+                // if(index != -1){
+                //     $rootScope[index].checked = true;
+                // }
+                angular.forEach($rootScope.allUnit, function(unit) {
+                    if(unit.id == $rootScope.id){
+                        unit.checked = true;
+                    }
+                })
+                // console.log($rootScope.id)
+                // console.log(index)
                 // console.log($rootScope.allUnit)
                 angular.forEach($rootScope.allUnit, function(unit) {
-                    // if (unit.checked != unit.originCheck) {
-                    //     if (unit.originCheck == true) {
-                    //         $scope.request.push({
-                    //             unitNameId: unit.id,
-                    //             id: contractId,
-                    //             result: "delete"
-                    //         })
-                    //     } else {
-                    //         $scope.request.push({
-                    //             unitNameId: unit.id,
-                    //             id: contractId,
-                    //             result: "create"
-                    //         })
-                    //     }
-                    // }
                     if (unit.checked == true) {
                         $scope.request.push({
                             unitNameId: unit.id,
@@ -131,7 +127,7 @@
                         })
                     }
                 })
-                console.log($scope.request);
+                // console.log($scope.request);
                 vnuService.shareContract($scope.request)
                     .then(function() {
                         $scope.alertSuccess("Thành công!", "successdelete_edit");
@@ -140,6 +136,7 @@
                         //         unit.checked = false;
                         //     }
                         // })
+                        $scope.getAllContract();
                     }, function(error) {
                         console.log(error);
                     })
@@ -780,6 +777,10 @@
                     .then(function(response) {
                         console.log(response.data)
                         $scope.allPartner = response.data;
+                        // $scope.allPartner.push({
+                        //     partnerName: "Tạo mới",
+                        //     id: 0
+                        // })
                     }, function(error) {
                         console.log(error)
                     })
@@ -813,34 +814,95 @@
                     })
             }
 
-            $scope.getAllContract = function() {
-                vnuService.getAllContract()
-                    .then(function(response) {
-                        console.log(response.data);
-                        $scope.allContract = response.data;
-                        angular.forEach($scope.allContract, function(contract) {
-                            contract.checked = false;
-                            contract.contentContract = "";
-                            angular.forEach(contract.cooperateActivity, function(v) {
-                                contract.contentContract = contract.contentContract + v.cooperateActivity + "<br />";
-                            });
-                            // console.log(contract.contentContract);
-                        });
-                        $scope.currentPage = 1;
-                        $scope.totalItems = response.data.length;
-                        $scope.entryLimit = 10; // items per page
-                        $scope.noOfPages = Math.ceil($scope.totalItems / $scope.entryLimit);
+            // $scope.getContractOfUnit = function(){
+            //     vnuService.getContractOfUnit()
+            //         .then(function(response) {
+            //             console.log(response.data);
+            //             $scope.allContract = response.data;
+            //             angular.forEach($scope.allContract, function(contract) {
+            //                 contract.checked = false;
+            //                 contract.contentContract = "";
+            //                 angular.forEach(contract.cooperateActivity, function(v) {
+            //                     contract.contentContract = contract.contentContract + v.cooperateActivity + "<br />";
+            //                 });
+            //                 // console.log(contract.contentContract);
+            //             });
+            //             $scope.currentPage = 1;
+            //             $scope.totalItems = response.data.length;
+            //             $scope.entryLimit = 10; // items per page
+            //             $scope.noOfPages = Math.ceil($scope.totalItems / $scope.entryLimit);
 
-                        $scope.$watch('search', function(newVal, oldVal) {
-                            $scope.filtered = filterFilter($scope.allContract, newVal);
-                            $scope.totalItems = $scope.filtered.length;
-                            $scope.noOfPages = Math.ceil($scope.totalItems / $scope.entryLimit);
+            //             $scope.$watch('search', function(newVal, oldVal) {
+            //                 $scope.filtered = filterFilter($scope.allContract, newVal);
+            //                 $scope.totalItems = $scope.filtered.length;
+            //                 $scope.noOfPages = Math.ceil($scope.totalItems / $scope.entryLimit);
+            //                 $scope.currentPage = 1;
+            //             }, true);
+            //             // console.log(response);
+            //         }, function(error) {
+            //             console.log(error);
+            //         })
+            // }
+
+            $scope.getAllContract = function() {
+                if ($rootScope.role == 'UNIT') {
+                    vnuService.getContractOfUnit()
+                        .then(function(response) {
+                            console.log(response.data);
+                            $scope.allContract = response.data;
+                            angular.forEach($scope.allContract, function(contract) {
+                                contract.checked = false;
+                                contract.contentContract = "";
+                                angular.forEach(contract.cooperateActivity, function(v) {
+                                    contract.contentContract = contract.contentContract + v.cooperateActivity + "<br />";
+                                });
+                                // console.log(contract.contentContract);
+                            });
                             $scope.currentPage = 1;
-                        }, true);
-                        // console.log(response);
-                    }, function(error) {
-                        console.log(error);
-                    })
+                            $scope.totalItems = response.data.length;
+                            $scope.entryLimit = 10; // items per page
+                            $scope.noOfPages = Math.ceil($scope.totalItems / $scope.entryLimit);
+
+                            $scope.$watch('search', function(newVal, oldVal) {
+                                $scope.filtered = filterFilter($scope.allContract, newVal);
+                                $scope.totalItems = $scope.filtered.length;
+                                $scope.noOfPages = Math.ceil($scope.totalItems / $scope.entryLimit);
+                                $scope.currentPage = 1;
+                            }, true);
+                            // console.log(response);
+                        }, function(error) {
+                            console.log(error);
+                        })
+                } else if($rootScope.role == 'ADMIN_UNIT'){
+                    vnuService.getAllContract()
+                        .then(function(response) {
+                            console.log(response.data);
+                            $scope.allContract = response.data;
+                            angular.forEach($scope.allContract, function(contract) {
+                                contract.checked = false;
+                                contract.contentContract = "";
+                                angular.forEach(contract.cooperateActivity, function(v) {
+                                    contract.contentContract = contract.contentContract + v.cooperateActivity + "<br />";
+                                });
+                                // console.log(contract.contentContract);
+                            });
+                            $scope.currentPage = 1;
+                            $scope.totalItems = response.data.length;
+                            $scope.entryLimit = 10; // items per page
+                            $scope.noOfPages = Math.ceil($scope.totalItems / $scope.entryLimit);
+
+                            $scope.$watch('search', function(newVal, oldVal) {
+                                $scope.filtered = filterFilter($scope.allContract, newVal);
+                                $scope.totalItems = $scope.filtered.length;
+                                $scope.noOfPages = Math.ceil($scope.totalItems / $scope.entryLimit);
+                                $scope.currentPage = 1;
+                            }, true);
+                            // console.log(response);
+                        }, function(error) {
+                            console.log(error);
+                        })
+                }
+
             }
 
             $scope.addAttachFileToScope = function(fileName, fileType, attachFile, elementId) {
@@ -943,9 +1005,15 @@
                 // if($scope.input.partnerContactId == -1){
                 //     $scope.
                 // }
-                if ($rootScope.role == 'UNIT') {
-                    $scope.input.unitNameId = $rootScope.id;
-                }
+                // if ($rootScope.role == 'UNIT') {
+                //     var index = $rootScope.allUnit.findIndex(x => x.id === $rootScope.id);
+                //     if(index != -1){
+                //         $rootScope.allUnit[index].checked = true;
+                //     }
+                // }
+                // if($scope.input.partnerId == -1){
+                //     $scope.input.partnerContactId
+                // }
                 if ($scope.input.partnerId != null && $scope.input.partnerId != undefined &&
                     $scope.input.partnerContactId != null && $scope.input.partnerContactId != undefined &&
                     // $scope.input.unitNameId != null && $scope.input.unitNameId != undefined &&
@@ -992,7 +1060,7 @@
                             angular.forEach($scope.allUetMan, function(uetMan) {
                                 uetMan.checked = false;
                             })
-                            if($scope.input.partnerContactId == -1){
+                            if ($scope.input.partnerContactId == -1) {
                                 $scope.getAllPartner();
                             }
                         }, function(error) {
