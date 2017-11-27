@@ -653,8 +653,9 @@
                     vnuService.createAccount($scope.request, $scope.input.unitNameId)
                         .then(function() {
                             $scope.alertSuccess("Tạo tài khoản thành công!", "");
-                            $scope.input.userName = "";
-                            $scope.input.password = "";
+                            // $scope.input.userName = "";
+                            // $scope.input.password = "";
+                            $scope.input = {};
                             $scope.getAllUnitName();
                         }, function(error) {
                             console.log(error);
