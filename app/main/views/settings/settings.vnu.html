@@ -140,7 +140,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="uetMan in allUetMan" id="tr_uetMan_{{uetMan.id}}">
+                                <tr ng-repeat="uetMan in allUetMan| filter : uet_man" id="tr_uetMan_{{uetMan.id}}">
                                     <th scope="row">{{uetMan.id}}</th>
                                     <td id="uetMan_{{uetMan.id}}">{{uetMan.uetManName}}</td>
                                     <th>
