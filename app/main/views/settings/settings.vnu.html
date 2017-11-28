@@ -180,7 +180,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="unitName in allUnit" id="tr_unitName_{{unitName.id}}">
+                                <tr ng-repeat="unitName in allUnit| filter : all_unit" id="tr_unitName_{{unitName.id}}">
                                     <th scope="row">{{unitName.id}}</th>
                                     <td id="unitName_{{unitName.id}}">{{unitName.unitName}}</td>
                                     <td id="username_{{unitName.id}}">{{unitName.user.userName}}</td>
