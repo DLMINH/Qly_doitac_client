@@ -6,6 +6,7 @@
             $scope.count;
             $scope.or_count;
             // $scope.input = [];
+
             $scope.clearAngucompleteAltInput = function(id) {
                 $scope.$broadcast('angucomplete-alt:clearInput', id)
             }
@@ -105,7 +106,7 @@
                 //     $rootScope[index].checked = true;
                 // }
                 angular.forEach($rootScope.allUnit, function(unit) {
-                    if(unit.id == $rootScope.id){
+                    if (unit.id == $rootScope.id) {
                         unit.checked = true;
                     }
                 })
@@ -465,6 +466,7 @@
                             var first_sheet_name = workbook.SheetNames[0];
                             /* DO SOMETHING WITH workbook HERE */
                             var worksheet = workbook.Sheets[first_sheet_name];
+                            worksheet['A1'].w = "STT";
                             worksheet['B1'].w = "partnerName";
                             worksheet['C1'].w = "startDate";
                             worksheet['D1'].w = "uetMan";
@@ -539,6 +541,126 @@
                         }, function(error) {
                             console.log(error);
                         })
+                });
+            }
+
+            $scope.checkExcelData = function() {
+                $scope.checkContractValue = true;
+                var dataExcal = $rootScope.excelIn;
+                $scope.excelTableIn = dataExcal;
+                console.log($rootScope.excelIn)
+                angular.forEach($scope.excelTableIn, function(data) {
+                    // v.endDate = v.endDate.getTime();
+                    data.contentContract = data.contentContract.replace(/(?:\r\n|\r|\n)/g, '<br />');
+                    // console.log(v.contentContract);
+                    data.endDate = new Date(data.endDate).getTime();
+                    data.startDate = new Date(data.startDate).getTime();
+                    if (data.partnerIds != null || data.partnerIds != undefined) {
+
+                    }
+                    if (data.unitName != null || data.unitName != undefined) {
+                        var unitNames = data.unitName.split(' ');
+                        var checked;
+                        data.unitNames = [];
+                        data.unitName = "";
+                        angular.forEach(unitNames, function(unitId) {
+                            function equals(element) {
+                                return element.id == unitId;
+                            }
+                            var unit = $rootScope.allUnit.find(equals);
+                            if (unit != undefined) {
+                                data.unitName += unit.unitName + '<br />';
+                                data.unitNames.push(unit);
+                            } else {
+                                data.unitName += 'Mã ' + unitId + ' không đúng ' + '<br />';
+                                checked = false;
+                            }
+
+                        })
+                        // console.log(checked);
+                        if (checked == false) {
+                            $('#In_unitName_' + data.STT).css('background-color', '#f0ad4e');
+                            $scope.checkContractValue = false;
+                        }
+                    }
+                    if (data.uetMan != null || data.uetMan != undefined) {
+                        var uetMans = data.uetMan.split(' ');
+                        var checked;
+                        data.uetManList = []
+                        data.uetMan = "";
+                        angular.forEach(uetMans, function(uetManId) {
+                            function equals(element) {
+                                return element.id == uetManId;
+                            }
+                            var uetMan = $rootScope.allUetMan.find(equals);
+                            if (uetMan != undefined) {
+                                data.uetMan += uetMan.uetManName + '<br />';
+                                data.uetManList.push(uetMan);
+                            } else {
+                                data.uetMan += 'Mã ' + uetManId + ' không đúng ' + '<br />';
+                                checked = false;
+                            }
+                        })
+                        if (checked == false) {
+                            $('#In_uetMan_' + data.STT).css('background-color', '#f0ad4e');
+                            $scope.checkContractValue = false;
+                        }
+                    }
+                    if (data.partnerName != null || data.partnerName != undefined) {
+                        function equals(element) {
+                            return element.id == data.partnerName;
+                        }
+                        var partner = $rootScope.allPartner.find(equals);
+                        if (partner != undefined) {
+                            data.partnerName = partner.partnerName;
+                            data.partnerId = partner.id;
+                            if (partner.partnerContacts != null) {
+                                function equals(element) {
+                                    return element.id == data.contactName;
+                                }
+                                var partnerContact = partner.partnerContacts.find(equals);
+                                if (partnerContact != undefined) {
+                                    data.contactName = partnerContact.contactName;
+                                    data.partnerContactId = partnerContact.id;
+                                } else {
+                                    console.log($('#In_contactname_' + data.STT))
+                                    $('#In_contactname_' + data.STT).css('background-color', '#f0ad4e');
+                                    $scope.checkContractValue = false;
+                                }
+                            } else {
+                                $('#In_contactname_' + data.STT).css('background-color', '#f0ad4e');
+                                $scope.checkContractValue = false;
+                            }
+                        } else {
+                            $('#In_partnerName_' + data.STT).css('background-color', '#f0ad4e');
+                            $scope.checkContractValue = false;
+                        }
+                        // var index = $rootScope.allPartner.findIndex(x => x.id === data.partnerName);
+                        // if (index == -1) {
+                        //     $('#In_partnerName_' + data.STT).css('background-color', '#f0ad4e');
+                        //     $scope.checkContractValue = false;
+                        // } else {
+                        //     data.partnerName = $rootScope.allPartner[index].partnerName;
+                        //     if ($rootScope.allPartner[index].partnerContacts != null) {
+                        //         var indexOfContact = $rootScope.allPartner[index].partnerContacts.findIndex(x => x.id === data.contactName);
+                        //         if (indexOfContact != -1) {
+                        //             data.contactName = $rootScope.allPartner[index].partnerContacts[indexOfContact].contactName;
+                        //         } else {
+                        //             $('#In_contactname_' + data.STT).css('background-color', '#f0ad4e');
+                        //             $scope.checkContractValue = false;
+                        //         }
+                        //     } else {
+                        //         $('#In_contactname_' + data.STT).css('background-color', '#f0ad4e');
+                        //         $scope.checkContractValue = false;
+                        //     }
+
+                        // }
+                    } else {
+                        $('#In_partnerName_' + data.STT).css('background-color', '#f0ad4e');
+                        $('#In_contactname_' + data.STT).css('background-color', '#f0ad4e');
+                        $scope.checkContractValue = false;
+                    }
+
                 });
             }
 
@@ -735,14 +857,14 @@
                 vnuService.getAllUetMan()
                     .then(function(response) {
                         // console.log(response);
-                        $scope.allUetMan = response.data;
+                        $rootScope.allUetMan = response.data;
                         $scope.uetMan_currentPage = 1;
                         $scope.uetMan_totalItems = response.data.length;
                         $scope.uetMan_entryLimit = 5; // items per page
                         $scope.uetMan_noOfPages = Math.ceil($scope.uetMan_totalItems / $scope.uetMan_entryLimit);
 
                         $scope.$watch('search', function(newVal, oldVal) {
-                            $scope.uetMan_filtered = filterFilter($scope.allUetMan, newVal);
+                            $scope.uetMan_filtered = filterFilter($rootScope.allUetMan, newVal);
                             $scope.uetMan_totalItems = $scope.uetMan_filtered.length;
                             $scope.uetMan_noOfPages = Math.ceil($scope.uetMan_totalItems / $scope.uetMan_entryLimit);
                             $scope.uetMan_currentPage = 1;
@@ -777,7 +899,7 @@
                 partnerService.getAllPartner()
                     .then(function(response) {
                         console.log(response.data)
-                        $scope.allPartner = response.data;
+                        $rootScope.allPartner = response.data;
                         // $scope.allPartner.push({
                         //     partnerName: "Tạo mới",
                         //     id: 0
@@ -874,7 +996,7 @@
                         }, function(error) {
                             console.log(error);
                         })
-                } else if($rootScope.role == 'ADMIN_UNIT'){
+                } else if ($rootScope.role == 'ADMIN_UNIT') {
                     vnuService.getAllContract()
                         .then(function(response) {
                             console.log(response.data);
@@ -1028,7 +1150,7 @@
                     if ($scope.unitNames.length != 0) {
                         $scope.input.unitNames = $scope.unitNames;
                     }
-                    angular.forEach($scope.allUetMan, function(uetMan) {
+                    angular.forEach($rootScope.allUetMan, function(uetMan) {
                         if (uetMan.checked == true) {
                             $scope.uetManList.push(uetMan);
                         }
@@ -1058,7 +1180,7 @@
                             angular.forEach($rootScope.allUnit, function(unit) {
                                 unit.checked = false;
                             })
-                            angular.forEach($scope.allUetMan, function(uetMan) {
+                            angular.forEach($rootScope.allUetMan, function(uetMan) {
                                 uetMan.checked = false;
                             })
                             if ($scope.input.partnerContactId == -1) {

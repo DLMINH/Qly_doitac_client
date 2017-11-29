@@ -20,6 +20,10 @@
     <!-- Custom Theme Style -->
     <link href="bower_components/gentelella/build/css/custom.min.css" rel="stylesheet">
     <link rel="stylesheet" href="bower_components/tags-input/tags-input.css">
+    <!-- jQuery -->
+    <script src="bower_components/gentelella/vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="bower_components/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- AngularJs -->
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="bower_components/angular-route/angular-route.min.js"></script>
@@ -40,7 +44,7 @@
 </head>
 <div ng-view ng-if="loggedIn != true"></div>
 
-<body class="nav-sm" ng-app="myAdminApp" ng-controller="mainCtrl" ng-cloak>
+<body class="nav-md" ng-app="myAdminApp" ng-controller="mainCtrl" ng-cloak>
     <div class="container body" ng-show="loggedIn">
         <div class="main_container">
             <div class="col-md-3 left_col">
@@ -170,10 +174,6 @@
     <script src="main/services/contract.service.js"></script>
     <!-- config request header -->
     <script src="main/services/httpRequestInterceptor.js"></script>
-    <!-- jQuery -->
-    <script src="bower_components/gentelella/vendors/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="bower_components/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- FastClick -->
     <script src="bower_components/gentelella/vendors/fastclick/lib/fastclick.js"></script>
     <!-- NProgress -->
@@ -195,6 +195,8 @@
     <script src="bower_components/angucomplete-alt/dist/angucomplete-alt.min.js"></script>
     <!-- tags-input -->
     <script src="bower_components/tags-input/tags-input.js"></script>
+    <!-- ng-clipboard -->
+    <script src="bower_components/ng-clipboard/dist/ng-clipboard.js"></script>
 </body>
 
 </html>
