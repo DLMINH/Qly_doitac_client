@@ -1379,7 +1379,27 @@
 
             $scope.editUetMan = function(uetManId) {
                 var uetMan = $('#uetMan_' + uetManId).text();
-                $('#uetMan_' + uetManId).html('<input id="uetMan_value_' + uetManId + '" value="' + uetMan + '" style="border-radius:3px; border: 1px solid;" required/>')
+                var about = $('#about_' + uetManId).text().trim();
+                console.log(about)
+                $('#uetMan_' + uetManId).html('<input id="uetMan_value_' + uetManId + '" value="' + uetMan + '" style="border-radius:3px; border: 1px solid;"/>')
+                $('#about_' + uetManId).html('' +
+                    '<select id="about_value_' + uetManId + '" style="border-radius:3px; border: 1px solid;">' +
+                    '<option value="Giám đốc">Giám đốc</option>' +
+                    '<option value="Phó giám đốc">Phó giám đốc</option>' +
+                    '<option value="Trưởng ban">Trưởng ban</option>' +
+                    '<option value="Phó ban">Phó ban</option>' +
+                    '<option value="Hiệu trưởng">Hiệu trưởng</option>' +
+                    '<option value="Phó hiệu trưởng">Phó hiệu trưởng</option>' +
+                    '<option value="Trưởng phòng">Trưởng phòng</option>' +
+                    '<option value="Phó phòng">Phó phòng</option>' +
+                    '<option value="Trưởng Khoa">Trưởng Khoa</option>' +
+                    '<option value="Phó Khoa">Phó Khoa</option>' +
+                    '</select>')
+                $('#about_value_' + uetManId + " option").filter(function() {
+                    //may want to use $.trim in here
+                    return $(this).text() == about;
+                }).prop('selected', true);
+                // $('#about_value_' + uetManId).val(about);
                 $('#edit_uetMan_' + uetManId).hide();
                 $('#save_edit_uetMan_' + uetManId).show();
                 $('#button_cancel_edit_uetMan_' + uetManId).show();
@@ -1391,22 +1411,26 @@
                 $('#save_edit_uetMan_' + uetMan.id).hide();
                 $('#button_cancel_edit_uetMan_' + uetMan.id).hide();
                 $('#uetMan_' + uetMan.id).html(uetMan.uetManName);
+                $('#about_' + uetMan.id).html(uetMan.about);
             }
 
             $scope.saveEditUetMan = function(uetManId) {
                 // console.log(uetManId);
                 var uetManName = $('#uetMan_value_' + uetManId).val();
+                var about = $('#about_value_' + uetManId).find(":selected").text();
                 // console.log(v);
                 if (uetManName != "") {
                     $scope.request = {
                         id: uetManId,
-                        uetManName: uetManName
+                        uetManName: uetManName,
+                        about: about
                     }
                     // console.log($scope.request);
                     vnuService.editUetMan($scope.request)
                         .then(function() {
                             $('#edit_uetMan_' + uetManId).show();
                             $('#uetMan_' + uetManId).html(uetManName);
+                            $('#about_' + uetManId).html(about);
                             $('#save_edit_uetMan_' + uetManId).hide();
                             $('#button_cancel_edit_uetMan_' + uetManId).hide();
                             $scope.alertSuccess('Sửa người kí kết (VNU-UET) thành công!', '');
