@@ -3,6 +3,7 @@
     app.controller('partnerCtrl', ['$scope', 'partnerService', 'nationService', '$location', '$rootScope', '$window', '$timeout', 'filterFilter', '$state', '$filter',
         function($scope, partnerService, nationService, $location, $rootScope, $window, $timeout, filterFilter, $state, $filter) {
             $scope.input = {};
+            $scope.partnerContact = {};
             $rootScope.currentUrl = $state.current.url;
             // $rootScope.currentUrl = $state.current.url;
             $scope.annualActivity = {};
@@ -24,7 +25,18 @@
             //     console.log('modal is clicked');
             // });
 
-
+            $scope.$watch('selectedFindPartnerId', function() {
+                // console.log($scope.selectedContract);
+                // angular.forEach($rootScope.allUnit, function(c) {
+                //     c.checked = false;
+                // })
+                // $timeout(function() {
+                // $scope.$apply();
+                // });
+                if ($scope.selectedFindPartnerId != undefined || $scope.selectedFindPartnerId != null) {
+                    $rootScope.recentCreatedPartner = undefined;
+                }
+            });
 
             window.addEventListener('click', function(e) {
                 if (!$('.delete-modal').is(':visible')) {
@@ -243,6 +255,10 @@
             //     $scope.Partner = partner;
             // }
 
+            // $scope.clearData = function() {
+            //     $rootScope.recentCreatedPartner = undefined;
+            // }
+
             $scope.alertDanger = function(error, danger) {
                 $scope.errorMessage = error;
                 if (danger == 'danger') {
@@ -287,14 +303,14 @@
                 partnerService.getAllPartner()
                     .then(function(response) {
                         console.log(response.data);
-                        $scope.allPartner = response.data;
+                        $rootScope.allPartner = response.data;
                         $scope.currentPage = 1;
                         $scope.totalItems = response.data.length;
                         $scope.entryLimit = 10; // items per page
                         $scope.noOfPages = Math.ceil($scope.totalItems / $scope.entryLimit);
 
                         $scope.$watch('search', function(newVal, oldVal) {
-                            $scope.filtered = filterFilter($scope.allPartner, newVal);
+                            $scope.filtered = filterFilter($rootScope.allPartner, newVal);
                             $scope.totalItems = $scope.filtered.length;
                             $scope.noOfPages = Math.ceil($scope.totalItems / $scope.entryLimit);
                             $scope.currentPage = 1;
@@ -354,9 +370,9 @@
                         $('#close_modal_delete_partner_contact').trigger('click');
                         $scope.alertSuccess("Xóa liên hệ thành công!", "successdelete_edit");
                         // $scope.getAllPartner();
-                        var index = $scope.allPartner.findIndex(x => x.id === $scope.Partner.id);
-                        index = $scope.allPartner[index].partnerContacts.findIndex(x => x.id === contactId);
-                        $scope.allPartner[index].partnerContacts.splice(index, 1);
+                        var index = $rootScope.allPartner.findIndex(x => x.id === $scope.Partner.id);
+                        index = $rootScope.allPartner[index].partnerContacts.findIndex(x => x.id === contactId);
+                        $rootScope.allPartner[index].partnerContacts.splice(index, 1);
                         // console.log(index);
                     }, function(error) {
                         $('#close_modal_delete_partner_contact').trigger('click');
@@ -376,11 +392,22 @@
                     console.log($scope.input);
                     partnerService.createPartner($scope.input)
                         .then(function(response) {
-                            // console.log(response);
-                            // $scope.allPartner.push(response.data);
-                            $scope.input = {};
-                            // if($scope)
                             $scope.alertSuccess("Tạo đối tác thành công", "");
+                            console.log(response.data);
+                            $rootScope.allPartner.push(response.data);
+                            // $scope.$broadcast('angucomplete-alt:clearInput', 'findpartnerId');
+                            // var originalObject = {
+                            //     originalObject: response.data
+                            // }
+                            $rootScope.recentCreatedPartner = response.data;
+                            console.log($rootScope.recentCreatedPartner);
+                            $timeout(function() {
+                                $scope.$apply();
+                            });
+                            $scope.input = {};
+
+                            // if($scope)
+
                         }, function(error) {
                             console.log(error);
                             $scope.alertDanger("Có lỗi xảy ra, hãy thử reload lại trang và tạo lại!", '');
@@ -397,33 +424,75 @@
                 $('#a_step_3').removeClass("disabled");
             }
 
-            $scope.createPartnerContact = function() {
-                if ($scope.input.partnerContact.partnerId != null && $scope.input.partnerContact.contactName != null) {
-                    // console.log($scope.input.partnerContact);
-                    partnerService.createPartnerContact($scope.input.partnerContact, $scope.input.partnerContact.partnerId)
-                        .then(function(response) {
-                            // $scope.getAllPartner();
-                            // var index = $scope.allPartner.findIndex(x => x.id === $scope.input.partnerContact.partnerId);
-                            angular.forEach($scope.allPartner, function(partner) {
-                                if (partner.id == $scope.input.partnerContact.partnerId) {
-                                    if (partner.partnerContacts == null) {
-                                        partner.partnerContacts = [];
-                                    }
-                                    partner.partnerContacts.push(response.data);
-                                }
-                            })
-                            // console.log(index);
-                            // console.log($scope.input.partnerContact.partnerId);
-                            // if($scope.allPartner[index].partnerContacts == null){
-                            //     $scope.allPartner[index].partnerContacts = [];
-                            // }
-                            // $scope.allPartner[index].partnerContacts.push($scope.input.partnerContact);
-                            $scope.input.partnerContact = {};
-                            $scope.alertSuccess("Tạo liên hệ thành công", '');
-                        }, function(error) {
-                            $scope.alertDanger(error.data.message, '');
-                        })
+            $scope.createPartnerContact = function(location, partnerId) {
+                console.log(location);
+                console.log($scope.partnerContact);
+                if (location == undefined) {
+                    location = "";
                 }
+                if (location != 'contract') {
+                    if ($scope.input.partnerContact.partnerId != null && $scope.input.partnerContact.contactName != null) {
+                        // console.log($scope.input.partnerContact);
+                        partnerService.createPartnerContact($scope.input.partnerContact, $scope.input.partnerContact.partnerId)
+                            .then(function(response) {
+                                // $scope.getAllPartner();
+                                // var index = $rootScope.allPartner.findIndex(x => x.id === $scope.input.partnerContact.partnerId);
+                                angular.forEach($rootScope.allPartner, function(partner) {
+                                    if (partner.id == $scope.input.partnerContact.partnerId) {
+                                        if (partner.partnerContacts == null) {
+                                            partner.partnerContacts = [];
+                                        }
+                                        partner.partnerContacts.push(response.data);
+                                    }
+                                })
+                                // console.log(index);
+                                // console.log($scope.input.partnerContact.partnerId);
+                                // if($rootScope.allPartner[index].partnerContacts == null){
+                                //     $rootScope.allPartner[index].partnerContacts = [];
+                                // }
+                                // $rootScope.allPartner[index].partnerContacts.push($scope.input.partnerContact);
+                                $scope.input.partnerContact = {};
+                                $scope.alertSuccess("Tạo liên hệ thành công", '');
+                            }, function(error) {
+                                $scope.alertDanger(error.data.message, '');
+                            })
+                    }
+                } else {
+                    if ($scope.partnerContact != null || $scope.partnerContact != undefined) {
+                        if ($scope.partnerContact.contactName != null || $scope.partnerContact.contactName != undefined) {
+                            partnerService.createPartnerContact($scope.partnerContact, partnerId)
+                                .then(function(response) {
+                                    // $scope.getAllPartner();
+                                    // var index = $rootScope.allPartner.findIndex(x => x.id === $scope.input.partnerContact.partnerId);
+                                    angular.forEach($rootScope.allPartner, function(partner) {
+                                        if (partner.id == partnerId) {
+                                            if (partner.partnerContacts == null) {
+                                                partner.partnerContacts = [];
+                                            }
+                                            partner.partnerContacts.push(response.data);
+                                            // break;
+                                        }
+                                    })
+                                    // console.log(index);
+                                    // console.log($scope.input.partnerContact.partnerId);
+                                    // if($rootScope.allPartner[index].partnerContacts == null){
+                                    //     $rootScope.allPartner[index].partnerContacts = [];
+                                    // }
+                                    // $rootScope.allPartner[index].partnerContacts.push($scope.input.partnerContact);
+                                    $scope.partnerContact = {};
+                                    // $rootScope.selectedFindPartnerId.originalObject.pa
+                                    // if ($rootScope.selectedFindPartnerId.originalObject.partnerContacts == null) {
+                                    //     $rootScope.selectedFindPartnerId.originalObject.partnerContacts = [];
+                                    // }
+                                    // $rootScope.selectedFindPartnerId.originalObject.partnerContacts.push(response.data);
+                                    $scope.alertSuccess("Tạo liên hệ thành công", '');
+                                }, function(error) {
+                                    $scope.alertDanger(error.data.message, '');
+                                })
+                        }
+                    }
+                }
+
             }
 
             $scope.click = function(id) {
@@ -435,12 +504,12 @@
                 });
             }
 
-            $scope.getAllAnnualActivityOfContract = function(contractId){
+            $scope.getAllAnnualActivityOfContract = function(contractId) {
                 partnerService.getAllAnnualActivityOfContract(contractId)
-                    .then(function(response){
+                    .then(function(response) {
                         console.log(response.data);
                         $scope.Partner.annualActivity = response.data;
-                    }, function(error){
+                    }, function(error) {
                         console.log(error);
                     })
             }
@@ -481,8 +550,8 @@
 
                         }
                         $scope.Partner = response.data;
-                        var index = $scope.allPartner.findIndex(x => x.id === response.data.id);
-                        $scope.allPartner[index] = response.data;
+                        var index = $rootScope.allPartner.findIndex(x => x.id === response.data.id);
+                        $rootScope.allPartner[index] = response.data;
                     }, function(error) {
                         console.log(error);
                         $scope.alertDanger(error.data.message, 'danger');

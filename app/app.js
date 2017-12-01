@@ -14,7 +14,8 @@ angular.module('myApp', [
     'ngSanitize',
     'contract',
     'angular-md5',
-    'angucomplete-alt'
+    'angucomplete-alt',
+    'ng-clipboard'
 ]).
 config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProvider', function($locationProvider, $routeProvider, $stateProvider, $urlRouterProvider) {
         $locationProvider.html5Mode(true).hashPrefix('');

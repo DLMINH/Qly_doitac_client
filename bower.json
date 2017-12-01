@@ -19,6 +19,7 @@
     "file-saver": "^1.3.3",
     "angular-md5": "^0.1.10",
     "angucomplete-alt": "^3.0.0",
-    "tags-input": "^1.1.1"
+    "tags-input": "^1.1.1",
+    "ng-clipboard": "^1.0.0"
   }
 }
