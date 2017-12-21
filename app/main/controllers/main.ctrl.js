@@ -33,7 +33,10 @@
                             $window.location.href = $rootScope.clientAdd;
                         })
                 }
-
+                // $rootScope.confirmDelete = function(id, name) {
+                //     $rootScope.confirmDeleteId = id;
+                //     $rootScope.confirmDeleteName = name;
+                // }
             }
         ])
 }());

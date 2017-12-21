@@ -32,9 +32,17 @@
             getAllContractOfPartner: getAllContractOfPartner,
             shareContract: shareContract,
             getAllContractShareOfContract: getAllContractShareOfContract,
-            getContractOfUnit: getContractOfUnit
+            getContractOfUnit: getContractOfUnit,
+            editCooperateActivityDetail: editCooperateActivityDetail
         };
 
+        function editCooperateActivityDetail(data) {
+            return $http({
+                url: $rootScope.serverAdd + '/cooperate/activity/detail/edit',
+                method: 'POST',
+                data: data
+            })
+        }
 
         function getContractOfUnit() {
             return $http({
