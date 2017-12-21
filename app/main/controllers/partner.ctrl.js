@@ -347,6 +347,7 @@
             }
 
             $scope.confirmDelete = function(id, name) {
+                console.log(id)
                 $scope.confirmDeleteId = id;
                 $scope.confirmDeleteName = name;
             }
