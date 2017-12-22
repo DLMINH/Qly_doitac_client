@@ -23,7 +23,7 @@
                 } else if ($scope.contractType == "" || $scope.contractType == undefined) {
                     // console.log("ngoai nuoc");
                     return item;
-                } else if($scope.contractType == "ngoai_nuoc"){
+                } else if ($scope.contractType == "ngoai_nuoc") {
                     if (item.partner.nation.nationName != 'Việt Nam') {
                         // console.log(item.partner.nation.nationName);
                         return item;
@@ -41,7 +41,7 @@
                         return element.id == $scope.selectedUetMan.originalObject.id;
                     }
                     var uetMan = $scope.listUetMan.find(equals);
-                    if(uetMan == undefined){
+                    if (uetMan == undefined) {
                         $scope.listUetMan.push($scope.selectedUetMan.originalObject);
                         $scope.clearAngucompleteAltInput('findUetMan');
                     }
@@ -65,8 +65,8 @@
 
             $scope.$watch('selectedPartner_qlcs', function() {
                 if ($scope.selectedPartner_qlcs != undefined && $scope.selectedPartner_qlcs != null) {
-                    angular.forEach($scope.allContract, function(contract){
-                        if(contract.partner.id == $scope.selectedPartner_qlcs.originalObject.id){
+                    angular.forEach($scope.allContract, function(contract) {
+                        if (contract.partner.id == $scope.selectedPartner_qlcs.originalObject.id) {
                             $scope.listContract.push(contract);
                         }
                     })
@@ -77,23 +77,23 @@
                 }
             });
 
-            $scope.clearListContract = function(){
-                angular.forEach($scope.listContract, function(c){
+            $scope.clearListContract = function() {
+                angular.forEach($scope.listContract, function(c) {
                     c.check = false;
                 })
             }
 
-            $scope.selectContractQlcs = function(contract){
+            $scope.selectContractQlcs = function(contract) {
                 $scope.showShareContractTable = true;
-                angular.forEach($scope.listContract, function(c){
-                    if(c.id == contract.id){
+                angular.forEach($scope.listContract, function(c) {
+                    if (c.id == contract.id) {
                         c.check = true;
                         $scope.getAllContractShareOfContract(contract.id);
                     } else {
                         c.check = false;
                     }
                 })
-                
+
             }
 
             $scope.getAllContractShareOfContract = function(contractId) {
@@ -144,8 +144,8 @@
             }
 
             $scope.shareContract = function(contractId) {
-                angular.forEach($scope.listContract, function(c){
-                    if(c.check == true){
+                angular.forEach($scope.listContract, function(c) {
+                    if (c.check == true) {
                         contractId = c.id;
                     }
                 })
@@ -285,16 +285,22 @@
                 };
                 angular.forEach($scope.allContract, function(excel) {
                     if (excel.checked == true) {
-                        var startDate = new Date(excel.startDate);
-                        var curr_date = startDate.getDate();
-                        var curr_month = startDate.getMonth() + 1; //Months are zero based
-                        var curr_year = startDate.getFullYear();
-                        startDate = curr_date + "-" + curr_month + "-" + curr_year;
-                        var endDate = new Date(excel.endDate);
-                        var curr_date = endDate.getDate();
-                        var curr_month = endDate.getMonth() + 1; //Months are zero based
-                        var curr_year = endDate.getFullYear();
-                        endDate = curr_date + "-" + curr_month + "-" + curr_year;
+                        var startDate = null;
+                        var endDate = null;
+                        if (excel.startDate != null) {
+                            startDate = new Date(excel.startDate);
+                            var curr_date = startDate.getDate();
+                            var curr_month = startDate.getMonth() + 1; //Months are zero based
+                            var curr_year = startDate.getFullYear();
+                            startDate = curr_date + "-" + curr_month + "-" + curr_year;
+                        }
+                        if (excel.endDate != null) {
+                            endDate = new Date(excel.endDate);
+                            var curr_date = endDate.getDate();
+                            var curr_month = endDate.getMonth() + 1; //Months are zero based
+                            var curr_year = endDate.getFullYear();
+                            endDate = curr_date + "-" + curr_month + "-" + curr_year;
+                        }
                         ws['A' + i] = {
                             h: excel.partner.partnerName,
                             r: excel.partner.partnerName,
@@ -321,12 +327,16 @@
                                 }
                             }
                         };
+                        var uetMans = "";
+                        angular.forEach(excel.uetMan, function(uetMan) {
+                            uetMans += uetMan.uetManName + '\n'
+                        })
                         ws['C' + i] = {
-                            h: excel.uetMan.uetManName,
-                            r: excel.uetMan.uetManName,
+                            h: uetMans,
+                            r: uetMans,
                             t: "s",
-                            v: excel.uetMan.uetManName,
-                            w: excel.uetMan.uetManName,
+                            v: uetMans,
+                            w: uetMans,
                             s: {
                                 alignment: {
                                     wrapText: true,
@@ -347,60 +357,70 @@
                                 }
                             }
                         };
-                        ws['E' + i] = {
-                            h: excel.funding,
-                            r: excel.funding,
-                            t: "s",
-                            v: excel.funding,
-                            w: excel.funding,
-                            s: {
-                                alignment: {
-                                    wrapText: true,
-                                    vertical: "center"
-                                }
-                            }
-                        };
-                        ws['F' + i] = {
-                            h: startDate,
-                            r: startDate,
-                            t: "s",
-                            v: startDate,
-                            w: startDate,
-                            s: {
-                                alignment: {
-                                    wrapText: true,
-                                    vertical: "center"
-                                }
-                            }
-                        };
-                        ws['G' + i] = {
-                            h: endDate,
-                            r: endDate,
-                            t: "s",
-                            v: endDate,
-                            w: endDate,
-                            s: {
-                                alignment: {
-                                    wrapText: true,
-                                    vertical: "center"
-                                }
-                            }
-                        };
-                        if(excel.unitName != null){
-                            ws['H' + i] = {
-                                h: excel.unitName.unitName,
-                                r: excel.unitName.unitName,
+                        if (excel.funding != null) {
+                            ws['E' + i] = {
+                                h: excel.funding,
+                                r: excel.funding,
                                 t: "s",
-                                v: excel.unitName.unitName,
-                                w: excel.unitName.unitName,
+                                v: excel.funding,
+                                w: excel.funding,
                                 s: {
                                     alignment: {
                                         wrapText: true,
                                         vertical: "center"
                                     }
                                 }
-                            };                            
+                            };
                         }
+                        if (startDate != null) {
+                            ws['F' + i] = {
+                                h: startDate,
+                                r: startDate,
+                                t: "s",
+                                v: startDate,
+                                w: startDate,
+                                s: {
+                                    alignment: {
+                                        wrapText: true,
+                                        vertical: "center"
+                                    }
+                                }
+                            };
+                        }
+
+                        if (endDate != null) {
+                            ws['G' + i] = {
+                                h: endDate,
+                                r: endDate,
+                                t: "s",
+                                v: endDate,
+                                w: endDate,
+                                s: {
+                                    alignment: {
+                                        wrapText: true,
+                                        vertical: "center"
+                                    }
+                                }
+                            };
+                        }
+
+                        var unitNames = "";
+                        angular.forEach(excel.contractShares, function(c) {
+                            unitNames += c.unitName.unitName + '\n'
+                        })
+                        ws['H' + i] = {
+                            h: unitNames,
+                            r: unitNames,
+                            t: "s",
+                            v: unitNames,
+                            w: unitNames,
+                            s: {
+                                alignment: {
+                                    wrapText: true,
+                                    vertical: "center"
+                                }
+                            }
+                        };
 
                         if (excel.result != null) {
                             ws['I' + i] = {
@@ -419,13 +439,12 @@
                             };
                         }
                         if (excel.notice != null) {
-
                             ws['J' + i] = {
-                                h: excel.notice,
-                                r: excel.notice,
+                                h: excel.notice.replace(/<br\s*[\/]?>/g, '\r\n'),
+                                r: excel.notice.replace(/<br\s*[\/]?>/g, '\r\n'),
                                 t: "s",
-                                v: excel.notice,
-                                w: excel.notice,
+                                v: excel.notice.replace(/<br\s*[\/]?>/g, '\r\n'),
+                                w: excel.notice.replace(/<br\s*[\/]?>/g, '\r\n'),
                                 s: {
                                     alignment: {
                                         wrapText: true,
@@ -1021,7 +1040,7 @@
                 NProgress.start();
                 partnerService.getAllPartner()
                     .then(function(response) {
-                         NProgress.done();
+                        NProgress.done();
                         console.log(response.data)
                         $rootScope.allPartner = response.data;
                         // $scope.allPartner.push({
@@ -1271,7 +1290,7 @@
             }
 
             $scope.createContract = function() {
-                
+
                 var count = 0;
                 $scope.unitNames = [];
                 $scope.uetManList = [];
@@ -1315,7 +1334,7 @@
                     //dùng ở autocomplte
                     angular.forEach($scope.listUetMan, function(uetMan) {
                         // if (unit.checked == true) {
-                            $scope.uetManList.push(uetMan);
+                        $scope.uetManList.push(uetMan);
                         // }
                     })
                     if ($scope.uetManList.length != 0) {
@@ -1471,9 +1490,9 @@
                     })
             }
 
-            $scope.setCooperateActivityDetail = function(contract){
-                angular.forEach(contract.cooperateActivity, function(act){
-                    if(act.cooperateActivityDetail.content != null){
+            $scope.setCooperateActivityDetail = function(contract) {
+                angular.forEach(contract.cooperateActivity, function(act) {
+                    if (act.cooperateActivityDetail.content != null) {
                         act.cooperateActivityDetail.content = act.cooperateActivityDetail.content.replace(/<br\s*[\/]?>/g, '\r\n')
                     }
                 })
@@ -1481,8 +1500,8 @@
 
             }
 
-            $scope.editCooperateActivityDetail = function(content = "", date = "", funding = "", id){
-                if(id != undefined && id != null){
+            $scope.editCooperateActivityDetail = function(content = "", date = "", funding = "", id) {
+                if (id != undefined && id != null) {
                     $scope.req = {
                         content: content.replace(/(?:\r\n|\r|\n)/g, '<br />'),
                         date: date,
@@ -1491,9 +1510,9 @@
                     };
                     console.log($scope.req)
                     vnuService.editCooperateActivityDetail($scope.req)
-                        .then(function(response){
+                        .then(function(response) {
                             $scope.alertSuccess("Thêm hoạt động hợp tác cụ thể thành công!", "successdelete_edit");
-                        }, function(error){
+                        }, function(error) {
                             console.log(error);
                             $scope.alertDanger("Có lỗi, hãy reload lại trang!", "danger_edit");
                         })
