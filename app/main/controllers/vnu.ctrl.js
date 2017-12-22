@@ -210,7 +210,7 @@
                 wscols[7] = { wpx: 200 };
                 wscols[8] = { wpx: 200 };
                 wscols[9] = { wpx: 200 };
-                var ws = { '!ref': "A1:" + ($scope.allContract.length+1) };
+                var ws = { '!ref': "A1:1000"};
                 ws['!cols'] = wscols;
                 // ws['A1'] = { h: "test", r: "<t>test</t>", t: "s", v: "test", w: "test" }
                 var i = 2;
