@@ -1596,6 +1596,7 @@
                 $('#uetMan_' + uetManId).html('<input id="uetMan_value_' + uetManId + '" value="' + uetMan + '" style="border-radius:3px; border: 1px solid;"/>')
                 $('#about_' + uetManId).html('' +
                     '<select id="about_value_' + uetManId + '" style="border-radius:3px; border: 1px solid;">' +
+                    '<option value="" ">--Chọn chức vụ--</option>' +
                     '<option value="Giám đốc">Giám đốc</option>' +
                     '<option value="Phó giám đốc">Phó giám đốc</option>' +
                     '<option value="Trưởng ban">Trưởng ban</option>' +
