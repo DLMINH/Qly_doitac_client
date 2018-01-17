@@ -13,11 +13,13 @@
                     <ul class="dropdown-menu" role="menu">
                         <li ng-if="role == 'ADMIN_UNIT'"><a data-toggle="collapse" data-target="#add_unit" class="cursor"> Thêm đơn vị theo dõi </a>
                         </li>
-                        <li><a data-toggle="collapse" data-target="#add_uet_man" class="cursor"> Thêm người kí kết (VNU-UET) </a>
+                        <li><a data-toggle="collapse" data-target="#add_uet_man" class="cursor"> Thêm người kí kết ({{user.rolesAndSigningLevel.name}}) </a>
                         </li>
                         <!-- <li><a data-toggle="collapse" data-target="#add_type_contract" class="cursor"> Thêm loại hợp đồng </a>
                             </li> -->
                         <li ng-if="role == 'ADMIN_UNIT'"><a data-toggle="collapse" data-target="#create_account" class="cursor"> Tạo tài khoản cho đơn vị theo dõi </a>
+                        </li>
+                        <li ng-if="role == 'ADMIN_VNU'"><a data-toggle="collapse" data-target="#create_university_account" class="cursor"> Thêm trường </a>
                         </li>
                     </ul>
                 </li>
@@ -31,6 +33,55 @@
             <div class="alert alert-danger" ng-if="danger">
                 <strong>{{errorMessage}}</strong>
             </div>
+            <!-- form tao trường con của dh quốc gia -->
+            <form class="form-horizontal form-label-left collapse" id="create_university_account">
+                <ul class="nav navbar-right panel_toolbox">
+                    <li><a data-toggle="collapse" data-target="#create_university_account" class="cursor"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                </ul>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên trường: <span class="required">*</span></label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" name="country" class="form-control col-md-10" ng-model="rolesAndSigningLevel.universityName" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên viết tắt của trường: <span class="required">*</span></label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" name="country" class="form-control col-md-10" ng-model="rolesAndSigningLevel.rolesAndSigningLevel" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên đăng nhập: <span class="required">*</span></label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" name="country" class="form-control col-md-10" ng-model="rolesAndSigningLevel.userName" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Mật khẩu: <span class="required">*</span></label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="password" name="country" class="form-control col-md-10" ng-model="rolesAndSigningLevel.password" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nhập lại mật khẩu: <span class="required">*</span></label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="password" name="country" class="form-control col-md-10" ng-model="rolesAndSigningLevel.reTypePass" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="alert alert-warning col-md-6 col-sm-6 col-xs-12 col-md-offset-3" ng-if="rolesAndSigningLevel.password != rolesAndSigningLevel.reTypePass && rolesAndSigningLevel.reTypePass != null">
+                        <strong>Mật khẩu mới không khớp</strong>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="rolesAndSigningLevel.password == rolesAndSigningLevel.reTypePass && rolesAndSigningLevel.reTypePass != null && rolesAndSigningLevel.reTypePass != '' && rolesAndSigningLevel.password != null && rolesAndSigningLevel.password != ''">
+                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                        <button type="submit" class="btn btn-success" ng-click="createUniversityAccount()">Tạo</button>
+                    </div>
+                </div>
+                <div class="divider-dashed"></div>
+            </form>
+            <!-- end form tao trường con của dh quốc gia  -->
             <!-- form tao tk cho don vi theo doi -->
             <form class="form-horizontal form-label-left collapse" id="create_account">
                 <ul class="nav navbar-right panel_toolbox">
@@ -85,9 +136,15 @@
                     </li>
                 </ul>
                 <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên đơn vị theo dõi</label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên đơn vị theo dõi: <span class="required">*</span></label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <input type="text" name="country" class="form-control col-md-10" ng-model="input.unitName" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên viết tắt: </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" name="country" class="form-control col-md-10" ng-model="input.abbreviation" />
                     </div>
                 </div>
                 <div class="form-group">
@@ -105,7 +162,7 @@
                     </li>
                 </ul>
                 <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên người kí kết (VNU-UET)</label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên người kí kết ({{user.rolesAndSigningLevel.name}})</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <input type="text" name="country" class="form-control col-md-10" ng-model="input.uetManName" required />
                     </div>
@@ -114,6 +171,7 @@
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Chức vụ</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <select class="form-control" ng-model="input.about">
+                            <option value=" " selected="selected"> </option>
                             <option value="Giám đốc">Giám đốc</option>
                             <option value="Phó giám đốc">Phó giám đốc</option>
                             <option value="Trưởng ban">Trưởng ban</option>
@@ -138,7 +196,7 @@
             <div class="col-md-6 col-sm-6 col-xs-12" ng-init="getAllUetMan()">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>Người kí kết (VNU-UET)</h2>
+                        <h2>Người kí kết ({{user.rolesAndSigningLevel.name}})</h2>
                         <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Search for..." ng-model="uet_man" style="border-radius:25px; border: 1px solid rgba(221,226,232,.49); box-shadow: inset 0 1px 0 rgba(0,0,0,.075)">
@@ -153,6 +211,7 @@
                                     <th>Mã người kí kết</th>
                                     <th>Người kí kết</th>
                                     <th>Chức vụ</th>
+                                    <th ng-if="role != 'UNIT'">Đơn vị</th>
                                     <th>Sửa</th>
                                     <!-- <th>Xóa</th> -->
                                 </tr>
@@ -162,14 +221,60 @@
                                     <th scope="row">{{uetMan.id}}</th>
                                     <td id="uetMan_{{uetMan.id}}">{{uetMan.uetManName}}</td>
                                     <td id="about_{{uetMan.id}}">
-                                        
                                         {{uetMan.about}}
+                                    </td>
+                                    <td id="rolesAndSigningLevel_name_{{uetMan.id}}" ng-if="role != 'UNIT'">
+                                        {{uetMan.rolesAndSigningLevel.name}}
                                     </td>
                                     <th>
                                         <i id="edit_uetMan_{{uetMan.id}}" class="fa fa-edit cursor" ng-click="editUetMan(uetMan.id, uetMan.content); edit_uetMan = true"></i>
                                         <button id="button_cancel_edit_uetMan_{{uetMan.id}}" ng-if="edit_uetMan" type="button" class="btn btn-default btn-xs" ng-click="cancelEditUetMan(uetMan)">Hủy</button>
                                         <button id="save_edit_uetMan_{{uetMan.id}}" ng-if="edit_uetMan" type="button" class="btn btn-success btn-xs" ng-click="saveEditUetMan(uetMan.id)">Xác nhận</button>
                                     </th>
+                                    <!-- <td class=" ">
+                                        <a class="cursor" ng-click="confirmDelete(uetMan.id, uetMan.uetManName)" data-toggle="modal" data-target="#delete_uet_man"><i class="fa fa-trash"></i></a>
+                                    </td> -->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12" ng-init="getAllRolesAndSigningLevel()"  ng-if="role == 'ADMIN_VNU'">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Trường</h2>
+                        <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search for..." ng-model="uet_man" style="border-radius:25px; border: 1px solid rgba(221,226,232,.49); box-shadow: inset 0 1px 0 rgba(0,0,0,.075)">
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Tên trường</th>
+                                    <th>Tên viết tắt</th>
+                                    <th>Tài khoản</th>
+                                    <!-- <th>Sửa</th> -->
+                                    <!-- <th>Xóa</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="data in allRolesAndSigningLevel" id="tr_data_{{data.id}}">
+                                    <!-- <th scope="row">{{data.id}}</th> -->
+                                    <td id="universityName_{{data.id}}">{{data.universityName}}</td>
+                                    <td id="name_{{data.id}}">
+                                        {{data.name}}
+                                    </td>
+                                    <td id="userNameUniversity_{{data.id}}">{{data.user.userName}}</td>
+                                    <!-- <th>
+                                        <i id="edit_uetMan_{{uetMan.id}}" class="fa fa-edit cursor" ng-click="editUetMan(uetMan.id, uetMan.content); edit_uetMan = true"></i>
+                                        <button id="button_cancel_edit_uetMan_{{uetMan.id}}" ng-if="edit_uetMan" type="button" class="btn btn-default btn-xs" ng-click="cancelEditUetMan(uetMan)">Hủy</button>
+                                        <button id="save_edit_uetMan_{{uetMan.id}}" ng-if="edit_uetMan" type="button" class="btn btn-success btn-xs" ng-click="saveEditUetMan(uetMan.id)">Xác nhận</button>
+                                    </th> -->
                                     <!-- <td class=" ">
                                         <a class="cursor" ng-click="confirmDelete(uetMan.id, uetMan.uetManName)" data-toggle="modal" data-target="#delete_uet_man"><i class="fa fa-trash"></i></a>
                                     </td> -->
@@ -196,6 +301,7 @@
                                 <tr>
                                     <th>Mã đơn vị theo dõi</th>
                                     <th>Đơn vị theo dõi</th>
+                                    <th>Tên viết tắt</th>
                                     <th>Account</th>
                                     <th>Sửa</th>
                                     <!-- <th>Xóa</th> -->
@@ -205,6 +311,7 @@
                                 <tr ng-repeat="unitName in allUnit" id="tr_unitName_{{unitName.id}}">
                                     <th scope="row">{{unitName.id}}</th>
                                     <td id="unitName_{{unitName.id}}">{{unitName.unitName}}</td>
+                                    <td id="username_{{unitName.id}}">{{unitName.abbreviation}}</td>
                                     <td id="username_{{unitName.id}}">{{unitName.user.userName}}</td>
                                     <th>
                                         <!-- <i id="edit_unitName_{{unitName.id}}" class="fa fa-edit cursor" ng-click="editUnitName(unitName.id); edit_unitName = true"></i>

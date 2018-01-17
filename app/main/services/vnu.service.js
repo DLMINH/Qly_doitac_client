@@ -33,8 +33,49 @@
             shareContract: shareContract,
             getAllContractShareOfContract: getAllContractShareOfContract,
             getContractOfUnit: getContractOfUnit,
-            editCooperateActivityDetail: editCooperateActivityDetail
+            editCooperateActivityDetail: editCooperateActivityDetail,
+            getAllUetManRolesAndSigningLevel: getAllUetManRolesAndSigningLevel,
+            getAllRolesAndSigningLevel: getAllRolesAndSigningLevel,
+            createUniversityAccount: createUniversityAccount,
+            getContractByRoleAndSigningLevel: getContractByRoleAndSigningLevel,
+            getUnitNameByRolesAndSigningLevel: getUnitNameByRolesAndSigningLevel
         };
+
+        function getUnitNameByRolesAndSigningLevel() {
+            return $http({
+                url: $rootScope.serverAdd + '/unit/rolesAndSigningLevel',
+                method: 'GET'
+            })
+        }
+
+        function getContractByRoleAndSigningLevel() {
+            return $http({
+                url: $rootScope.serverAdd + '/contract/RoleAndSigningLevel',
+                method: 'GET'
+            })
+        }
+
+        function createUniversityAccount(data) {
+            return $http({
+                url: $rootScope.serverAdd + '/account/university/create',
+                method: 'POST',
+                data: data
+            })
+        }
+
+        function getAllRolesAndSigningLevel() {
+            return $http({
+                url: $rootScope.serverAdd + '/rolesAndSigningLevel',
+                method: 'GET'
+            })
+        }
+
+        function getAllUetManRolesAndSigningLevel() {
+            return $http({
+                url: $rootScope.serverAdd + '/uetMan/rolesAndSigningLevel',
+                method: 'GET'
+            })
+        }
 
         function editCooperateActivityDetail(data) {
             return $http({

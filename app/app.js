@@ -7,7 +7,7 @@ angular.module('myApp', [
     'ui.bootstrap',
     'ngRoute',
     'services',
-    'user',
+    // 'user',
     'nation',
     'partner',
     'vnu',
@@ -21,11 +21,14 @@ config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProv
         $locationProvider.html5Mode(false).hashPrefix('');
 
         if (sessionStorage["User-Data"] == null) {
-            $routeProvider
-                .when("/login", {
-                    templateUrl: "/main/views/login/login.html",
-                    controller: "userCtrl"
-                }).otherwise({ redirectTo: "/login" });
+            // $routeProvider
+            //     .when("/login", {
+            //         // templateUrl: "/main/views/login/login.html",
+            //         controller: function(){
+                        
+            //             window.location.href = 'login.html';
+            //         }
+            //     }).otherwise({ redirectTo: "/login" });
         } else {
             $urlRouterProvider.otherwise('/partner/contract');
             $stateProvider
@@ -40,11 +43,11 @@ config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProv
                 .state('/settings', {
                     url: '/settings',
                     templateUrl: 'main/views/settings/settings.html',
+                    controller: 'vnuCtrl'
                 })
                 .state('/settings.vnu', {
                     url: '/vnu',
-                    templateUrl: 'main/views/settings/settings.vnu.html',
-                    controller: 'vnuCtrl'
+                    templateUrl: 'main/views/settings/settings.vnu.html'
                 })
                 .state('/settings.nation_continent', {
                     url: '/nation_continent',
@@ -55,13 +58,6 @@ config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProv
                     url: '/partner',
                     templateUrl: 'main/views/partner/partner.html',
                     controller: 'partnerCtrl'
-                    // controller: function($state, $rootScope) {
-                    //     console.log($state);
-                    //     if ($state.current.url == "/partner") {
-                    //         $state.go('.contract');
-                    //     }
-                    //     $rootScope.currentUrl = $state.current.url;
-                    // }
                 })
                 .state('/partner.information', {
                     url: '/information',
@@ -88,42 +84,47 @@ config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProv
                         }
                     }
                 })
-                // .state('/partner.information.contract', {
-                //     url: '/contract',
-                //     templateUrl: 'main/views/contract/contract.html',
-                //     controller: 'partnerCtrl'
-                // })
-
                 .state('/partner.activity', {
                     url: '/activity',
                     templateUrl: 'main/views/partner/partner.annualActivity.all.html',
                     controller: 'vnuCtrl'
                 })
                 .state('/partner.contract', {
-                    // url: '/contract',
-                    // templateUrl: 'main/views/partner/partner.contract.all.html',
-                    // controller: 'vnuCtrl'
                     url: '/contract',
                     views: {
                         '': {
-                            templateUrl: 'main/views/partner/partner.contract.all.html',
+                            templateUrl: 'main/views/contract/contract.all.html',
                             controller: 'vnuCtrl'
                         },
                         'contract@/partner.contract': {
-                            templateUrl: 'main/views/partner/partner.contract.html',
-                            // controller: 'partnerCtrl'
+                            templateUrl: 'main/views/partner/partner.contract.html'
                         },
                         'activity@/partner.contract': {
-                            templateUrl: 'main/views/partner/partner.annualActivity.html',
-                            // controller: 'partnerCtrl'
+                            templateUrl: 'main/views/partner/partner.annualActivity.html'
                         },
                         'information@/partner.contract': {
-                            templateUrl: 'main/views/partner/partner.information.html',
-                            // controller: 'partnerCtrl'
+                            templateUrl: 'main/views/partner/partner.information.html'
                         },
                         'contact@/partner.contract': {
-                            templateUrl: 'main/views/partner/partner.contact.html',
-                            // controller: 'partnerCtrl'
+                            templateUrl: 'main/views/partner/partner.contact.html'
+                        },
+                        'add_partner@/partner.contract': {
+                            templateUrl: 'main/views/partner/partner.add.html'
+                        },
+                        'add_contract@/partner.contract': {
+                            templateUrl: 'main/views/contract/contract.add.html'
+                        },
+                        'share_contract@/partner.contract': {
+                            templateUrl: 'main/views/contract/contract.share.html',
+                            controller: 'vnuCtrl'
+                        },
+                        'edit_contract@/partner.contract': {
+                            templateUrl: 'main/views/contract/contract.edit.html',
+                            // controller: 'vnuCtrl'
+                        },
+                        'insert_excel@/partner.contract': {
+                            templateUrl: 'main/views/contract/contract.insert_excel.html',
+                            // controller: 'vnuCtrl'
                         }
                     }
                 });

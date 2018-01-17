@@ -1,0 +1,398 @@
+<div class="alert alert-warning" ng-if="warning">
+    <strong>{{warningMessage}}</strong>
+</div>
+<div class="alert alert-success" ng-if="success">
+    <strong>{{successMessage}}</strong>
+</div>
+<div class="alert alert-danger" ng-if="danger">
+    <strong>{{errorMessage}}</strong>
+</div>
+<div>
+    <form>
+        <!-- <ul class="nav navbar-right panel_toolbox">
+                            <li><a data-toggle="collapse" data-target="#find_id" class="cursor"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                        </ul> -->
+        <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <angucomplete-alt id="findpartnerId" placeholder="Tìm kiếm đối tác" pause="100" selected-object="selectedFindPartnerId" local-data="allPartner" search-fields="partnerName" title-field="partnerName" minlength="1" input-class="form-control" input-changed="clearData()" />
+                <!-- <select class="form-control" ng-model="input.partnerId" ng-change="getPartnerContact(input.partnerId)">
+                                            <option ng-repeat="partner in allPartner" value="{{partner.id}}">
+                                                {{partner.partnerName}}
+                                            </option>
+                                        </select> -->
+            </div>
+        </div>
+        <div class="form-group" ng-if="selectedFindPartnerId != null || selectedFindPartnerId != undefined">
+            <label class="control-label col-md-4 col-sm-4 col-xs-12">
+                <!-- Đơn vị theo dõi:  -->
+            </label>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th> Tên đối tác </th>
+                            <th> Mã </th>
+                            <th> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <!-- <th scope="row">{{unitName.id}}</th> -->
+                            <td>{{selectedFindPartnerId.originalObject.partnerName}}</td>
+                            <td>
+                                {{selectedFindPartnerId.originalObject.id}}
+                            </td>
+                            <td>
+                                <input ng-model="selectedFindPartnerId.originalObject.id" ng-hide="selectedFindPartnerId.originalObject.id">
+                                <button style="border-radius:25px; border: 1px solid rgba(221,226,232,.49); box-shadow: inset 0 1px 0 rgba(0,0,0,.075);" ng-copy="selectedFindPartnerId.originalObject.id" class="btn">Copy</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <thead ng-if="selectedFindPartnerId.originalObject.partnerContacts.length != 0">
+                        <tr>
+                            <th> Đầu mối đối tác </th>
+                            <th> Mã </th>
+                            <th> </th>
+                        </tr>
+                    </thead>
+                    <tbody ng-if="selectedFindPartnerId.originalObject.partnerContacts.length != 0">
+                        <tr ng-repeat="partnerContact in selectedFindPartnerId.originalObject.partnerContacts">
+                            <!-- <th scope="row">{{unitName.id}}</th> -->
+                            <td>{{partnerContact.contactName}}</td>
+                            <td>
+                                {{partnerContact.id}}
+                            </td>
+                            <td>
+                                <input ng-model="partnerContact.id" ng-hide="partnerContact.id">
+                                <button style="border-radius:25px; border: 1px solid rgba(221,226,232,.49); box-shadow: inset 0 1px 0 rgba(0,0,0,.075);" ng-copy="partnerContact.id" class="btn">Copy</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <label class="control-label col-md-4 col-sm-4 col-xs-12">
+                <!-- Đơn vị theo dõi:  -->
+            </label>
+        </div>
+        <div ng-if="selectedFindPartnerId != null || selectedFindPartnerId != undefined">
+            <div class="form-group">
+                <!-- <label class="control-label col-md-3 col-sm-3 col-xs-12"></label> -->
+                <label class="control-label col-md-6 col-sm-6 col-xs-12 col-md-offset-3" data-toggle="collapse" data-target="#create_partner_contact" class="cursor">
+                    <i class="fa fa-plus"></i> Thêm người kí
+                </label>
+                <!-- <div class="col-md-6 col-sm-6 col-xs-12">
+                                <angucomplete-alt id="findpartner" placeholder="Tìm kiếm đối tác" pause="100" selected-object="selectedFindPartnerId" local-data="allPartner" search-fields="partnerName" title-field="partnerName" minlength="1" input-class="form-control" />
+                            </div> -->
+            </div>
+            <div class="form-horizontal form-label-left collapse" id="create_partner_contact">
+                <ul class="nav navbar-right panel_toolbox">
+                    <li><a data-toggle="collapse" data-target="#create_partner_contact" class="cursor"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                </ul>
+                <!-- <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên Đối tác: </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <select class="form-control" ng-model="input.partnerContact.partnerId">
+                                        <option value="" selected="selected">
+                                            -- Chọn Đối tác --
+                                        </option>
+                                        <option ng-repeat="partner in allPartner" value="{{partner.id}}">
+                                            {{partner.partnerName}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div> -->
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên liên hệ: </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" class="form-control col-md-10" ng-model="partnerContact.contactName" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Email: </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" class="form-control col-md-10" ng-model="partnerContact.email" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Phone: </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" class="form-control col-md-10" ng-model="partnerContact.phone" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Chức vụ: </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" class="form-control col-md-10" ng-model="partnerContact.about" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Skype: </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" class="form-control col-md-10" ng-model="partnerContact.skype" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-4">
+                        <button type="submit" class="btn btn-success" ng-click="createPartnerContact('contract', selectedFindPartnerId.originalObject.id)">Tạo</button>
+                    </div>
+                </div>
+                <div class="divider-dashed"></div>
+            </div>
+        </div>
+    </form>
+</div>
+<div id="step-1" ng-controller="nationCtrl">
+    <!-- {{recentCreatedPartner}} -->
+    <form>
+        <div class="form-group" ng-if="recentCreatedPartner != null || recentCreatedPartner != undefined">
+            <label class="control-label col-md-4 col-sm-4 col-xs-12">
+                <!-- Đơn vị theo dõi:  -->
+            </label>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th> Tên đối tác </th>
+                            <th> Mã </th>
+                            <th> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <!-- <th scope="row">{{unitName.id}}</th> -->
+                            <td>{{recentCreatedPartner.partnerName}}</td>
+                            <td>
+                                {{recentCreatedPartner.id}}
+                            </td>
+                            <td>
+                                <input ng-model="recentCreatedPartner.id" ng-hide="recentCreatedPartner.id">
+                                <button style="border-radius:25px; border: 1px solid rgba(221,226,232,.49); box-shadow: inset 0 1px 0 rgba(0,0,0,.075);" ng-copy="recentCreatedPartner.id" class="btn">Copy</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <thead ng-if="recentCreatedPartner.partnerContacts.length != 0">
+                        <tr>
+                            <th> Đầu mối đối tác </th>
+                            <th> Mã </th>
+                            <th> </th>
+                        </tr>
+                    </thead>
+                    <!-- <tbody ng-if="recentCreatedPartner.partnerContacts.length != 0">
+                                        <tr>
+                                            <td>{{recentCreatedPartner.partnerContacts[0].contactName}}</td>
+                                            <td>
+                                                {{recentCreatedPartner.partnerContacts[0].id}}
+                                            </td>
+                                            <td>
+                                                <input ng-model="recentCreatedPartner.partnerContacts[0].id" ng-hide="recentCreatedPartner.partnerContacts[0].id">
+                                                <button style="border-radius:25px; border: 1px solid rgba(221,226,232,.49); box-shadow: inset 0 1px 0 rgba(0,0,0,.075);" ng-copy="recentCreatedPartner.partnerContacts[0].id" class="btn">Copy</button>
+                                            </td>
+                                        </tr>
+                                    </tbody> -->
+                    <tbody ng-if="recentCreatedPartner.partnerContacts.length != 0">
+                        <tr ng-repeat="partnerContact in recentCreatedPartner.partnerContacts">
+                            <td>{{partnerContact.contactName}}</td>
+                            <td>
+                                {{partnerContact.id}}
+                            </td>
+                            <td>
+                                <input ng-model="partnerContact.id" ng-hide="partnerContact.id">
+                                <button style="border-radius:25px; border: 1px solid rgba(221,226,232,.49); box-shadow: inset 0 1px 0 rgba(0,0,0,.075);" ng-copy="partnerContact.id" class="btn">Copy</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <label class="control-label col-md-4 col-sm-4 col-xs-12">
+                <!-- Đơn vị theo dõi:  -->
+            </label>
+        </div>
+        <div ng-if="recentCreatedPartner != null || recentCreatedPartner != undefined">
+            <div class="form-group">
+                <!-- <label class="control-label col-md-3 col-sm-3 col-xs-12"></label> -->
+                <label class="control-label col-md-6 col-sm-6 col-xs-12 col-md-offset-3" data-toggle="collapse" data-target="#create_partner_contact" class="cursor">
+                    <i class="fa fa-plus"></i> Thêm người kí
+                </label>
+                <!-- <div class="col-md-6 col-sm-6 col-xs-12">
+                                <angucomplete-alt id="findpartner" placeholder="Tìm kiếm đối tác" pause="100" selected-object="selectedFindPartnerId" local-data="allPartner" search-fields="partnerName" title-field="partnerName" minlength="1" input-class="form-control" />
+                            </div> -->
+            </div>
+            <div class="form-horizontal form-label-left collapse" id="create_partner_contact">
+                <ul class="nav navbar-right panel_toolbox">
+                    <li><a data-toggle="collapse" data-target="#create_partner_contact" class="cursor"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                </ul>
+                <!-- <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên Đối tác: </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <select class="form-control" ng-model="input.partnerContact.partnerId">
+                                        <option value="" selected="selected">
+                                            -- Chọn Đối tác --
+                                        </option>
+                                        <option ng-repeat="partner in allPartner" value="{{partner.id}}">
+                                            {{partner.partnerName}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div> -->
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên liên hệ: </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" class="form-control col-md-10" ng-model="partnerContact.contactName" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Email: </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" class="form-control col-md-10" ng-model="partnerContact.email" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Phone: </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" class="form-control col-md-10" ng-model="partnerContact.phone" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Chức vụ: </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" class="form-control col-md-10" ng-model="partnerContact.about" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Skype: </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" class="form-control col-md-10" ng-model="partnerContact.skype" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-4">
+                        <button type="submit" class="btn btn-success" ng-click="createPartnerContact('contract', recentCreatedPartner.id)">Tạo</button>
+                    </div>
+                </div>
+                <div class="divider-dashed"></div>
+            </div>
+        </div>
+    </form>
+    <form class="form-horizontal form-label-left">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a data-toggle="collapse" data-target="#add_partner" class="cursor"><i class="fa fa-chevron-up"></i></a>
+            </li>
+        </ul>
+        <div class="form-group">
+            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12"></label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <!-- <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name" ng-model="input.phone"> -->
+                <h4 class="control-label col-md-7 col-xs-12">Thông tin cơ bản</h4>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên đối tác: <span class="required">*</span></label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="text" class="form-control col-md-10" ng-model="input.partnerName" ng-change="clearAngucompleteAltInput('findpartnerId')" required />
+            </div>
+        </div>
+        <div class="form-group" ng-init="getAllNation()">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Quốc Gia: <span class="required">*</span></label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <!-- <angucomplete-alt id="selectNation" placeholder="" pause="100" selected-object="selectedNation" local-data="allNations" search-fields="nationName" title-field="nationName" minlength="1" input-class="form-control" ng-model="input.nation" /> -->
+                <select class="form-control" ng-model="input.nationId">
+                    <option ng-repeat="nation in allNations" value="{{nation}}">
+                        {{nation.nationName}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Giám đốc: </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="input.director">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Ngày thành lập: </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="input.birthday">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Số điện thoại: </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name" ng-model="input.phone">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Địa chỉ: </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="input.address">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Email: </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <input class="date-picker form-control col-md-7 col-xs-12" type="text" ng-model="input.email">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Website: </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="text" id="last-name" name="last-name" class="form-control col-md-7 col-xs-12" ng-model="input.website">
+            </div>
+        </div>
+        <div class="divider-dashed"></div>
+        <div class="form-group">
+            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12"></label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <h4 class="control-label col-md-7 col-xs-12 cursor" data-toggle="collapse" data-target="#add_contact"> Thêm đầu mối đối tác</h4>
+            </div>
+        </div>
+        <div class="collapse" id="add_contact">
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a data-toggle="collapse" data-target="#add_contact" class="cursor"><i class="fa fa-chevron-up"></i></a>
+                </li>
+            </ul>
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên: <span class="required">*</span></label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <input type="text" class="form-control col-md-10" ng-model="input.partnerContact.contactName" required />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Chức vụ: </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <input type="text" class="form-control col-md-10" ng-model="input.partnerContact.about" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Email: </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <input type="text" class="form-control col-md-10" ng-model="input.partnerContact.email" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Phone: </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <input type="text" class="form-control col-md-10" ng-model="input.partnerContact.phone" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Skype: </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <input type="text" class="form-control col-md-10" ng-model="input.partnerContact.skype" />
+                </div>
+            </div>
+        </div>
+        <div class="divider-dashed"></div>
+        <div class="form-group">
+            <div class="col-md-8">
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-success" ng-click="createPartner()">Tạo</button>
+            </div>
+        </div>
+        <div class="divider-dashed"></div>
+    </form>
+</div>

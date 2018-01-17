@@ -1,0 +1,89 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" id="close_modal_edit"><span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title">Chỉnh sửa Thỏa thuận hợp tác</h4>
+    </div>
+    <div class="modal-body">
+        <div class="alert alert-danger" ng-if="danger_edit">
+            <strong>{{errorMessage}}</strong>
+        </div>
+        <div class="alert alert-success" ng-if="successdelete_edit">
+            <strong>{{successMessage}}</strong>
+        </div>
+        <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+            <div class="form-group">
+                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Nội dung hợp tác: </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <!-- <textarea class="form-control" rows="7" ng-model="editContractData.contentContract"></textarea> -->
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a data-toggle="collapse" data-target="#add_activity" class="cursor">
+                                                    Thêm hoạt động hợp tác
+                                                    <i class="fa fa-plus-circle"></i>
+                                                </a>
+                        </li>
+                    </ul>
+                    <!-- <input  class="form-control col-md-7 col-xs-12" type="text" ng-model="editContractData.cooperateActivityValue"> -->
+                    <textarea id="add_activity" class="form-control collapse" rows="7" ng-model="editContractData.cooperateActivityValue"></textarea>
+                    <br />
+                    <table class="table table-striped">
+                        <tbody>
+                            <tr ng-repeat="activity in editContractData.cooperateActivity" id="tr_activity_{{activity.id}}">
+                                <!-- <th scope="row">{{typeContract.id}}</th> -->
+                                <td id="activity{{activity.id}}">{{activity.cooperateActivity}}</td>
+                                <th>
+                                    <i id="edit_activity_{{activity.id}}" class="fa fa-edit cursor" ng-click="editActivity(activity.id); edit_activity=true"></i>
+                                    <i id="save_edit_activity_{{activity.id}}" class="fa fa-save cursor" ng-click="saveEditActivity(activity.id)" ng-if="edit_activity"></i>
+                                </th>
+                                <th><i class="fa fa-trash cursor" data-toggle="modal" data-target="#delete_activity" ng-click="confirmDelete(activity.id, activity.cooperateActivity)"></i></th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="middle-name" class="control-label col-md-4 col-sm-4 col-xs-12">Kinh phí: </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name" ng-model="editContractData.funding">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="middle-name" class="control-label col-md-4 col-sm-4 col-xs-12">Lưu ý: </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <textarea class="form-control" rows="8" cols="6" name="middle-name" ng-model="editContractData.notice"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="middle-name" class="control-label col-md-4 col-sm-4 col-xs-12">Kết quả hợp tác: </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name" ng-model="editContractData.result">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Ngày ký: </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <input type="date" class="form-control col-md-7 col-xs-12" ng-model="editContractData.startDate" value="{{editContractData.startDate}}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Ngày hết hiệu lựu: </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <input type="date" class="form-control col-md-7 col-xs-12" ng-model="editContractData.endDate" value="{{editContractData.endDate}}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-4 col-sm-4 col-xs-12">
+                    <b>Biên bản ghi nhớ:</b>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <input type="file" class="form-control col-md-7 col-xs-12 attach-file" name="file" id="contract-edit" accept=".doc, .docx, .pdf">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+        <button type="button" class="btn btn-primary" ng-click="editContract()">Lưu thay đổi</button>
+    </div>
+</div>
