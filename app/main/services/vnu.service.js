@@ -38,7 +38,8 @@
             getAllRolesAndSigningLevel: getAllRolesAndSigningLevel,
             createUniversityAccount: createUniversityAccount,
             getContractByRoleAndSigningLevel: getContractByRoleAndSigningLevel,
-            getUnitNameByRolesAndSigningLevel: getUnitNameByRolesAndSigningLevel
+            getUnitNameByRolesAndSigningLevel: getUnitNameByRolesAndSigningLevel,
+            renewContract: renewContract
         };
 
         function getUnitNameByRolesAndSigningLevel() {
@@ -205,10 +206,18 @@
             })
         }
 
+        function renewContract(data, contractId) {
+            return $http({
+                url: $rootScope.serverAdd + '/contract/' + contractId + '/renew',
+                method: 'POST',
+                data: data
+            })
+        }
+
         function editContract(data, contractId) {
             return $http({
                 url: $rootScope.serverAdd + '/contract/' + contractId + '/edit',
-                method: 'PUT',
+                method: 'POST',
                 data: data
             })
         }

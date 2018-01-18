@@ -29,8 +29,8 @@
                         // console.log(item.partner.nation.nationName);
                         return item;
                     }
-                } else if ($scope.contractType == "hop_dong"){
-                    if(item.funding != null && item.funding != ""){
+                } else if ($scope.contractType == "hop_dong") {
+                    if (item.funding != null && item.funding != "") {
                         return item;
                     }
                 }
@@ -191,6 +191,8 @@
                         //         unit.checked = false;
                         //     }
                         // })
+                        $scope.getAllContractShareOfContract(contractId);
+                        // $scope
                         $scope.getAllContract();
                     }, function(error) {
                         console.log(error);
@@ -910,22 +912,22 @@
 
             }
 
-            $scope.getAllRolesAndSigningLevel = function(){
+            $scope.getAllRolesAndSigningLevel = function() {
                 vnuService.getAllRolesAndSigningLevel()
-                    .then(function(response){
-                        console.log(response)
-                        $scope.allRolesAndSigningLevel = response.data;
-                    }, function(error){
+                    .then(function(response) {
+                        console.log(response);
+                        $rootScope.allRolesAndSigningLevel = response.data;
+                    }, function(error) {
                         console.log(error);
                     })
-                    
+
             }
 
-            $scope.createUniversityAccount = function(){
-                if($scope.rolesAndSigningLevel.rolesAndSigningLevel != "" && $scope.rolesAndSigningLevel.rolesAndSigningLevel != undefined 
-                    && $scope.rolesAndSigningLevel.userName != "" && $scope.rolesAndSigningLevel.userName != undefined
-                    && $scope.rolesAndSigningLevel.password != "" && $scope.rolesAndSigningLevel.password != undefined
-                    && $scope.rolesAndSigningLevel.universityName != "" && $scope.rolesAndSigningLevel.universityName != undefined){
+            $scope.createUniversityAccount = function() {
+                if ($scope.rolesAndSigningLevel.rolesAndSigningLevel != "" && $scope.rolesAndSigningLevel.rolesAndSigningLevel != undefined &&
+                    $scope.rolesAndSigningLevel.userName != "" && $scope.rolesAndSigningLevel.userName != undefined &&
+                    $scope.rolesAndSigningLevel.password != "" && $scope.rolesAndSigningLevel.password != undefined &&
+                    $scope.rolesAndSigningLevel.universityName != "" && $scope.rolesAndSigningLevel.universityName != undefined) {
                     $scope.request = {
                         rolesAndSigningLevel: $scope.rolesAndSigningLevel.rolesAndSigningLevel,
                         userName: $scope.rolesAndSigningLevel.userName,
@@ -933,7 +935,7 @@
                         universityName: $scope.rolesAndSigningLevel.universityName
                     };
                     vnuService.createUniversityAccount($scope.request)
-                        .then(function(){
+                        .then(function() {
                             $scope.alertSuccess("Tạo tài khoản thành công!", "");
                             $scope.rolesAndSigningLevel = {};
                             $scope.getAllRolesAndSigningLevel();
@@ -1033,7 +1035,7 @@
             $scope.getAllUetMan = function() {
                 vnuService.getAllUetManRolesAndSigningLevel()
                     .then(function(response) {
-                        console.log(response);
+                        // console.log(response);
                         $rootScope.allUetMan = response.data;
                         $scope.uetMan_currentPage = 1;
                         $scope.uetMan_totalItems = response.data.length;
@@ -1054,7 +1056,7 @@
             $scope.getAllUnitName = function() {
                 vnuService.getUnitNameByRolesAndSigningLevel()
                     .then(function(response) {
-                        console.log(response);
+                        // console.log(response);
                         $rootScope.allUnit = response.data;
                         $rootScope.allUnit_currentPage = 1;
                         $rootScope.allUnit_totalItems = response.data.length;
@@ -1077,7 +1079,7 @@
                 partnerService.getAllPartner()
                     .then(function(response) {
                         // NProgress.done();
-                        console.log(response.data)
+                        // console.log(response.data)
                         $rootScope.allPartner = response.data;
                         // $scope.allPartner.push({
                         //     partnerName: "Tạo mới",
@@ -1148,6 +1150,16 @@
 
             $scope.getAllContract = function() {
                 // NProgress.start();
+                var current = new Date();
+                // conso
+                var curr_date = current.getDate();
+                var curr_month = current.getMonth() + 1;
+                var curr_year = current.getFullYear();
+                current = new Date(curr_year + "-" + curr_month + "-" + curr_date);
+                // if ($rootScope.notifications == undefined) {
+                //     $rootScope.notifications = [];
+                // }
+                $rootScope.notifications = [];
                 if ($rootScope.role == 'UNIT') {
                     vnuService.getContractOfUnit()
                         .then(function(response) {
@@ -1157,9 +1169,78 @@
                             angular.forEach($scope.allContract, function(contract) {
                                 contract.checked = false;
                                 contract.contentContract = "";
-                                angular.forEach(contract.cooperateActivity, function(v) {
-                                    contract.contentContract = contract.contentContract + v.cooperateActivity + "<br />";
-                                });
+                                // angular.forEach(contract.cooperateActivity, function(v) {
+                                //     contract.contentContract = contract.contentContract + v.cooperateActivity + "<br />";
+                                // });
+
+                                if (contract.partner.birthday != null) {
+                                    var birthday = new Date(contract.partner.birthday);
+                                    var birthday_month = birthday.getMonth() + 1;
+                                    var birthday_date = birthday.getDate();
+                                    var current_birthday = new Date(curr_year + "-" + birthday_month + "-" + birthday_date);
+                                    if (curr_month == birthday_month) {
+                                        if (curr_date == birthday_date) {
+                                            function equals(element) {
+                                                return element.uid == "partnerId" + contract.partner.id;
+                                            }
+                                            var p = $rootScope.notifications.find(equals);
+                                            if (p == undefined) {
+                                                var noti = {
+                                                    message: "Hôm nay là ngày thành lập của " + contract.partner.partnerName,
+                                                    uid: "partnerId" + contract.partner.id
+                                                }
+                                                $rootScope.notifications.push(noti);
+                                            }
+                                        }
+                                    }
+                                    if (current.getTime() / 1000 > (current_birthday.getTime() / 1000 - 604800) &&
+                                        current.getTime() / 1000 < current_birthday.getTime() / 1000) {
+                                        console.log(contract.partner.partnerName)
+
+                                        function equals(element) {
+                                            return element.uid == "partnerId" + contract.partner.id;
+                                        }
+                                        var p = $rootScope.notifications.find(equals);
+                                        if (p == undefined) {
+                                            var noti = {
+                                                message: "Sắp đến ngày thành lập của " + contract.partner.partnerName + ". Ngày " + birthday_date + "-" + birthday_month + "-" + curr_year,
+                                                uid: "partnerId" + contract.partner.id
+                                            }
+                                            $rootScope.notifications.push(noti);
+                                        }
+                                        // var noti = {
+                                        //     message: "Sắp đến ngày thành lập của " + contract.partner.partnername + ". Ngày " + current_birthday,
+                                        // }
+                                    }
+                                    // if()
+                                }
+                                if (contract.renew == true) {
+                                    if (contract.endDate != null) {
+                                        var end_date = new Date(contract.endDate);
+                                        var end_date_month = end_date.getMonth() + 1;
+                                        var end_date_date = end_date.getDate();
+                                        var end_date_year = end_date.getFullYear();
+                                        var current_end_date = new Date(curr_year + "-" + end_date_month + "-" + end_date_date);
+                                        if (current.getTime() / 1000 >= (end_date.getTime() / 1000 - 604800) &&
+                                            current.getTime() / 1000 <= end_date.getTime() / 1000) {
+                                            // console.log(contract)
+
+                                            function equals(element) {
+                                                return element.uid == "contractId" + contract.id;
+                                            }
+                                            var c = $rootScope.notifications.find(equals);
+                                            if (c == undefined) {
+                                                var noti = {
+                                                    message: "Hoạt động hợp tác của " + contract.partner.partnerName + " sắp hết hạn. Ngày " + end_date_date + "-" + end_date_month + "-" + end_date_year,
+                                                    uid: "contractId" + contract.id,
+                                                    contract: contract
+                                                }
+                                                $rootScope.notifications.push(noti);
+                                            }
+                                        }
+
+                                    }
+                                }
                                 // console.log(contract.contentContract);
                             });
                             $scope.currentPage = 1;
@@ -1177,7 +1258,7 @@
                         }, function(error) {
                             console.log(error);
                         })
-                } else if ($rootScope.role == 'ADMIN_UNIT') {
+                } else if ($rootScope.role == 'ADMIN_UNIT' || $rootScope.role == 'ADMIN_VNU') {
                     vnuService.getContractByRoleAndSigningLevel()
                         .then(function(response) {
                             // NProgress.done();
@@ -1186,11 +1267,80 @@
                             angular.forEach($scope.allContract, function(contract) {
                                 contract.checked = false;
                                 contract.contentContract = "";
-                                angular.forEach(contract.cooperateActivity, function(v) {
-                                    contract.contentContract = contract.contentContract + v.cooperateActivity + "<br />";
-                                });
-                                // console.log(contract.contentContract);
+                                // angular.forEach(contract.cooperateActivity, function(v) {
+                                //     contract.contentContract = contract.contentContract + v.cooperateActivity + "<br />";
+                                // });
+                                // console.log(contract.contentContract); 604800 seconds
+                                if (contract.partner.birthday != null) {
+                                    var birthday = new Date(contract.partner.birthday);
+                                    var birthday_month = birthday.getMonth() + 1;
+                                    var birthday_date = birthday.getDate();
+                                    var current_birthday = new Date(curr_year + "-" + birthday_month + "-" + birthday_date);
+                                    if (curr_month == birthday_month) {
+                                        if (curr_date == birthday_date) {
+                                            function equals(element) {
+                                                return element.uid == "partnerId" + contract.partner.id;
+                                            }
+                                            var p = $rootScope.notifications.find(equals);
+                                            if (p == undefined) {
+                                                var noti = {
+                                                    message: "Hôm nay là ngày thành lập của " + contract.partner.partnerName,
+                                                    uid: "partnerId" + contract.partner.id
+                                                }
+                                                $rootScope.notifications.push(noti);
+                                            }
+                                        }
+                                    }
+                                    if (current.getTime() / 1000 > (current_birthday.getTime() / 1000 - 604800) &&
+                                        current.getTime() / 1000 < current_birthday.getTime() / 1000) {
+                                        console.log(contract.partner.partnerName)
+
+                                        function equals(element) {
+                                            return element.uid == "partnerId" + contract.partner.id;
+                                        }
+                                        var p = $rootScope.notifications.find(equals);
+                                        if (p == undefined) {
+                                            var noti = {
+                                                message: "Sắp đến ngày thành lập của " + contract.partner.partnerName + ". Ngày " + birthday_date + "-" + birthday_month + "-" + curr_year,
+                                                uid: "partnerId" + contract.partner.id
+                                            }
+                                            $rootScope.notifications.push(noti);
+                                        }
+                                        // var noti = {
+                                        //     message: "Sắp đến ngày thành lập của " + contract.partner.partnername + ". Ngày " + current_birthday,
+                                        // }
+                                    }
+                                    // if()
+                                }
+                                if (contract.renew == true) {
+                                    if (contract.endDate != null) {
+                                        var end_date = new Date(contract.endDate);
+                                        var end_date_month = end_date.getMonth() + 1;
+                                        var end_date_date = end_date.getDate();
+                                        var end_date_year = end_date.getFullYear();
+                                        var current_end_date = new Date(curr_year + "-" + end_date_month + "-" + end_date_date);
+                                        if (current.getTime() / 1000 >= (end_date.getTime() / 1000 - 604800) &&
+                                            current.getTime() / 1000 <= end_date.getTime() / 1000) {
+                                            // console.log(contract)
+
+                                            function equals(element) {
+                                                return element.uid == "contractId" + contract.id;
+                                            }
+                                            var c = $rootScope.notifications.find(equals);
+                                            if (c == undefined) {
+                                                var noti = {
+                                                    message: "Hoạt động hợp tác của " + contract.partner.partnerName + " sắp hết hạn. Ngày " + end_date_date + "-" + end_date_month + "-" + end_date_year,
+                                                    uid: "contractId" + contract.id,
+                                                    contract: contract
+                                                }
+                                                $rootScope.notifications.push(noti);
+                                            }
+                                        }
+
+                                    }
+                                }
                             });
+                            console.log($rootScope.notifications);
                             $scope.currentPage = 1;
                             $scope.totalItems = response.data.length;
                             $scope.entryLimit = 10; // items per page
@@ -1278,9 +1428,9 @@
                 // attachFileAdd = "http://www.pdf995.com/samples/pdf.pdf";
                 $rootScope.modalFileLink = $sce.trustAs($sce.RESOURCE_URL, "https://docs.google.com/gview?url=" + $rootScope.srcAdd + attachFileAdd + "&embedded=true");
             }
-
             $scope.$watch('selectedPartner', function() {
                 console.log($scope.selectedPartner);
+                // console.log($state.current);
                 // if()
                 // angular.forEach($rootScope.allUnit, function(c) {
                 //     c.checked = false;
@@ -1326,9 +1476,9 @@
             }
 
             $scope.createContract = function() {
-
                 var count = 0;
                 $scope.unitNames = [];
+                $scope.universities = [];
                 $scope.uetManList = [];
                 // console.log($rootScope.allUnit);
                 if ($scope.Partner != undefined) {
@@ -1347,19 +1497,32 @@
                 // if($scope.input.partnerId == -1){
                 //     $scope.input.partnerContactId
                 // }
-                if ($scope.input.partnerId != null && $scope.input.partnerId != undefined 
-                    && $scope.input.partnerContactId != null && $scope.input.partnerContactId != undefined 
+                if ($scope.input.partnerId != null && $scope.input.partnerId != undefined &&
+                    $scope.input.partnerContactId != null && $scope.input.partnerContactId != undefined
                     // $scope.input.unitNameId != null && $scope.input.unitNameId != undefined &&
                     // $scope.input.uetManId != null && $scope.input.uetManId != undefined &&
-                    && $scope.input.contentContract != null && $scope.input.contentContract != undefined) {
+                    &&
+                    $scope.input.contentContract != null && $scope.input.contentContract != undefined) {
                     // NProgress.start();
-                    angular.forEach($rootScope.allUnit, function(unit) {
-                        if (unit.checked == true) {
-                            $scope.unitNames.push(unit);
-                        }
-                    })
+                    if ($rootScope.role != "ADMIN_VNU") {
+                        angular.forEach($rootScope.allUnit, function(unit) {
+                            if (unit.checked == true) {
+                                $scope.unitNames.push(unit);
+                            }
+                        })
+                    } else {
+                        console.log($rootScope.allRolesAndSigningLevel)
+                        angular.forEach($rootScope.allRolesAndSigningLevel, function(university) {
+                            if (university.checked == true) {
+                                $scope.universities.push(university);
+                            }
+                        })
+                    }
                     if ($scope.unitNames.length != 0) {
                         $scope.input.unitNames = $scope.unitNames;
+                    }
+                    if ($scope.universities.length != 0) {
+                        $scope.input.rolesAndSigningLevelList = $scope.universities;
                     }
                     //dùng để tích chọn uetman
                     // angular.forEach($rootScope.allUetMan, function(uetMan) {
@@ -1385,6 +1548,11 @@
                     $scope.input.contentContract = $scope.input.contentContract.replace(/(?:\r\n|\r|\n)/g, '<br />');
                     if ($scope.input.notice != null && $scope.input.notice != undefined && $scope.input.notice != "") {
                         $scope.input.notice = $scope.input.notice.replace(/(?:\r\n|\r|\n)/g, '<br />');
+                    }
+                    if ($scope.input.renew == undefined || $scope.input.renew == "false") {
+                        $scope.input.renew = false;
+                    } else if ($scope.input.renew == "true") {
+                        $scope.input.renew = true;
                     }
                     // if ($scope.input.contactPoint != null && $scope.input.contactPoint != undefined && $scope.input.contactPoint != "") {
                     //     $scope.input.contactPoint = $scope.input.contactPoint.replace(/(?:\r\n|\r|\n)/g, '<br />');
@@ -1426,6 +1594,54 @@
                 }
             }
 
+            $scope.setRenewContract = function(contract) {
+                console.log(contract)
+                $rootScope.renewContractData = contract;
+                if ($rootScope.renewContractData.startDate != null) {
+                    $rootScope.renewContractData.startDate = new Date($rootScope.renewContractData.startDate)
+                }
+
+                if ($rootScope.renewContractData.endDate != null) {
+                    $rootScope.renewContractData.endDate = new Date($rootScope.renewContractData.endDate)
+                }
+                if ($rootScope.renewContractData.renew == null || $rootScope.renewContractData.renew == false) {
+                    $rootScope.renewContractData.renew = "false";
+                } else if ($rootScope.renewContractData.renew == true) {
+                    $rootScope.renewContractData.renew = "true";
+                }
+                if ($rootScope.renewContractData.notice != null && $rootScope.renewContractData.notice != undefined && $rootScope.renewContractData.notice != "") {
+                    $rootScope.renewContractData.notice = $rootScope.renewContractData.notice.replace(/<br\s*[\/]?>/g, '\r\n');
+                }
+                if ($rootScope.renewContractData.contactPoint != null) {
+                    $rootScope.renewContractData.contactPointId = $rootScope.renewContractData.contactPoint.id;
+                    $rootScope.renewContractData.contactPoint = {};
+                }
+            }
+
+            $scope.renewContract = function() {
+                console.log($rootScope.renewContractData);
+                $("#close_modal_renew").trigger('click');
+                if ($rootScope.renewContractData.renew == undefined || $rootScope.renewContractData.renew == "false") {
+                    $rootScope.renewContractData.renew = false;
+                } else if ($rootScope.renewContractData.renew == "true") {
+                    $rootScope.renewContractData.renew = true;
+                }
+                if ($rootScope.renewContractData.notice != null && $rootScope.renewContractData.notice != undefined) {
+                    $rootScope.renewContractData.notice = $rootScope.renewContractData.notice.replace(/(?:\r\n|\r|\n)/g, '<br />');
+                }
+                vnuService.renewContract($rootScope.renewContractData, $rootScope.renewContractData.id)
+                    .then(function(response) {
+                        $rootScope.renewContractData = {};
+                        console.log("Renew hoạt động hợp tác thành công!");
+                        $scope.alertSuccess("Renew hoạt động hợp tác thành công!", "");
+                        location.reload();
+                        $scope.getAllContract();
+
+                    }, function(error) {
+                        console.log(error)
+                    })
+            }
+
             $scope.setEditContract = function(contract) {
                 $scope.editContractData = contract;
                 // $scope.editContractData.startDate = null;
@@ -1441,10 +1657,20 @@
                 if ($scope.editContractData.endDate != null) {
                     $scope.editContractData.endDate = new Date($scope.editContractData.endDate)
                 }
+                if ($scope.editContractData.renew == null || $scope.editContractData.renew == false) {
+                    $scope.editContractData.renew = "false";
+                } else if ($scope.editContractData.renew == true) {
+                    $scope.editContractData.renew = "true";
+                }
+                if ($scope.editContractData.contactPoint != null) {
+                    $scope.editContractData.contactPointId = $scope.editContractData.contactPoint.id;
+                    $scope.editContractData.contactPoint = {};
+                }
             }
 
             $scope.editContract = function() {
                 // NProgress.start();
+                $("#close_modal_edit").trigger('click');
                 if ($scope.editContractData.notice != null && $scope.editContractData.notice != undefined) {
                     $scope.editContractData.editNotice = 'false';
                     // if($scope.editContractData.notice)
@@ -1472,19 +1698,30 @@
                     $scope.editContractData.cooperateActivityValue = $scope.editContractData.cooperateActivityValue.replace(/(?:\r\n|\r|\n)/g, '<br />');
                     // console.log($scope.editContractData.cooperateActivityValue);
                 }
+                if ($scope.editContractData.renew == undefined || $scope.editContractData.renew == "false") {
+                    $scope.editContractData.renew = false;
+                } else if ($scope.editContractData.renew == "true") {
+                    $scope.editContractData.renew = true;
+                }
 
                 vnuService.editContract($scope.editContractData, $scope.editContractData.id)
                     .then(function() {
                         // NProgress.start();
-                        $("#close_modal_edit").trigger('click');
                         $('#contract-edit').val(null);
                         sessionStorage.setItem("notice", "");
                         $scope.alertSuccess("Sửa hoạt động hợp tác thành công!", "");
                         $scope.getAllContract();
+                        $timeout(function() {
+                            $scope.apply();
+                        });
                     }, function(error) {
                         // NProgress.start();
                         console.log(error);
                     })
+                if ($scope.editContractData.notice != null && $scope.editContractData.notice != undefined && $scope.editContractData.notice != "") {
+                    // sessionStorage.setItem("notice", $scope.editContractData.notice);
+                    $scope.editContractData.notice = $scope.editContractData.notice.replace(/<br\s*[\/]?>/g, '\r\n');
+                }
             }
 
             $scope.setNoticesHistory = function(notices) {

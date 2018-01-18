@@ -1,8 +1,8 @@
 <div class="modal-content">
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" id="close_modal_edit"><span aria-hidden="true">×</span>
+        <button type="button" class="close" data-dismiss="modal" id="close_modal_renew"><span aria-hidden="true">×</span>
         </button>
-        <h4 class="modal-title">Chỉnh sửa Thỏa thuận hợp tác</h4>
+        <h4 class="modal-title">Renew Thỏa thuận hợp tác {{renewContractData.partner.partnerName}}</h4>
     </div>
     <div class="modal-body">
         <div class="alert alert-danger" ng-if="danger_edit">
@@ -15,8 +15,8 @@
             <div class="form-group">
                 <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Đầu mối liên hệ (đối tác): </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                    <select class="form-control" ng-model="editContractData.contactPointId">
-                        <option ng-repeat="contact in editContractData.partner.partnerContacts" value="{{contact.id}}">
+                    <select class="form-control" ng-model="renewContractData.contactPointId">
+                        <option ng-repeat="contact in renewContractData.partner.partnerContacts" value="{{contact.id}}" ng-selected="{{contact.id == renewContractData.contactPointId}}">
                             {{contact.contactName}} - {{contact.email}}
                         </option>
                         <option value="-1"> - Tạo mới - </option>
@@ -24,36 +24,36 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group" ng-if="editContractData.contactPointId=='-1'">
+            <div class="form-group" ng-if="renewContractData.contactPointId=='-1'">
                 <div>
                     <div class="form-group">
                         <label class="control-label col-md-4 col-sm-4 col-xs-12">Tên: <span class="required">*</span></label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" class="form-control col-md-10" ng-model="editContractData.contactPoint.contactName" required />
+                            <input type="text" class="form-control col-md-10" ng-model="renewContractData.contactPoint.contactName" required />
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-4 col-sm-4 col-xs-12">Chức vụ: </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" class="form-control col-md-10" ng-model="editContractData.contactPoint.about" />
+                            <input type="text" class="form-control col-md-10" ng-model="renewContractData.contactPoint.about" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-4 col-sm-4 col-xs-12">Email: </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" class="form-control col-md-10" ng-model="editContractData.contactPoint.email" />
+                            <input type="text" class="form-control col-md-10" ng-model="renewContractData.contactPoint.email" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-4 col-sm-4 col-xs-12">Phone: </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" class="form-control col-md-10" ng-model="editContractData.contactPoint.phone" />
+                            <input type="text" class="form-control col-md-10" ng-model="renewContractData.contactPoint.phone" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-4 col-sm-4 col-xs-12">Skype: </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" class="form-control col-md-10" ng-model="editContractData.contactPoint.skype" />
+                            <input type="text" class="form-control col-md-10" ng-model="renewContractData.contactPoint.skype" />
                         </div>
                     </div>
                 </div>
@@ -61,21 +61,21 @@
             <div class="form-group">
                 <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Nội dung hợp tác: </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                    <!-- <textarea class="form-control" rows="7" ng-model="editContractData.contentContract"></textarea> -->
+                    <!-- <textarea class="form-control" rows="7" ng-model="renewContractData.contentContract"></textarea> -->
                     <ul class="nav navbar-right panel_toolbox">
                         <li>
-                            <a data-toggle="collapse" data-target="#add_activity" class="cursor">
+                            <a data-toggle="collapse" data-target="#add_activity_renew" class="cursor">
                                                     Thêm hoạt động hợp tác
                                                     <i class="fa fa-plus-circle"></i>
                                                 </a>
                         </li>
                     </ul>
-                    <!-- <input  class="form-control col-md-7 col-xs-12" type="text" ng-model="editContractData.cooperateActivityValue"> -->
-                    <textarea id="add_activity" class="form-control collapse" rows="7" ng-model="editContractData.cooperateActivityValue"></textarea>
+                    <!-- <input  class="form-control col-md-7 col-xs-12" type="text" ng-model="renewContractData.cooperateActivityValue"> -->
+                    <textarea id="add_activity_renew" class="form-control collapse" rows="7" ng-model="renewContractData.cooperateActivityValue"></textarea>
                     <br />
                     <table class="table table-striped">
                         <tbody>
-                            <tr ng-repeat="activity in editContractData.cooperateActivity" id="tr_activity_{{activity.id}}">
+                            <tr ng-repeat="activity in renewContractData.cooperateActivity" id="tr_activity_{{activity.id}}">
                                 <!-- <th scope="row">{{typeContract.id}}</th> -->
                                 <td id="activity{{activity.id}}">{{activity.cooperateActivity}}</td>
                                 <th>
@@ -91,36 +91,36 @@
             <div class="form-group">
                 <label for="middle-name" class="control-label col-md-4 col-sm-4 col-xs-12">Kinh phí: </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                    <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name" ng-model="editContractData.funding">
+                    <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name" ng-model="renewContractData.funding">
                 </div>
             </div>
             <div class="form-group">
                 <label for="middle-name" class="control-label col-md-4 col-sm-4 col-xs-12">Lưu ý: </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                    <textarea class="form-control" rows="8" cols="6" name="middle-name" ng-model="editContractData.notice"></textarea>
+                    <textarea class="form-control" rows="8" cols="6" name="middle-name" ng-model="renewContractData.notice"></textarea>
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Tự động renew: </label>
-                <label class="control-label col-md-2 col-sm-1 col-xs-12" for="co">Có  <input type="radio" name="renew" id="co" value="true" ng-model="editContractData.renew"></label>
-                <label class="control-label col-md-2 col-sm-1 col-xs-12" for="khong">Không  <input type="radio" name="renew" id="khong" value="false" ng-model="editContractData.renew"></label>
+                <label class="control-label col-md-2 col-sm-1 col-xs-12" for="co">Có  <input type="radio" name="renew" id="co" value="true" ng-model="renewContractData.renew"></label>
+                <label class="control-label col-md-2 col-sm-1 col-xs-12" for="khong">Không  <input type="radio" name="renew" id="khong" value="false" ng-model="renewContractData.renew"></label>
             </div>
             <!-- <div class="form-group">
                 <label for="middle-name" class="control-label col-md-4 col-sm-4 col-xs-12">Kết quả hợp tác: </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                    <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name" ng-model="editContractData.result">
+                    <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name" ng-model="renewContractData.result">
                 </div>
             </div> -->
             <div class="form-group">
                 <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Ngày ký: </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                    <input type="date" class="form-control col-md-7 col-xs-12" ng-model="editContractData.startDate" value="{{editContractData.startDate}}">
+                    <input type="date" class="form-control col-md-7 col-xs-12" ng-model="renewContractData.startDate" value="{{renewContractData.startDate}}">
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Ngày hết hiệu lựu: </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                    <input type="date" class="form-control col-md-7 col-xs-12" ng-model="editContractData.endDate" value="{{editContractData.endDate}}">
+                    <input type="date" class="form-control col-md-7 col-xs-12" ng-model="renewContractData.endDate" value="{{renewContractData.endDate}}">
                 </div>
             </div>
             <div class="form-group">
@@ -135,6 +135,6 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-        <button type="button" class="btn btn-primary" ng-click="editContract()">Lưu thay đổi</button>
+        <button type="button" class="btn btn-primary" ng-click="renewContract()">Renew</button>
     </div>
 </div>

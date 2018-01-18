@@ -23,6 +23,15 @@
             <div class="col-sm-2">
             </div>
         </div>
+        <div class="col-sm-12" ng-show="listContract.length == 0 && selectedPartner_qlcs != undefined"">
+            <div class="col-sm-3">
+            </div>
+            <div class="col-sm-6">
+                <p class="text-center"> Không có hoạt động nào </p>
+            </div>
+            <div class="col-sm-3">
+            </div>
+        </div>
         <div class="col-sm-12" ng-show="listContract.length != 0">
             <table class="table table-striped">
                 <thead>
@@ -39,9 +48,25 @@
                 <tbody>
                     <tr ng-repeat="contract in listContract" ng-click="selectContractQlcs(contract)" class="cursor">
                         <!-- <th scope="row">{{unitName.id}}</th> -->
-                        <td ng-bind-html="contract.contentContract"></td>
-                        <td>{{contract.uetMan.uetManName}}</td>
-                        <td>{{contract.partnerContact.contactName}}</td>
+                        <td>
+                            <a ng-repeat="act in contract.cooperateActivity">
+                                {{act.cooperateActivity}}
+                            </a>
+                        </td>
+                        <td>
+                            <a ng-repeat="u in contract.uetMan">
+                                {{u.about + ' - '}}{{u.uetManName}}
+                                <br>
+                            </a>
+                        </td>
+                        <td>
+                            <a ng-if="contract.partnerContact.about != null">
+                                {{contract.partnerContact.about + ' - '}}
+                            </a>
+                            <a>
+                                {{contract.partnerContact.contactName}}
+                            </a>
+                        </td>
                         <td id="">{{contract.startDate | date:'dd/MM/yyyy'}}</td>
                         <td id="">{{contract.endDate | date:'dd/MM/yyyy'}}</td>
                         <td>

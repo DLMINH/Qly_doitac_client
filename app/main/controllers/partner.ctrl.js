@@ -390,6 +390,10 @@
                     //     nationId: $scope.nation_.id,
                     //     partnerName: $scope.input.partnerName
                     // }
+
+                    if ($scope.input.birthday) {
+                        $scope.input.birthday = $scope.input.birthday.getTime();
+                    }
                     console.log($scope.input);
                     partnerService.createPartner($scope.input)
                         .then(function(response) {
@@ -518,6 +522,9 @@
             $scope.editPartner = function(partner, flag, contract) {
                 console.log(contract);
                 $scope.Partner = partner;
+                if ($scope.Partner.birthday != null) {
+                    $scope.Partner.birthday = new Date($scope.Partner.birthday)
+                }
                 $scope.edit = flag;
                 $scope.showContact();
                 $scope.getAllAnnualActivityOfContract(contract.id);
@@ -532,7 +539,7 @@
             }
 
             $scope.editPartnerInfo = function(modal) {
-                // console.log($scope.Partner);
+                console.log($scope.Partner);
                 $scope.Partner.partnerId = $scope.Partner.id;
                 // $scope.Partner.partnerInfo.nationId = $scope.Partner.id;
                 partnerService.editPartnerInfo($scope.Partner)

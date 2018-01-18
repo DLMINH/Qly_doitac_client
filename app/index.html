@@ -107,40 +107,30 @@
                                 </ul>
                             </li>
                             <li role="presentation" class="dropdown">
-                                <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
-                                    <i class="fa fa-envelope-o"></i>
-                                    <span class="badge bg-green">6</span>
+                                <a class="dropdown-toggle info-number cursor" data-toggle="dropdown" aria-expanded="true">
+                                    <i class="fa fa-bell-o"></i>
+                                    <span class="badge bg-red" ng-if="notifications.length != 0">{{notifications.length}}</span>
                                 </a>
                                 <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
-                                    <li>
+                                    <li ng-repeat="noti in notifications | orderBy:'-uid'">
                                         <a>
-                                            <span>
-                          <span>John Smith</span>
-                                            <span class="time">3 mins ago</span>
-                                            </span>
+                                            <!-- <span>
+                                                <span>
+                                                    John Smith
+                                                </span>
+                                                <span class="time">
+                                                    3 mins ago
+                                                </span>
+                                            </span> -->
                                             <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a>
-                                            <span>
-                          <span>John Smith</span>
-                                            <span class="time">3 mins ago</span>
+                                            {{noti.message}}
                                             </span>
-                                            <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
+                                            <span class="pull-right" ng-if="noti.contract != undefined">
+                                                <br>
+                                                <button type="button" class="btn-default" data-dismiss="modal">Bỏ qua</button>
+                                                <button ng-controller="vnuCtrl" type="button" class="btn-primary" ng-click="setRenewContract(noti.contract)" data-toggle="modal" data-target="#renew_contract">Renew</button>
+                                            </span>
                                         </a>
-                                    </li>
-                                    <li>
-                                        <div class="text-center">
-                                            <a>
-                                                <strong>See All Alerts</strong>
-                                                <i class="fa fa-angle-right"></i>
-                                            </a>
-                                        </div>
                                     </li>
                                 </ul>
                             </li>

@@ -98,34 +98,59 @@
                             <!-- <th> -->
                             <!-- <input type="checkbox" id="check-all" class="flat"> -->
                             <!-- </th> -->
-                            <th class="column-title">Tên cơ quan hợp tác/
-                                <br>Người ký (Đối tác)</th>
+                            <th class="column-title"><p class="text-center">Tên cơ quan hợp tác</p>
+                                <p class="text-center">Người ký (Đối tác)</p></th>
                             <!-- <th class="column-title">Quốc Gia</th> -->
                             <!-- <th class="column-title">Người ký ({{user.rolesAndSigningLevel.name}})</th> -->
-                            <th class="column-title">Đơn vị theo dõi/
-                                <br>Người ký ({{user.rolesAndSigningLevel.name}})
-                                <br>Cấp ký kết
+                            <th class="column-title">
+                                <p class="text-center">Đơn vị theo dõi</p>
+                                <p class="text-center">Người ký ({{user.rolesAndSigningLevel.name}})</p>
+                                <p class="text-center">Cấp ký kết</p>
                             </th>
                             <!-- <th class="column-title">Người ký (Đối tác)</th> -->
-                            <th class="column-title">Nội dung hợp tác chính</th>
+                            <th class="column-title"><p class="text-center">Nội dung hợp tác chính</p></th>
                             <!-- <th class="column-title">Kinh phí</th> -->
                             <th class="column-title">
-                                Ngày ký
-                                <br>
-                                Ngày hết hiệu lực
+                                <p class="text-center">Ngày ký</p>
+                                <!-- <br> -->
+                                <p class="text-center">Ngày hết hiệu lực</p>
                             </th>
                             <!-- <th class="column-title">Ngày hết hiệu lực</th> -->
-                            <th class="column-title">Đầu mối liên hệ</th>
-                            <th class="column-title">Lưu ý</th>
-                            <th class="column-title">Biên bản</th>
-                            <th class="column-title">Sửa</th>
-                            <th class="column-title">Xóa</th>
+                            <th class="column-title"><p class="text-center">Đầu mối liên hệ</p></th>
+                            <th class="column-title"><p class="text-center">Lưu ý</p></th>
+                            <th class="column-title"><p class="text-center">Renew</p></th>
+                            <th class="column-title"><p class="text-center">Biên bản</p></th>
+                            <th class="column-title"><p class="text-center">Sửa</p></th>
+                            <th class="column-title"><p class="text-center">Xóa</p></th>
                             <th class="column-title">
                                 <i class="fa fa-chevron-down cursor" data-toggle="collapse" data-target="#export_xcel"></i>
                             </th>
                             <!-- <th class="column-title no-link last"><span class="nobr">Action</span> -->
                             <!-- </th> -->
                         </tr>
+                        <!-- <tr class="headings">
+                            <th class="column-title">Tên cơ quan hợp tác/
+                                <br>Người ký (Đối tác)</th>
+                            <th class="column-title">Đơn vị theo dõi/
+                                <br>Người ký ({{user.rolesAndSigningLevel.name}})
+                                <br>Cấp ký kết
+                            </th>
+                            <th class="column-title">Nội dung hợp tác chính</th>
+                            <th class="column-title">
+                                Ngày ký
+                                <br>
+                                Ngày hết hiệu lực
+                            </th>
+                            <th class="column-title">Đầu mối liên hệ</th>
+                            <th class="column-title">Lưu ý</th>
+                            <th class="column-title">Renew</th>
+                            <th class="column-title">Biên bản</th>
+                            <th class="column-title">Sửa</th>
+                            <th class="column-title">Xóa</th>
+                            <th class="column-title">
+                                <i class="fa fa-chevron-down cursor" data-toggle="collapse" data-target="#export_xcel"></i>
+                            </th>
+                        </tr> -->
                     </thead>
                     <tbody>
                         <tr class="even pointer" ng-repeat="contract in filtered = allContract | filter : search | filter : filterContract | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit | orderBy:'partner.partnerName'">
@@ -137,8 +162,6 @@
                                 <a ng-if="contract.partnerContact.about != null">{{contract.partnerContact.about + ' - '}}</a>
                                 <a>
                                     {{contract.partnerContact.contactName}}
-                                    <!-- <br />  -->
-                                    <!-- {{contract.partnerContact.about}} -->
                                 </a>
                             </td>
                             <td>
@@ -146,10 +169,12 @@
                                     {{u.unitName.unitName}}
                                     <br>
                                 </a>
+                                <br>
                                 <a ng-repeat="u in contract.uetMan">
                                     {{u.about + ' - '}}{{u.uetManName}}
                                     <br>
                                 </a>
+                                <br>
                                 <a>
                                     {{contract.rolesAndSigningLevel.name}}
                                     <br>
@@ -164,8 +189,14 @@
                             </td> -->
                             <!-- <td>{{contract.partnerContact.contactName}}
                                 <br /> {{contract.partnerContact.about}}</td> -->
-                            <td>
+                            <!-- <td>
                                 <a ng-bind-html="contract.contentContract" class="cursor" data-toggle="modal" data-target="#cooperate_activity_detail" ng-click="setCooperateActivityDetail(contract)"></a>
+                            </td> -->
+                            <td class="cursor" data-toggle="modal" data-target="#cooperate_activity_detail" ng-click="setCooperateActivityDetail(contract)">
+                                <a ng-repeat="act in contract.cooperateActivity">
+                                    {{act.cooperateActivity}}
+                                    <br>
+                                </a>
                             </td>
                             <!-- <td class="">{{contract.funding}}</td> -->
                             <td>
@@ -176,15 +207,18 @@
                             <!-- <td>{{contract.endDate | date:'dd/MM/yyyy'}}</td> -->
                             <!-- <td class="">{{contract.result}}</td> -->
                             <td>
-                                <a ng-if="contract.contactPoint.contactName != null">{{contract.contactPoint.contactName}}</a>
-                                <a ng-if="contract.contactPoint.email != null">{{contract.contactPoint.email}}</a>
-                                <a ng-if="contract.contactPoint.phone != null">{{contract.contactPoint.phone}}</a>
+                                <p class="text-center" ng-if="contract.contactPoint.contactName != null">{{contract.contactPoint.contactName}}</p>
+                                <p class="text-center" ng-if="contract.contactPoint.email != null">{{contract.contactPoint.email}}</p>
+                                <p class="text-center" ng-if="contract.contactPoint.phone != null">{{contract.contactPoint.phone}}</p>
                             </td>
                             <td class="">
                                 <p ng-bind-html="contract.notice"></p>
                                 <p class="text-center cursor underline" ng-if="contract.notices.length != 0" data-toggle="modal" data-target="#notices_history" ng-click="setNoticesHistory(contract.notices)">
                                     Lịch sửa chỉnh sửa
                                 </p>
+                            </td>
+                            <td class="">
+                                <a ng-if="contract.renew == true">Có</a>
                             </td>
                             <td class="">
                                 <a ng-if="contract.attachFileAdd != null" class="cursor" data-toggle="modal" data-target="#view_file" ng-click="getLinkFile(contract.attachFileAdd)">
@@ -221,6 +255,13 @@
                     </div>
                 </div>
             </div>
+            <!-- renew contract -->
+            <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="renew_contract">
+                <div class="modal-dialog modal-lg">
+                    <div ui-view="renew_contract"></div>
+                </div>
+            </div>
+            <!-- end renew contract -->
             <!-- edit_contract -->
             <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="edit_contract">
                 <div class="modal-dialog modal-lg">

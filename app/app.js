@@ -112,7 +112,8 @@ config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProv
                             templateUrl: 'main/views/partner/partner.add.html'
                         },
                         'add_contract@/partner.contract': {
-                            templateUrl: 'main/views/contract/contract.add.html'
+                            templateUrl: 'main/views/contract/contract.add.html',
+                            controller: 'vnuCtrl'
                         },
                         'share_contract@/partner.contract': {
                             templateUrl: 'main/views/contract/contract.share.html',
@@ -125,6 +126,10 @@ config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProv
                         'insert_excel@/partner.contract': {
                             templateUrl: 'main/views/contract/contract.insert_excel.html',
                             // controller: 'vnuCtrl'
+                        },
+                        'renew_contract@/partner.contract': {
+                            templateUrl: 'main/views/contract/contract.renew.html',
+                            controller: 'vnuCtrl'
                         }
                     }
                 });
