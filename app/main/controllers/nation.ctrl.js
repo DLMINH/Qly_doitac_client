@@ -101,10 +101,10 @@
                 $scope.Continent = continent;
             }
 
-            $scope.confirmDelete = function(id, name) {
-                $scope.confirmDeleteId = id;
-                $scope.confirmDeleteName = name;
-            }
+            // $scope.confirmDelete = function(id, name) {
+            //     $scope.confirmDeleteId = id;
+            //     $scope.confirmDeleteName = name;
+            // }
 
             $scope.deleteNation = function(nationId) {
                 nationService.deleteNation(nationId)

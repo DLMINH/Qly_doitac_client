@@ -346,11 +346,11 @@
                 // console.log(JSON.parse(continent));
             }
 
-            $scope.confirmDelete = function(id, name) {
-                console.log(id)
-                $scope.confirmDeleteId = id;
-                $scope.confirmDeleteName = name;
-            }
+            // $scope.confirmDelete = function(id, name) {
+            //     console.log(id)
+            //     $scope.confirmDeleteId = id;
+            //     $scope.confirmDeleteName = name;
+            // }
 
             $scope.deletePartner = function(partnerId) {
                 partnerService.deletePartner(partnerId)

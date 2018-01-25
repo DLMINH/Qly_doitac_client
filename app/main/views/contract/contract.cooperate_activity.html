@@ -1,0 +1,56 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_modal_cooperate_activity_detail"><span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title">Hoạt động hợp tác cụ thể</h4>
+    </div>
+    <!-- <div class="modal-body"> -->
+    <div class="col-sm-12">
+        <div class="alert alert-danger" ng-if="danger_edit">
+            <strong>{{errorMessage}}</strong>
+        </div>
+        <div class="alert alert-success" ng-if="successdelete_edit">
+            <strong>{{successMessage}}</strong>
+        </div>
+        <br>
+        <form class="col-md-12 col-sm-12 col-xs-12 form-horizontal form-label-left" ng-repeat="cooperateAct in cooperateActivitys">
+            <!-- <div class="col-md-3 col-sm-3 col-xs-12">
+                                        <label>{{cooperateAct.cooperateActivity}}</label>
+                                    </div> -->
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <!-- <ul class="nav navbar-right panel_toolbox">
+                                            <li><a data-toggle="collapse" data-target="#create_partner_contact" class="cursor"><i class="fa fa-chevron-up"></i></a>
+                                            </li>
+                                        </ul> -->
+                <div class="form-group">
+                    <label class="col-md-4 col-sm-4 col-xs-12">{{cooperateAct.cooperateActivity}}</label>
+                    <div class="col-md-8 col-sm-8 col-xs-12">
+                        <textarea class="form-control col-md-10" rows="7" ng-model="cooperateAct.cooperateActivityDetail.content" placeholder="Nội dung hợp tác cụ thể"></textarea>
+                        <!-- <input type="text" class="form-control col-md-10" ng-model="partnerContact.contactName" required /> -->
+                    </div>
+                </div>
+                <!-- <div class="form-group">
+                    <label class="control-label col-md-4 col-sm-4 col-xs-12"></label>
+                    <div class="col-md-8 col-sm-8 col-xs-12">
+                        <input type="text" class="form-control col-md-10" ng-model="cooperateAct.cooperateActivityDetail.date" placeholder="Hiệu lực hợp tác" />
+                    </div>
+                </div> -->
+                <div class="form-group">
+                    <label class="control-label col-md-4 col-sm-4 col-xs-12"></label>
+                    <div class="col-md-8 col-sm-8 col-xs-12">
+                        <input type="text" class="form-control col-md-10" ng-model="cooperateAct.cooperateActivityDetail.funding" placeholder="Kinh phí" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-8 col-sm-8 col-xs-12 col-md-offset-11">
+                        <button type="submit" class="btn btn-success" ng-click="editCooperateActivityDetail(cooperateAct.cooperateActivityDetail.content, cooperateAct.cooperateActivityDetail.date, cooperateAct.cooperateActivityDetail.funding, cooperateAct.cooperateActivityDetail.id)">Tạo</button>
+                    </div>
+                </div>
+                <div class="divider-dashed"></div>
+            </div>
+        </form>
+    </div>
+    <!-- </div> -->
+    <div class="modal-footer">
+    </div>
+</div>

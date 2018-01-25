@@ -39,8 +39,16 @@
             createUniversityAccount: createUniversityAccount,
             getContractByRoleAndSigningLevel: getContractByRoleAndSigningLevel,
             getUnitNameByRolesAndSigningLevel: getUnitNameByRolesAndSigningLevel,
-            renewContract: renewContract
+            renewContract: renewContract,
+            removeRenew: removeRenew
         };
+
+        function removeRenew(contractId) {
+            return $http({
+                url: $rootScope.serverAdd + '/contract/' + contractId + '/remove/renew',
+                method: 'POST'
+            })
+        }
 
         function getUnitNameByRolesAndSigningLevel() {
             return $http({

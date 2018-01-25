@@ -121,6 +121,10 @@ config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProv
                         },
                         'edit_contract@/partner.contract': {
                             templateUrl: 'main/views/contract/contract.edit.html',
+                            controller: 'vnuCtrl'
+                        },
+                        'cooperate_activity@/partner.contract': {
+                            templateUrl: 'main/views/contract/contract.cooperate_activity.html',
                             // controller: 'vnuCtrl'
                         },
                         'insert_excel@/partner.contract': {

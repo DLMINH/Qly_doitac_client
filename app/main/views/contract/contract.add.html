@@ -10,11 +10,6 @@
                 <label class="control-label col-md-4 col-sm-4 col-xs-12">Tên cơ quan hợp tác: </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
                     <angucomplete-alt id="findpartner" placeholder="Tìm kiếm đối tác" pause="100" selected-object="selectedPartner" local-data="allPartner" search-fields="partnerName" title-field="partnerName" minlength="1" input-class="form-control" />
-                    <!-- <select class="form-control" ng-model="input.partnerId" ng-change="getPartnerContact(input.partnerId)">
-                                            <option ng-repeat="partner in allPartner" value="{{partner.id}}">
-                                                {{partner.partnerName}}
-                                            </option>
-                                        </select> -->
                 </div>
             </div>
             <!-- <div ng-if="selectedPartner.originalObject.id==0">
@@ -217,10 +212,20 @@
                     </div>
                 </div>
             </div>
+
+            <div class="form-group" ng-if="role == 'ADMIN_UNIT'">
+                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Cấp ký kết: </label>
+                <div class="col-md-6 col-sm-6 col-xs-12" ng-init="input.rolesAndSigningLevel = user.rolesAndSigningLevel">
+                    <select class="form-control" ng-model="input.rolesAndSigningLevel">
+                        <option ng-value="user.rolesAndSigningLevel" value="{{user.rolesAndSigningLevel}}">{{user.rolesAndSigningLevel.name}}</option>
+                        <option ng-value="child" value="{{child}}" ng-repeat="child in user.rolesAndSigningLevel.child">{{child.name}}</option>
+                    </select>
+                </div>
+            </div>
             <div class="form-group">
-                <label class="control-label col-md-4 col-sm-4 col-xs-12">Người ký ({{user.rolesAndSigningLevel.name}}): </label>
+                <label class="control-label col-md-4 col-sm-4 col-xs-12">Người ký ({{input.rolesAndSigningLevel.name}}): </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                    <label class="btn btn-default" ng-repeat="uetMan in listUetMan" id="{{uetMan.id}}" ng-mouseover="uetMan.show = true" ng-mouseleave="uetMan.show = false" ng-click="removeStudent($index, uetMan.id)">
+                    <label class="btn btn-default" ng-repeat="uetMan in listUetMan" id="{{uetMan.id}}" ng-mouseover="uetMan.show = true" ng-mouseleave="uetMan.show = false" ng-click="removeUetMan($index, uetMan.id)">
                         {{uetMan.uetManName}}
                         <span id="span_{{uetMan.id}}" ng-show="uetMan.show">x</span>
                     </label>
@@ -229,7 +234,7 @@
             <div class="form-group">
                 <label class="control-label col-md-4 col-sm-4 col-xs-12"></label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                    <angucomplete-alt id="findUetMan" placeholder="Tìm kiếm người kí {{user.rolesAndSigningLevel.name}}" pause="100" selected-object="selectedUetMan" local-data="allUetMan" search-fields="uetManName" title-field="uetManName" minlength="1" input-class="form-control" />
+                    <angucomplete-alt id="findUetMan" placeholder="Tìm kiếm người kí {{input.rolesAndSigningLevel.name}}" pause="100" selected-object="selectedUetMan" local-data="allUetMan" search-fields="uetManName" title-field="uetManName" minlength="1" input-class="form-control" local-search="localSearchUetMan" />
                 </div>
             </div>
             <div class="form-group" ng-init="getAllRolesAndSigningLevel()" ng-if="role == 'ADMIN_VNU'">
@@ -257,7 +262,7 @@
                     </table>
                 </div>
             </div>
-            <div class="form-group" ng-if="role == 'ADMIN_UNIT' || role == 'UNIT'">
+            <div class="form-group" ng-if="role == 'ADMIN_UNIT'">
                 <label class="control-label col-md-4 col-sm-4 col-xs-12">
                 </label>
                 <div class="col-md-3 col-sm-3 col-xs-12">
@@ -340,7 +345,7 @@
                     <textarea class="form-control" rows="8" cols="6" ng-model="input.notice"></textarea>
                 </div>
             </div>
-            <div class="form-group" ng-if="role == 'ADMIN_UNIT'">
+            <!-- <div class="form-group" ng-if="role == 'ADMIN_UNIT'">
                 <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Cấp ký kết: </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
                     <select class="form-control" ng-model="input.rolesAndSigningLevelId">
@@ -348,7 +353,7 @@
                         <option value="{{child.id}}" ng-repeat="child in user.rolesAndSigningLevel.child">{{child.name}}</option>
                     </select>
                 </div>
-            </div>
+            </div> -->
             <!-- <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">Tự động renew: </label>
                 <label class="control-label col-md-1 col-sm-1 col-xs-12" for="last-name">Có <i class="fa fa-check-circle-o" ng-class="{'fa-check-circle-o'}"></i></label>
                 <label class="control-label col-md-1 col-sm-1 col-xs-12" for="last-name">Không <i class="fa fa-circle-o"></i></label> -->

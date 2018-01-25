@@ -38,12 +38,24 @@
                 </li>
             </ul>
             <div class="input-group">
-                <select class="form-control" style="border-radius:25px; border: 1px solid rgba(221,226,232,.49); box-shadow: inset 0 1px 0 rgba(0,0,0,.075);" ng-change="changeContractType(contractType)" ng-model="contractType">
-                    <option value="">Tất cả hoạt động hợp tác</option>
-                    <option value="trong_nuoc">Hợp tác trong nước</option>
-                    <option value="ngoai_nuoc">Hợp tác ngoài nước</option>
-                    <option value="hop_dong">Hợp đồng</option>
-                </select>
+                <table>
+                    <tr>
+                        <td>
+                            <select class="form-control" style="border-radius:25px; border: 1px solid rgba(221,226,232,.49); box-shadow: inset 0 1px 0 rgba(0,0,0,.075);" ng-change="changeContractType(contractType)" ng-model="contractType">
+                                <option value="">Tất cả hoạt động hợp tác</option>
+                                <option value="trong_nuoc">Hợp tác trong nước</option>
+                                <option value="ngoai_nuoc">Hợp tác ngoài nước</option>
+                                <option value="hop_dong">Hợp đồng</option>
+                                <option value="cap_ky_ket">Cấp kí kết</option>
+                            </select>
+                        </td>
+                        <td ng-if="contractType == 'cap_ky_ket'">
+                            <select class="form-control" style="border-radius:25px; border: 1px solid rgba(221,226,232,.49); box-shadow: inset 0 1px 0 rgba(0,0,0,.075);" ng-change="changeRolesAndSigingLevel(rolesAndSigingLevelType)" ng-model="rolesAndSigingLevelType">
+                                <option ng-repeat="roles in listRolesAndSigningLevel" value="{{roles}}">{{roles}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
             </div>
             <div class="clearfix"></div>
             <div class="input-group pull-right">
@@ -98,8 +110,10 @@
                             <!-- <th> -->
                             <!-- <input type="checkbox" id="check-all" class="flat"> -->
                             <!-- </th> -->
-                            <th class="column-title"><p class="text-center">Tên cơ quan hợp tác</p>
-                                <p class="text-center">Người ký (Đối tác)</p></th>
+                            <th class="column-title">
+                                <p class="text-center">Tên cơ quan hợp tác</p>
+                                <p class="text-center">Người ký (Đối tác)</p>
+                            </th>
                             <!-- <th class="column-title">Quốc Gia</th> -->
                             <!-- <th class="column-title">Người ký ({{user.rolesAndSigningLevel.name}})</th> -->
                             <th class="column-title">
@@ -108,7 +122,9 @@
                                 <p class="text-center">Cấp ký kết</p>
                             </th>
                             <!-- <th class="column-title">Người ký (Đối tác)</th> -->
-                            <th class="column-title"><p class="text-center">Nội dung hợp tác chính</p></th>
+                            <th class="column-title">
+                                <p class="text-center">Nội dung hợp tác chính</p>
+                            </th>
                             <!-- <th class="column-title">Kinh phí</th> -->
                             <th class="column-title">
                                 <p class="text-center">Ngày ký</p>
@@ -116,12 +132,24 @@
                                 <p class="text-center">Ngày hết hiệu lực</p>
                             </th>
                             <!-- <th class="column-title">Ngày hết hiệu lực</th> -->
-                            <th class="column-title"><p class="text-center">Đầu mối liên hệ</p></th>
-                            <th class="column-title"><p class="text-center">Lưu ý</p></th>
-                            <th class="column-title"><p class="text-center">Renew</p></th>
-                            <th class="column-title"><p class="text-center">Biên bản</p></th>
-                            <th class="column-title"><p class="text-center">Sửa</p></th>
-                            <th class="column-title"><p class="text-center">Xóa</p></th>
+                            <th class="column-title">
+                                <p class="text-center">Đầu mối liên hệ</p>
+                            </th>
+                            <th class="column-title">
+                                <p class="text-center">Lưu ý</p>
+                            </th>
+                            <th class="column-title">
+                                <p class="text-center">Renew</p>
+                            </th>
+                            <th class="column-title">
+                                <p class="text-center">Biên bản</p>
+                            </th>
+                            <th class="column-title">
+                                <p class="text-center">Sửa</p>
+                            </th>
+                            <th class="column-title">
+                                <p class="text-center">Xóa</p>
+                            </th>
                             <th class="column-title">
                                 <i class="fa fa-chevron-down cursor" data-toggle="collapse" data-target="#export_xcel"></i>
                             </th>
@@ -153,7 +181,7 @@
                         </tr> -->
                     </thead>
                     <tbody>
-                        <tr class="even pointer" ng-repeat="contract in filtered = allContract | filter : search | filter : filterContract | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit | orderBy:'partner.partnerName'">
+                        <tr class="even pointer" ng-repeat="contract in filtered = allContract | filter : search | filter : filterContract | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit | orderBy:['partner.partnerName', '-id']">
                             <td class="cursor" data-toggle="modal" data-target="#show_partner_details" ng-click="editPartner(contract.partner, false, contract); click( 'information-tab')">
                                 <a>
                                     {{contract.partner.partnerName}}
@@ -201,8 +229,7 @@
                             <!-- <td class="">{{contract.funding}}</td> -->
                             <td>
                                 {{contract.startDate | date:'dd/MM/yyyy'}}
-                                <br>
-                                {{contract.endDate | date:'dd/MM/yyyy'}}
+                                <br> {{contract.endDate | date:'dd/MM/yyyy'}}
                             </td>
                             <!-- <td>{{contract.endDate | date:'dd/MM/yyyy'}}</td> -->
                             <!-- <td class="">{{contract.result}}</td> -->
@@ -360,6 +387,23 @@
                 </div>
             </div>
             <!-- end partner contacts -->
+            <!-- remove_renew -->
+            <div class="modal fade bs-example-modal-sm delete-modal" tabindex="-1" role="dialog" aria-hidden="true" id="remove_renew">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" id="close_modal_remove_renew"><span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title">Bạn có chắc muốn hủy tự động renew hoạt động hợp tác của {{confirmDeleteName}}?</h4>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Không</button>
+                            <button type="button" class="btn btn-primary" ng-click="removeRenew(confirmDeleteId)">Có</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end remove_renew -->
             <div class="modal fade bs-example-modal-sm delete-modal" tabindex="-1" role="dialog" aria-hidden="true" id="delete_partner">
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
@@ -430,26 +474,29 @@
             <!-- end share contract -->
             <!-- notices history -->
             <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="notices_history">
-                <div class="modal-dialog modal-lg" style="width:40vw;">
+                <div class="modal-dialog modal-lg" style="width:60vw;">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_modal_notices_history"><span aria-hidden="true">×</span>
                             </button>
                             <h4 class="modal-title">Lịch sử chỉnh sửa</h4>
                             <table class="table table-striped">
-                                <!-- <thead>
-                                            <tr>
-                                                <th> Tên đối tác </th>
-                                                <th> Mã </th>
-                                                <th> </th>
-                                            </tr>
-                                        </thead> -->
+                                <thead>
+                                    <tr>
+                                        <th> Nội dung </th>
+                                        <th> Thời gian </th>
+                                        <th> Chỉnh sửa bởi</th>
+                                    </tr>
+                                </thead>
                                 <tbody>
                                     <tr ng-repeat="notice in noticesHistory">
                                         <!-- <th scope="row">{{unitName.id}}</th> -->
                                         <td ng-bind-html="notice.content"></td>
                                         <td>
-                                            {{notice.created | date:'hh:mm dd-MM-yyyy'}}
+                                            {{notice.created | date:'H:mm, EEE, dd-MM-yyyy'}}
+                                        </td>
+                                        <td>
+                                            {{notice.editorName}}
                                         </td>
                                     </tr>
                                 </tbody>
@@ -462,62 +509,7 @@
             <!-- cooperate activity detail -->
             <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="cooperate_activity_detail">
                 <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_modal_cooperate_activity_detail"><span aria-hidden="true">×</span>
-                            </button>
-                            <h4 class="modal-title">Hoạt động hợp tác cụ thể</h4>
-                        </div>
-                        <!-- <div class="modal-body"> -->
-                        <div class="col-sm-12">
-                            <div class="alert alert-danger" ng-if="danger_edit">
-                                <strong>{{errorMessage}}</strong>
-                            </div>
-                            <div class="alert alert-success" ng-if="successdelete_edit">
-                                <strong>{{successMessage}}</strong>
-                            </div>
-                            <br>
-                            <form class="col-md-12 col-sm-12 col-xs-12 form-horizontal form-label-left" ng-repeat="cooperateAct in cooperateActivitys">
-                                <!-- <div class="col-md-3 col-sm-3 col-xs-12">
-                                        <label>{{cooperateAct.cooperateActivity}}</label>
-                                    </div> -->
-                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                    <!-- <ul class="nav navbar-right panel_toolbox">
-                                            <li><a data-toggle="collapse" data-target="#create_partner_contact" class="cursor"><i class="fa fa-chevron-up"></i></a>
-                                            </li>
-                                        </ul> -->
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-sm-4 col-xs-12">{{cooperateAct.cooperateActivity}}</label>
-                                        <div class="col-md-8 col-sm-8 col-xs-12">
-                                            <textarea class="form-control col-md-10" rows="7" ng-model="cooperateAct.cooperateActivityDetail.content" placeholder="Nội dung hợp tác cụ thể"></textarea>
-                                            <!-- <input type="text" class="form-control col-md-10" ng-model="partnerContact.contactName" required /> -->
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12"></label>
-                                        <div class="col-md-8 col-sm-8 col-xs-12">
-                                            <input type="text" class="form-control col-md-10" ng-model="cooperateAct.cooperateActivityDetail.date" placeholder="Hiệu lực hợp tác" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-4 col-xs-12"></label>
-                                        <div class="col-md-8 col-sm-8 col-xs-12">
-                                            <input type="text" class="form-control col-md-10" ng-model="cooperateAct.cooperateActivityDetail.funding" placeholder="Kinh phí" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-md-8 col-sm-8 col-xs-12 col-md-offset-11">
-                                            <button type="submit" class="btn btn-success" ng-click="editCooperateActivityDetail(cooperateAct.cooperateActivityDetail.content, cooperateAct.cooperateActivityDetail.date, cooperateAct.cooperateActivityDetail.funding, cooperateAct.cooperateActivityDetail.id)">Tạo</button>
-                                        </div>
-                                    </div>
-                                    <div class="divider-dashed"></div>
-                                </div>
-                            </form>
-                        </div>
-                        <!-- </div> -->
-                        <div class="modal-footer">
-                        </div>
-                    </div>
+                    <div ui-view="cooperate_activity"></div>
                 </div>
             </div>
             <!-- end cooperate activity detail -->

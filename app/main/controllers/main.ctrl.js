@@ -21,9 +21,9 @@
                     $rootScope.id = sessionStorage["id"];
                     $rootScope.userName = sessionStorage["userName"];
                     $rootScope.user = JSON.parse(sessionStorage["user"]);
-                    if($rootScope.user.rolesAndSigningLevel.name != null){
+                    if ($rootScope.user.rolesAndSigningLevel.name != null) {
                         var a = $rootScope.user.rolesAndSigningLevel.name.split("-");
-                        if(a[0] == "UNIT"){
+                        if (a[0] == "UNIT") {
                             $rootScope.user.rolesAndSigningLevel.name = "VNU-" + a[1];
                         }
                     }
@@ -48,17 +48,22 @@
                 })
 
                 $scope.logout = function() {
-                    
                     userService.logout()
                         .then(function() {
                             NProgress.done();
                             sessionStorage.clear();
                             $window.location.href = $rootScope.clientAdd;
                         }, function(error) {
-                            
+
                             sessionStorage.clear();
                             $window.location.href = $rootScope.clientAdd;
                         })
+                }
+
+                $rootScope.confirmDelete = function(id, name) {
+                    console.log(id)
+                    $rootScope.confirmDeleteId = id;
+                    $rootScope.confirmDeleteName = name;
                 }
             }
         ])
