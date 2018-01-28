@@ -142,7 +142,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên viết tắt: </label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên viết tắt: <span class="required">*</span></label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <input type="text" name="country" class="form-control col-md-10" ng-model="input.abbreviation" />
                     </div>
@@ -304,14 +304,14 @@
                                     <th>Tên viết tắt</th>
                                     <th>Account</th>
                                     <th>Sửa</th>
-                                    <!-- <th>Xóa</th> -->
+                                    <th>Xóa</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="unitName in allUnit" id="tr_unitName_{{unitName.id}}">
                                     <th scope="row">{{unitName.id}}</th>
                                     <td id="unitName_{{unitName.id}}">{{unitName.unitName}}</td>
-                                    <td id="username_{{unitName.id}}">{{unitName.abbreviation}}</td>
+                                    <td id="abbreviation_{{unitName.id}}">{{unitName.abbreviation}}</td>
                                     <td id="username_{{unitName.id}}">{{unitName.user.userName}}</td>
                                     <th>
                                         <!-- <i id="edit_unitName_{{unitName.id}}" class="fa fa-edit cursor" ng-click="editUnitName(unitName.id); edit_unitName = true"></i>
@@ -320,9 +320,9 @@
                                         <button id="button_cancel_edit_unitName_{{unitName.id}}" ng-if="edit_unitName" type="button" class="btn btn-default btn-xs" ng-click="cancelEditUnitName(unitName)">Hủy</button>
                                         <button id="save_edit_unitName_{{unitName.id}}" ng-if="edit_unitName" type="button" class="btn btn-success btn-xs" ng-click="saveEditUnitName(unitName.id)">Xác nhận</button>
                                     </th>
-                                    <!-- <td class=" ">
+                                    <td class=" ">
                                         <a class="cursor" ng-click="confirmDelete(unitName.id, unitName.unitName)" data-toggle="modal" data-target="#delete_unit"><i class="fa fa-trash"></i></a>
-                                    </td> -->
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

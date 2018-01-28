@@ -71,16 +71,17 @@
                             <ul class="nav side-menu">
                                 <li><a href="/#/settings/nation_continent"><i class="fa fa-gear"></i> Thiết đặt </a></li>
                                 <li ng-class="{active : currentUrl == '/contract'}" ng-click="currentUrl = '/contract'"><a href="/#/partner/contract"><i class="fa fa-archive"></i> Thỏa thuận hợp tác </a></li>
-                                <li ng-class="{active : currentUrl == '/activity'}" ng-click="currentUrl = '/activity'"><!-- <a href="/#/partner/activity"><i class="fa fa-university"></i> Hoạt động hợp tác cụ thể </a></li> -->
-                                <!-- <li class="active"><a> Đối tác <span class="fa fa-chevron-down"></span></a>
+                                <li ng-class="{active : currentUrl == '/activity'}" ng-click="currentUrl = '/activity'">
+                                    <!-- <a href="/#/partner/activity"><i class="fa fa-university"></i> Hoạt động hợp tác cụ thể </a></li> -->
+                                    <!-- <li class="active"><a> Đối tác <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: block;">
                                         
                                         <li ng-class="{active : currentUrl == '/information'}" ng-click="currentUrl = '/information'"><a href="/#/partner/information"><i class="fa fa-group"></i> Danh sách đối Tác </a></li>
                                     </ul>
                                 </li> -->
-                                <!-- <li><a href="/#/nation_continent"><i class="fa fa-globe"></i> Quốc Gia Và Châu lục </a></li> -->
-                                <!-- <li><a href="/#/vnu"><i class="fa fa-university"></i> VNU </a></li> -->
-                                <!--  -->
+                                    <!-- <li><a href="/#/nation_continent"><i class="fa fa-globe"></i> Quốc Gia Và Châu lục </a></li> -->
+                                    <!-- <li><a href="/#/vnu"><i class="fa fa-university"></i> VNU </a></li> -->
+                                    <!--  -->
                             </ul>
                         </div>
                     </div>
@@ -103,6 +104,7 @@
                                     <span class="fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                    <li><a ng-click="" data-toggle="modal" data-target="#change_pass" class="cursor"><i class="fa fa-key pull-right"></i> Đổi mật khẩu</a></li>
                                     <li><a ng-click="logout()" class="cursor"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                                 </ul>
                             </li>
@@ -146,6 +148,60 @@
                 </div>
             </div>
             <!-- /page content -->
+            <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="change_pass">
+                <div class="modal-dialog modal-lg" style="width:40vw;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_modal_delete"><span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title">Thay đổi mật khẩu</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="alert alert-danger" ng-if="danger_edit">
+                                <strong>{{errorMessage}}</strong>
+                            </div>
+                            <div class="alert alert-success" ng-if="successdelete_edit">
+                                <strong>{{successMessage}}</strong>
+                            </div>
+                            <form class="form-horizontal form-label-left">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Mật khẩu hiện tại:</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="password" name="country" class="form-control col-md-10" ng-model="password.oldPassword" required />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Mật khẩu:</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="password" name="country" class="form-control col-md-10" ng-model="password.newPassword" required />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nhập lại mật khẩu:</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="password" name="country" class="form-control col-md-10" ng-model="password.reTypePass" required />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="alert alert-warning col-md-6 col-sm-6 col-xs-12 col-md-offset-3" ng-if="password.newPassword != input.reTypePass && input.reTypePass != null">
+                                        <strong>Mật khẩu mới không khớp</strong>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-if="password.newPassword == password.reTypePass && password.reTypePass != null && password.reTypePass != '' && password.newPassword != null && password.newPassword != ''">
+                                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                        <button type="submit" class="btn btn-success" ng-click="changePass()">Thay đổi</button>
+                                    </div>
+                                </div>
+                                <div class="divider-dashed"></div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button ng-if="showShareContractTable" type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                            <button ng-if="showShareContractTable" type="button" class="btn btn-primary" ng-click="shareContract(selectedContract.originalObject.id, allUnit)">Lưu thay đổi</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- footer content -->
             <footer>
                 <div class="pull-right">

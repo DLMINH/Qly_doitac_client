@@ -1,7 +1,7 @@
 (function() {
     angular.module('myApp')
-        .controller('mainCtrl', ['$scope', '$rootScope', '$location', '$window', 'userService', '$state', '$http',
-            function($scope, $rootScope, $location, $window, userService, $state, $http) {
+        .controller('mainCtrl', ['$scope', '$rootScope', '$location', '$window', 'userService', '$state', '$http', '$timeout', 'md5',
+            function($scope, $rootScope, $location, $window, userService, $state, $http, $timeout, md5) {
                 $rootScope.serverAdd = "http://localhost:8180";
                 $rootScope.clientAdd = "http://localhost:8100";
                 $scope.isLoading = function() {
@@ -65,6 +65,70 @@
                     $rootScope.confirmDeleteId = id;
                     $rootScope.confirmDeleteName = name;
                 }
+
+                $scope.changePass = function() {
+                    if ($scope.password.newPassword != null && $scope.password.newPassword != undefined &&
+                        $scope.password.oldPassword != null && $scope.password.oldPassword != undefined) {
+                        $scope.password.newPassword = md5.createHash($scope.password.newPassword || '');
+                        $scope.password.oldPassword = md5.createHash($scope.password.oldPassword || '');
+                        $http({
+                            url: $rootScope.serverAdd + '/changePassword',
+                            method: 'PUT',
+                            data: $scope.password
+                        }.then(function(response) {
+                            $scope.alertSuccess("Đổi mật khẩu thành công!", "successdelete_edit");
+                            $scope.password = {};
+                        }, function(error) {
+                            $scope.alertDanger(error.data.message, "");
+                            $scope.password = {};
+                        }))
+                        // infoService.changePass($scope.password)
+
+                    }
+
+                }
+
+                $scope.alertDanger = function(error, danger) {
+                    $scope.errorMessage = error;
+                    if (danger == 'danger') {
+                        $scope.danger_edit = true;
+                        $timeout(function() {
+                            $(".alert").fadeTo(500, 0).slideUp(500, function() {
+                                $scope.danger_edit = false;
+                            });
+                        }, 6000);
+                    } else {
+                        $scope.danger = true;
+                        $timeout(function() {
+                            // 
+                            $(".alert").fadeTo(500, 0).slideUp(500, function() {
+                                $scope.danger = false;
+                                $scope.errorMessage = "";
+                            });
+                        }, 6000);
+                    }
+                }
+
+                $scope.alertSuccess = function(string, success) {
+                    $scope.successMessage = string;
+                    if (success == 'successdelete_edit') {
+                        $scope.successdelete_edit = true;
+                        $timeout(function() {
+                            $(".alert").fadeTo(500, 0).slideUp(500, function() {
+                                $scope.successdelete_edit = false;
+                            });
+                        }, 3000);
+                    } else {
+                        $scope.success = true;
+                        $timeout(function() {
+                            $(".alert").fadeTo(500, 0).slideUp(500, function() {
+                                $scope.success = false;
+                            });
+                        }, 3000);
+                    }
+
+                }
+
             }
         ])
 }());

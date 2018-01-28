@@ -43,11 +43,11 @@ config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProv
                 .state('/settings', {
                     url: '/settings',
                     templateUrl: 'main/views/settings/settings.html',
-                    controller: 'vnuCtrl'
                 })
                 .state('/settings.vnu', {
                     url: '/vnu',
-                    templateUrl: 'main/views/settings/settings.vnu.html'
+                    templateUrl: 'main/views/settings/settings.vnu.html',
+                    controller: 'vnuCtrl'
                 })
                 .state('/settings.nation_continent', {
                     url: '/nation_continent',
@@ -91,6 +91,7 @@ config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProv
                 })
                 .state('/partner.contract', {
                     url: '/contract',
+                    // scope: true,
                     views: {
                         '': {
                             templateUrl: 'main/views/contract/contract.all.html',
@@ -125,11 +126,11 @@ config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProv
                         },
                         'cooperate_activity@/partner.contract': {
                             templateUrl: 'main/views/contract/contract.cooperate_activity.html',
-                            // controller: 'vnuCtrl'
+                            controller: 'vnuCtrl'
                         },
                         'insert_excel@/partner.contract': {
                             templateUrl: 'main/views/contract/contract.insert_excel.html',
-                            // controller: 'vnuCtrl'
+                            controller: 'vnuCtrl'
                         },
                         'renew_contract@/partner.contract': {
                             templateUrl: 'main/views/contract/contract.renew.html',
