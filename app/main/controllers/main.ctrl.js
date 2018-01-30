@@ -1,7 +1,7 @@
 (function() {
     angular.module('myApp')
-        .controller('mainCtrl', ['$scope', '$rootScope', '$location', '$window', 'userService', '$state', '$http', '$timeout', 'md5',
-            function($scope, $rootScope, $location, $window, userService, $state, $http, $timeout, md5) {
+        .controller('mainCtrl', ['$scope', '$rootScope', '$location', '$window', 'userService', '$state', '$http', '$timeout', 'md5', 'vnuService',
+            function($scope, $rootScope, $location, $window, userService, $state, $http, $timeout, md5, vnuService) {
                 $rootScope.serverAdd = "http://localhost:8180";
                 $rootScope.clientAdd = "http://localhost:8100";
                 $scope.isLoading = function() {
@@ -71,18 +71,16 @@
                         $scope.password.oldPassword != null && $scope.password.oldPassword != undefined) {
                         $scope.password.newPassword = md5.createHash($scope.password.newPassword || '');
                         $scope.password.oldPassword = md5.createHash($scope.password.oldPassword || '');
-                        $http({
-                            url: $rootScope.serverAdd + '/changePassword',
-                            method: 'PUT',
-                            data: $scope.password
-                        }.then(function(response) {
-                            $scope.alertSuccess("Đổi mật khẩu thành công!", "successdelete_edit");
-                            $scope.password = {};
-                        }, function(error) {
-                            $scope.alertDanger(error.data.message, "");
-                            $scope.password = {};
-                        }))
+                        vnuService.changePassword($scope.password)
+                            .then(function(response) {
+                                $scope.alertSuccess("Đổi mật khẩu thành công!", "successdelete_edit");
+                                // $scope.password = {};
+                            }, function(error) {
+                                $scope.alertDanger(error.data.message, "");
+                                $scope.password = {};
+                            })
                         // infoService.changePass($scope.password)
+                        $scope.password = {};
 
                     }
 

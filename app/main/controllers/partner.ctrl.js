@@ -738,8 +738,8 @@
             $scope.editContact = function(contactId) {
                 // $('#nation_' + nationId).html('<div class="col-md-4 col-sm-4 col-xs-6">' + 
                 //     '<input type="text" name="country" class="form-control col-md-6" ng-model="' + nationName + '" required /></div>');
-                $scope.editInLine++;
-                $scope.editContactCount++;
+                // $scope.editInLine++;
+                // $scope.editContactCount++;
                 if ($scope.editInLine == 1) {
                     console.log(639);
                     // console.log($('#show_partner_details').data('bs.modal'));
@@ -767,8 +767,8 @@
 
             $scope.cancelEditContact = function(contact) {
                 console.log(activity);
-                $scope.editInLine--;
-                $scope.editContactCount--;
+                // $scope.editInLine--;
+                // $scope.editContactCount--;
                 if ($scope.editInLine == 0) {
                     $('#show_partner_details').removeClass('backdrop-data');
                 }
@@ -812,8 +812,8 @@
                         $('#about_' + contactId).html(about);
                         $scope.alertSuccess('Sửa liên hệ thành công!', 'successdelete_edit');
                         // $scope.getAllPartner();
-                        $scope.editInLine--;
-                        $scope.editContactCount--;
+                        // $scope.editInLine--;
+                        // $scope.editContactCount--;
                         if ($scope.editInLine == 0) {
                             $('#show_partner_details').removeClass('backdrop-data');
                         }

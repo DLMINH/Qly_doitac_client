@@ -40,8 +40,17 @@
             getContractByRoleAndSigningLevel: getContractByRoleAndSigningLevel,
             getUnitNameByRolesAndSigningLevel: getUnitNameByRolesAndSigningLevel,
             renewContract: renewContract,
-            removeRenew: removeRenew
+            removeRenew: removeRenew,
+            changePassword: changePassword
         };
+
+        function changePassword(data) {
+            return $http({
+                url: $rootScope.serverAdd + '/changePassword',
+                method: 'PUT',
+                data: data
+            })
+        }
 
         function removeRenew(contractId) {
             return $http({
