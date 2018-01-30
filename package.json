@@ -7,12 +7,18 @@
   "license": "MIT",
   "devDependencies": {
     "bower": "^1.7.7",
+    "grunt": "~0.4.2",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-uglify": "git://github.com/gruntjs/grunt-contrib-uglify.git#harmony",
+    "grunt-contrib-uglify-es": "git://github.com/gruntjs/grunt-contrib-uglify.git#harmony",
+    "grunt-contrib-watch": "~0.5.3",
     "jasmine-core": "^2.4.1"
   },
   "scripts": {
     "start": "http-server -a localhost -p 8100 -c-1 ./app"
   },
   "dependencies": {
+    "grunt-contrib-compress": "^1.4.3",
     "http-server": "github:skleeschulte/http-server"
   }
 }

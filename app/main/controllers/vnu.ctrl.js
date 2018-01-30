@@ -306,7 +306,7 @@
                 wscols[12] = { wpx: 200 };
                 wscols[13] = { wpx: 200 };
                 // wscols[11] = { wpx: 200 };
-                var ws = { '!ref': "A1:M" + ($scope.allContract.length+1) };
+                var ws = { '!ref': "A1:M" + ($scope.allContract.length + 1) };
                 ws['!cols'] = wscols;
                 // ws['A1'] = { h: "test", r: "<t>test</t>", t: "s", v: "test", w: "test" }
                 var i = 2;
@@ -453,7 +453,7 @@
                             }
                         };
                         if (excel.partnerContact != null) {
-                            if(excel.partnerContact.about != null){
+                            if (excel.partnerContact.about != null) {
                                 var contact = excel.partnerContact.about + " - " + excel.partnerContact.contactName;
                             } else {
                                 var contact = excel.partnerContact.contactName;
@@ -604,7 +604,7 @@
                             };
                         }
                         if (excel.contactPoint != null) {
-                            var contactPoint = excel.contactPoint.contactName + "\n" + excel.contactPoint.phone  + "\n" + excel.contactPoint.email;
+                            var contactPoint = excel.contactPoint.contactName + "\n" + excel.contactPoint.phone + "\n" + excel.contactPoint.email;
                             ws['L' + i] = {
                                 h: contactPoint,
                                 r: contactPoint,
@@ -1162,9 +1162,9 @@
             }
 
             $scope.createUnit = function() {
-                if ($scope.input.unitName != "" && $scope.input.unitName != null
-                    && $scope.input.unitName != undefined && $scope.input.abbreviation != ""
-                    && $scope.input.abbreviation != null && $scope.input.abbreviation != undefined) {
+                if ($scope.input.unitName != "" && $scope.input.unitName != null &&
+                    $scope.input.unitName != undefined && $scope.input.abbreviation != "" &&
+                    $scope.input.abbreviation != null && $scope.input.abbreviation != undefined) {
                     vnuService.createUnit($scope.input)
                         .then(function() {
                             $scope.alertSuccess("Tạo đơn vị thành công!", "");
@@ -2221,6 +2221,8 @@
             }
 
             $scope.deleteUetMan = function(uetManId) {
+                $('#delete_uet_man').modal('hide');
+                $rootScope.confirmDeleteId = null;
                 vnuService.deleteUetMan(uetManId)
                     .then(function() {
                         $scope.alertSuccess("Xóa người kí kết " + $rootScope.user.rolesAndSigningLevel.name + " thành công!", '');
@@ -2229,7 +2231,12 @@
                         $scope.getAllUetMan();
                     }, function(error) {
                         console.log(error);
-                        $scope.alertDanger(error.data.message, '');
+                        if(error.data.message.indexOf("xóa")){
+                            $scope.alertDanger(error.data.message, '');
+                        } else {
+                            $scope.alertDanger("Có lỗi xảy ra, không thể xóa", '');
+                        }
+                        
                     })
             }
 
@@ -2300,7 +2307,7 @@
                         $scope.getAllUnitName();
                     }, function(error) {
                         console.log(error);
-                        if(error.data.message.indexOf("đơn vị")){
+                        if (error.data.message.indexOf("đơn vị")) {
                             $scope.alertDanger(error.data.message, '');
                         } else {
                             $scope.alertDanger("Không thể xóa!", '');

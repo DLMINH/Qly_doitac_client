@@ -213,7 +213,7 @@
                                     <th>Chức vụ</th>
                                     <th ng-if="role != 'UNIT'">Đơn vị</th>
                                     <th>Sửa</th>
-                                    <!-- <th>Xóa</th> -->
+                                    <th>Xóa</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -231,9 +231,9 @@
                                         <button id="button_cancel_edit_uetMan_{{uetMan.id}}" ng-if="edit_uetMan" type="button" class="btn btn-default btn-xs" ng-click="cancelEditUetMan(uetMan)">Hủy</button>
                                         <button id="save_edit_uetMan_{{uetMan.id}}" ng-if="edit_uetMan" type="button" class="btn btn-success btn-xs" ng-click="saveEditUetMan(uetMan.id)">Xác nhận</button>
                                     </th>
-                                    <!-- <td class=" ">
+                                    <td class=" ">
                                         <a class="cursor" ng-click="confirmDelete(uetMan.id, uetMan.uetManName)" data-toggle="modal" data-target="#delete_uet_man"><i class="fa fa-trash"></i></a>
-                                    </td> -->
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
