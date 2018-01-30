@@ -33,8 +33,67 @@
             shareContract: shareContract,
             getAllContractShareOfContract: getAllContractShareOfContract,
             getContractOfUnit: getContractOfUnit,
-            editCooperateActivityDetail: editCooperateActivityDetail
+            editCooperateActivityDetail: editCooperateActivityDetail,
+            getAllUetManRolesAndSigningLevel: getAllUetManRolesAndSigningLevel,
+            getAllRolesAndSigningLevel: getAllRolesAndSigningLevel,
+            createUniversityAccount: createUniversityAccount,
+            getContractByRoleAndSigningLevel: getContractByRoleAndSigningLevel,
+            getUnitNameByRolesAndSigningLevel: getUnitNameByRolesAndSigningLevel,
+            renewContract: renewContract,
+            removeRenew: removeRenew,
+            changePassword: changePassword
         };
+
+        function changePassword(data) {
+            return $http({
+                url: $rootScope.serverAdd + '/changePassword',
+                method: 'PUT',
+                data: data
+            })
+        }
+
+        function removeRenew(contractId) {
+            return $http({
+                url: $rootScope.serverAdd + '/contract/' + contractId + '/remove/renew',
+                method: 'POST'
+            })
+        }
+
+        function getUnitNameByRolesAndSigningLevel() {
+            return $http({
+                url: $rootScope.serverAdd + '/unit/rolesAndSigningLevel',
+                method: 'GET'
+            })
+        }
+
+        function getContractByRoleAndSigningLevel() {
+            return $http({
+                url: $rootScope.serverAdd + '/contract/RoleAndSigningLevel',
+                method: 'GET'
+            })
+        }
+
+        function createUniversityAccount(data) {
+            return $http({
+                url: $rootScope.serverAdd + '/account/university/create',
+                method: 'POST',
+                data: data
+            })
+        }
+
+        function getAllRolesAndSigningLevel() {
+            return $http({
+                url: $rootScope.serverAdd + '/rolesAndSigningLevel',
+                method: 'GET'
+            })
+        }
+
+        function getAllUetManRolesAndSigningLevel() {
+            return $http({
+                url: $rootScope.serverAdd + '/uetMan/rolesAndSigningLevel',
+                method: 'GET'
+            })
+        }
 
         function editCooperateActivityDetail(data) {
             return $http({
@@ -164,10 +223,18 @@
             })
         }
 
+        function renewContract(data, contractId) {
+            return $http({
+                url: $rootScope.serverAdd + '/contract/' + contractId + '/renew',
+                method: 'POST',
+                data: data
+            })
+        }
+
         function editContract(data, contractId) {
             return $http({
                 url: $rootScope.serverAdd + '/contract/' + contractId + '/edit',
-                method: 'PUT',
+                method: 'POST',
                 data: data
             })
         }

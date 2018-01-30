@@ -58,7 +58,7 @@
                 nationService.getAllNation()
                     .then(function(response) {
                         $scope.allNations = response.data;
-                        console.log(response.data);
+                        // console.log(response.data);
                     }, function(error) {
                         console.log(error);
                     })
@@ -101,10 +101,10 @@
                 $scope.Continent = continent;
             }
 
-            $scope.confirmDelete = function(id, name) {
-                $scope.confirmDeleteId = id;
-                $scope.confirmDeleteName = name;
-            }
+            // $scope.confirmDelete = function(id, name) {
+            //     $scope.confirmDeleteId = id;
+            //     $scope.confirmDeleteName = name;
+            // }
 
             $scope.deleteNation = function(nationId) {
                 nationService.deleteNation(nationId)

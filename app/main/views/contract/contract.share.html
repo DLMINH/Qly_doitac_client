@@ -1,0 +1,116 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_modal_delete"><span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title">Quản lý chia sẻ Thỏa thuận hợp tác</h4>
+    </div>
+    <!-- <div class="modal-body"> -->
+    <div class="col-sm-12">
+        <div class="alert alert-danger" ng-if="danger_edit">
+            <strong>{{errorMessage}}</strong>
+        </div>
+        <div class="alert alert-success" ng-if="successdelete_edit">
+            <strong>{{successMessage}}</strong>
+        </div>
+        <br>
+        <div class="col-sm-12">
+            <div class="col-sm-2">
+            </div>
+            <div class="col-sm-8">
+                <!-- <angucomplete-alt id="findContract" placeholder="Tìm kiếm Thỏa thuận hợp tác" pause="100" selected-object="selectedContract" local-data="allContract" search-fields="partner.partnerName" title-field="partner.partnerName" minlength="1" input-class="form-control" /> -->
+                <angucomplete-alt id="findPartner_qlcs" placeholder="Tìm kiếm đối tác" pause="100" selected-object="selectedPartner_qlcs" local-data="allPartner" search-fields="partnerName" title-field="partnerName" minlength="1" input-class="form-control" />
+            </div>
+            <div class="col-sm-2">
+            </div>
+        </div>
+        <div class="col-sm-12" ng-show="listContract.length == 0 && selectedPartner_qlcs != undefined"">
+            <div class="col-sm-3">
+            </div>
+            <div class="col-sm-6">
+                <p class="text-center"> Không có hoạt động nào </p>
+            </div>
+            <div class="col-sm-3">
+            </div>
+        </div>
+        <div class="col-sm-12" ng-show="listContract.length != 0">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <!-- <th>#</th> -->
+                        <th>Nội dung</th>
+                        <th>Người ký ({{user.rolesAndSigningLevel.name}})</th>
+                        <th>Người ký (Đối tác)</th>
+                        <th>Ngày ký</th>
+                        <th>Ngày hết hiệu lực</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="contract in listContract" ng-click="selectContractQlcs(contract)" class="cursor">
+                        <!-- <th scope="row">{{unitName.id}}</th> -->
+                        <td>
+                            <a ng-repeat="act in contract.cooperateActivity">
+                                {{act.cooperateActivity}}
+                            </a>
+                        </td>
+                        <td>
+                            <a ng-repeat="u in contract.uetMan">
+                                {{u.about + ' - '}}{{u.uetManName}}
+                                <br>
+                            </a>
+                        </td>
+                        <td>
+                            <a ng-if="contract.partnerContact.about != null">
+                                {{contract.partnerContact.about + ' - '}}
+                            </a>
+                            <a>
+                                {{contract.partnerContact.contactName}}
+                            </a>
+                        </td>
+                        <td id="">{{contract.startDate | date:'dd/MM/yyyy'}}</td>
+                        <td id="">{{contract.endDate | date:'dd/MM/yyyy'}}</td>
+                        <td>
+                            <input type="radio" name="tich" id="contract_qlcs_{{contract.id}}" ng-checked="contract.check">
+                            <!-- <i class="fa fa-check-square-o" ng-if="contract.checked == true"></i>
+                                                <i class="fa fa-square-o" ng-if="contract.checked != true"></i> -->
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-sm-12">
+            <div class="col-sm-3">
+            </div>
+            <div class="col-sm-6" ng-if="showShareContractTable">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <!-- <th>#</th> -->
+                            <th> Chia sẻ với đơn vị khác </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="unitName in allUnit" class="cursor" ng-click="unitName.checked = !unitName.checked" id="unitName_share_contract_{{unitName.id}}" ng-if="unitName.id != id">
+                            <!-- <th scope="row">{{unitName.id}}</th> -->
+                            <td>{{unitName.unitName}}</td>
+                            <td class="a-center unitName_share_contract_{{unitName.id}}">
+                                <!-- <i class="fa fa-check-square-o" ng-if="unitName.checked == true"></i> -->
+                                <!-- <i class="fa fa-square-o" ng-if="unitName.checked != true"></i> -->
+                                <i class="fa" ng-class="{'fa-square-o' : unitName.checked !=true, 'fa-check-square-o' : unitName.checked==true}"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-sm-3">
+            </div>
+        </div>
+    </div>
+    <!-- </div> -->
+    <div class="modal-footer">
+        <button ng-if="showShareContractTable" type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+        <button ng-if="showShareContractTable" type="button" class="btn btn-primary" ng-click="shareContract(selectedContract.originalObject.id, allUnit)">Lưu thay đổi</button>
+    </div>
+</div>

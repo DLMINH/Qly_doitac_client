@@ -8,10 +8,16 @@
             $scope.contractType = "";
             $scope.listUetMan = [];
             $scope.listContract = [];
-            // $scope.input = [];
+            $scope.input = {};
+            $scope.rolesAndSigningLevel = {};
+            $scope.listRolesAndSigningLevel = [];
 
             $scope.changeContractType = function(contractType) {
                 $scope.contractType = contractType;
+            }
+
+            $scope.changeRolesAndSigingLevel = function(rolesAndSigingLevelType) {
+                $scope.rolesAndSigingLevelType = rolesAndSigingLevelType;
             }
 
             $scope.filterContract = function(item) {
@@ -28,11 +34,43 @@
                         // console.log(item.partner.nation.nationName);
                         return item;
                     }
+                } else if ($scope.contractType == "hop_dong") {
+                    if (item.funding != null && item.funding != "") {
+                        return item;
+                    }
+                } else if ($scope.contractType == "cap_ky_ket") {
+                    // console.log($scope.rolesAndSigingLevelType)
+                    if (item.rolesAndSigningLevel.name == $scope.rolesAndSigingLevelType) {
+                        return item;
+                    }
                 }
             }
 
             $scope.clearAngucompleteAltInput = function(id) {
                 $scope.$broadcast('angucomplete-alt:clearInput', id)
+            }
+
+            $scope.localSearchUetMan = function(str) {
+                var matches = [];
+                var rolesAndSigningLevelId;
+                if ($scope.input.rolesAndSigningLevel == undefined) {
+                    rolesAndSigningLevelId = $rootScope.user.rolesAndSigningLevel.id;
+                } else {
+                    rolesAndSigningLevelId = $scope.input.rolesAndSigningLevel.id;
+                }
+                angular.forEach($scope.allUetMan, function(uetMan) {
+                    // console.log(uetMan)
+                    if ((uetMan.uetManName.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0)) {
+                        if (uetMan.rolesAndSigningLevel.id == rolesAndSigningLevelId) {
+                            matches.push(uetMan);
+                        }
+                    }
+                })
+
+                // $scope.allUetMan.forEach(function(uetMan) {
+
+                // });
+                return matches;
             }
 
             $scope.$watch('selectedUetMan', function() {
@@ -47,6 +85,35 @@
                     }
                 }
             });
+
+            $scope.$watch('selectedUetManRenewContractData', function() {
+                if ($scope.selectedUetManRenewContractData != undefined && $scope.selectedUetManRenewContractData != null) {
+                    function equals(element) {
+                        return element.id == $scope.selectedUetManRenewContractData.originalObject.id;
+                    }
+                    var uetMan = $scope.listUetMan.find(equals);
+                    if (uetMan == undefined) {
+                        $rootScope.renewContractData.uetMan.push($scope.selectedUetManRenewContractData.originalObject);
+                        $scope.clearAngucompleteAltInput('findUetManRenewContractData');
+                    }
+                }
+            });
+
+            $scope.removeUetManRenewContractData = function(index, id) {
+                $rootScope.renewContractData.uetMan.splice(index, 1);
+            }
+
+            $scope.removeUetMan = function(index, id) {
+                // function equals(element) {
+                //     return element.id == id;
+                // }
+                // var uetMan = $scope.listUetMan.find(equals);
+                // if (uetMan != undefined) {
+                //     console.log(uetMan.$index);
+                // }
+                $scope.listUetMan.splice(index, 1);
+                console.log($scope.listUetMan)
+            }
 
             $scope.$watch('selectedContractAnnual', function() {
                 if ($scope.selectedContractAnnual != undefined && $scope.selectedContractAnnual != null) {
@@ -88,10 +155,30 @@
                 angular.forEach($scope.listContract, function(c) {
                     if (c.id == contract.id) {
                         c.check = true;
-                        $scope.getAllContractShareOfContract(contract.id);
+                        // $scope.getAllContractShareOfContract(contract.id);
                     } else {
                         c.check = false;
                     }
+                })
+                angular.forEach($rootScope.allUnit, function(u) {
+                    u.checked = false;
+                });
+                angular.forEach(contract.contractShares, function(c) {
+                    var index = $rootScope.allUnit.findIndex(x => x.id === c.unitName.id);
+                    // console.log(index);
+                    if (index != -1) {
+                        $timeout(function() {
+                            $('#unitName_share_contract_' + c.unitName.id).trigger('click');
+                        });
+                    } else {
+                        // $rootScope.allUnit[index].originCheck = false;
+                        console.log(1);
+                        console.log($('#unitName_share_contract_' + c.unitName.id));
+                    }
+                    // console.log($rootScope.allUnit[index]);
+                    // $timeout(function() {
+                    //     $scope.$apply();
+                    // });
                 })
 
             }
@@ -186,6 +273,8 @@
                         //         unit.checked = false;
                         //     }
                         // })
+                        $scope.getAllContractShareOfContract(contractId);
+                        // $scope
                         $scope.getAllContract();
                     }, function(error) {
                         console.log(error);
@@ -205,12 +294,19 @@
                 var wscols = [];
                 wscols[0] = { wpx: 250 };
                 wscols[1] = { wpx: 120 };
-                wscols[2] = { wpx: 250 };
-                wscols[3] = { wpx: 200 };
-                wscols[7] = { wpx: 200 };
+                wscols[2] = { wpx: 150 };
+                wscols[3] = { wpx: 150 };
+                wscols[4] = { wpx: 300 };
+                wscols[6] = { wpx: 100 };
+                wscols[7] = { wpx: 100 };
                 wscols[8] = { wpx: 200 };
                 wscols[9] = { wpx: 200 };
-                var ws = { '!ref': "A1:J1000" };
+                wscols[10] = { wpx: 200 };
+                wscols[11] = { wpx: 200 };
+                wscols[12] = { wpx: 200 };
+                wscols[13] = { wpx: 200 };
+                // wscols[11] = { wpx: 200 };
+                var ws = { '!ref': "A1:M" + ($scope.allContract.length + 1) };
                 ws['!cols'] = wscols;
                 // ws['A1'] = { h: "test", r: "<t>test</t>", t: "s", v: "test", w: "test" }
                 var i = 2;
@@ -229,60 +325,88 @@
                     w: "Quốc gia"
                 };
                 ws['C1'] = {
-                    h: "Người ký (VNU-UET)",
-                    r: "Người ký (VNU-UET)",
+                    h: "Người ký đối tác",
+                    r: "Người ký đối tác",
                     t: "s",
-                    v: "Người ký (VNU-UET)",
-                    w: "Người ký (VNU-UET)"
+                    v: "Người ký đối tác",
+                    w: "Người ký đối tác"
                 };
                 ws['D1'] = {
+                    h: "Người ký " + $rootScope.user.rolesAndSigningLevel.name + "",
+                    r: "Người ký " + $rootScope.user.rolesAndSigningLevel.name + "",
+                    t: "s",
+                    v: "Người ký " + $rootScope.user.rolesAndSigningLevel.name + "",
+                    w: "Người ký " + $rootScope.user.rolesAndSigningLevel.name + ""
+                };
+                ws['E1'] = {
                     h: "Nội dung hợp tác chính",
                     r: "Nội dung hợp tác chính",
                     t: "s",
                     v: "Nội dung hợp tác chính",
                     w: "Nội dung hợp tác chính"
                 };
-                ws['E1'] = {
-                    h: "Kinh phí",
-                    r: "Kinh phí",
-                    t: "s",
-                    v: "Kinh phí",
-                    w: "Kinh phí"
-                };
                 ws['F1'] = {
+                    h: "Giá trị HĐ",
+                    r: "Giá trị HĐ",
+                    t: "s",
+                    v: "Giá trị HĐ",
+                    w: "Giá trị HĐ"
+                };
+                ws['G1'] = {
                     h: "Ngày ký",
                     r: "Ngày ký",
                     t: "s",
                     v: "Ngày ký",
                     w: "Ngày ký"
                 };
-                ws['G1'] = {
+                ws['H1'] = {
                     h: "Ngày hết hiệu lực",
                     r: "Ngày hết hiệu lực",
                     t: "s",
                     v: "Ngày hết hiệu lực",
                     w: "Ngày hết hiệu lực"
                 };
-                ws['H1'] = {
+                ws['I1'] = {
                     h: "Đơn vị theo dõi",
                     r: "Đơn vị theo dõi",
                     t: "s",
                     v: "Đơn vị theo dõi",
                     w: "Đơn vị theo dõi"
                 };
-                ws['I1'] = {
-                    h: "Hiệu quả hợp tác",
-                    r: "Hiệu quả hợp tác",
-                    t: "s",
-                    v: "Hiệu quả hợp tác",
-                    w: "Hiệu quả hợp tác"
-                };
                 ws['J1'] = {
+                    h: "Tự động renew",
+                    r: "Tự động renew",
+                    t: "s",
+                    v: "Tự động renew",
+                    w: "Tự động renew"
+                };
+                ws['K1'] = {
                     h: "Lưu ý",
                     r: "Lưu ý",
                     t: "s",
                     v: "Lưu ý",
                     w: "Lưu ý",
+                };
+                ws['L1'] = {
+                    h: "Thông tin liên hệ",
+                    r: "Thông tin liên hệ",
+                    t: "s",
+                    v: "Thông tin liên hệ",
+                    w: "Thông tin liên hệ",
+                };
+                ws['M1'] = {
+                    h: "Ngày thành lập",
+                    r: "Ngày thành lập",
+                    t: "s",
+                    v: "Ngày thành lập",
+                    w: "Ngày thành lập",
+                };
+                ws['N1'] = {
+                    h: "Địa chỉ",
+                    r: "Địa chỉ",
+                    t: "s",
+                    v: "Địa chỉ",
+                    w: "Địa chỉ",
                 };
                 angular.forEach($scope.allContract, function(excel) {
                     if (excel.checked == true) {
@@ -328,11 +452,31 @@
                                 }
                             }
                         };
+                        if (excel.partnerContact != null) {
+                            if (excel.partnerContact.about != null) {
+                                var contact = excel.partnerContact.about + " - " + excel.partnerContact.contactName;
+                            } else {
+                                var contact = excel.partnerContact.contactName;
+                            }
+                            ws['C' + i] = {
+                                h: contact,
+                                r: contact,
+                                t: "s",
+                                v: contact,
+                                w: contact,
+                                s: {
+                                    alignment: {
+                                        wrapText: true,
+                                        vertical: "center"
+                                    }
+                                }
+                            };
+                        }
                         var uetMans = "";
                         angular.forEach(excel.uetMan, function(uetMan) {
-                            uetMans += uetMan.uetManName + '\n'
+                            uetMans += uetMan.about + " - " + uetMan.uetManName + '\n'
                         })
-                        ws['C' + i] = {
+                        ws['D' + i] = {
                             h: uetMans,
                             r: uetMans,
                             t: "s",
@@ -345,12 +489,16 @@
                                 }
                             }
                         };
-                        ws['D' + i] = {
-                            h: excel.contentContract.replace(/<br\s*[\/]?>/g, '\r\n'),
-                            r: excel.contentContract.replace(/<br\s*[\/]?>/g, '\r\n'),
+                        var contentContract = "";
+                        angular.forEach(excel.cooperateActivity, function(act) {
+                            contentContract += act.cooperateActivity + '\n'
+                        })
+                        ws['E' + i] = {
+                            h: contentContract,
+                            r: contentContract,
                             t: "s",
-                            v: excel.contentContract.replace(/<br\s*[\/]?>/g, '\r\n'),
-                            w: excel.contentContract.replace(/<br\s*[\/]?>/g, '\r\n'),
+                            v: contentContract,
+                            w: contentContract,
                             s: {
                                 alignment: {
                                     wrapText: true,
@@ -359,7 +507,7 @@
                             }
                         };
                         if (excel.funding != null) {
-                            ws['E' + i] = {
+                            ws['F' + i] = {
                                 h: excel.funding,
                                 r: excel.funding,
                                 t: "s",
@@ -374,7 +522,7 @@
                             };
                         }
                         if (startDate != null) {
-                            ws['F' + i] = {
+                            ws['G' + i] = {
                                 h: startDate,
                                 r: startDate,
                                 t: "s",
@@ -390,7 +538,7 @@
                         }
 
                         if (endDate != null) {
-                            ws['G' + i] = {
+                            ws['H' + i] = {
                                 h: endDate,
                                 r: endDate,
                                 t: "s",
@@ -409,7 +557,7 @@
                         angular.forEach(excel.contractShares, function(c) {
                             unitNames += c.unitName.unitName + '\n'
                         })
-                        ws['H' + i] = {
+                        ws['I' + i] = {
                             h: unitNames,
                             r: unitNames,
                             t: "s",
@@ -423,13 +571,13 @@
                             }
                         };
 
-                        if (excel.result != null) {
-                            ws['I' + i] = {
-                                h: excel.result,
-                                r: excel.result,
+                        if (excel.renew == true) {
+                            ws['J' + i] = {
+                                h: "x",
+                                r: "x",
                                 t: "s",
-                                v: excel.result,
-                                w: excel.result,
+                                v: "x",
+                                w: "x",
                                 s: {
                                     alignment: {
                                         wrapText: true,
@@ -440,7 +588,7 @@
                             };
                         }
                         if (excel.notice != null) {
-                            ws['J' + i] = {
+                            ws['K' + i] = {
                                 h: excel.notice.replace(/<br\s*[\/]?>/g, '\r\n'),
                                 r: excel.notice.replace(/<br\s*[\/]?>/g, '\r\n'),
                                 t: "s",
@@ -455,8 +603,63 @@
                                 }
                             };
                         }
+                        if (excel.contactPoint != null) {
+                            var contactPoint = excel.contactPoint.contactName + "\n" + excel.contactPoint.phone + "\n" + excel.contactPoint.email;
+                            ws['L' + i] = {
+                                h: contactPoint,
+                                r: contactPoint,
+                                t: "s",
+                                v: contactPoint,
+                                w: contactPoint,
+                                s: {
+                                    alignment: {
+                                        wrapText: true,
+                                        vertical: "center",
+                                        horizontal: "center"
+                                    }
+                                }
+                            };
+                        }
+                        if (excel.partner.birthday != null) {
+                            birthday = new Date(excel.partner.birthday);
+                            var birthday_date = birthday.getDate();
+                            var birthday_month = birthday.getMonth() + 1; //Months are zero based
+                            var birthday_year = birthday.getFullYear();
+                            birthday = birthday_date + "-" + birthday_month + "-" + birthday_year;
+                            ws['M' + i] = {
+                                h: birthday,
+                                r: birthday,
+                                t: "s",
+                                v: birthday,
+                                w: birthday,
+                                s: {
+                                    alignment: {
+                                        wrapText: true,
+                                        vertical: "center",
+                                        horizontal: "center"
+                                    }
+                                }
+                            };
+                        }
+                        if (excel.partner.address != null) {
+                            ws['n' + i] = {
+                                h: excel.partner.address,
+                                r: excel.partner.address,
+                                t: "s",
+                                v: excel.partner.address,
+                                w: excel.partner.address,
+                                s: {
+                                    alignment: {
+                                        wrapText: true,
+                                        vertical: "center",
+                                        horizontal: "center"
+                                    }
+                                }
+                            };
+                        }
                         i++;
                         count++;
+                        excel.checked = false;
                         // console.log(excel);
                     }
 
@@ -476,7 +679,7 @@
                     $scope.alertWarning("Chưa có hoạt động hợp tác nào được chọn!", 5000);
                 } else {
                     saveAs(new Blob([s2ab(wbout)], { type: "" }), "Danh muc hop tac.xlsx");
-                    $scope.alertSuccess("Xuất hoạt động hợp tác ra file excel thành công!", "");
+                    // $scope.alertSuccess("Xuất hoạt động hợp tác ra file excel thành công!", "");
                 }
             };
 
@@ -566,7 +769,6 @@
                             worksheet['K1'].w = "notice";
                             $rootScope.excelIn = XLSX.utils.sheet_to_json(worksheet);
                             $timeout(function() {
-
                                 $scope.checkExcelData();
                             })
                         };
@@ -906,6 +1108,37 @@
 
             }
 
+            $scope.getAllRolesAndSigningLevel = function() {
+                vnuService.getAllRolesAndSigningLevel()
+                    .then(function(response) {
+                        console.log(response);
+                        $rootScope.allRolesAndSigningLevel = response.data;
+                    }, function(error) {
+                        console.log(error);
+                    })
+
+            }
+
+            $scope.createUniversityAccount = function() {
+                if ($scope.rolesAndSigningLevel.rolesAndSigningLevel != "" && $scope.rolesAndSigningLevel.rolesAndSigningLevel != undefined &&
+                    $scope.rolesAndSigningLevel.userName != "" && $scope.rolesAndSigningLevel.userName != undefined &&
+                    $scope.rolesAndSigningLevel.password != "" && $scope.rolesAndSigningLevel.password != undefined &&
+                    $scope.rolesAndSigningLevel.universityName != "" && $scope.rolesAndSigningLevel.universityName != undefined) {
+                    $scope.request = {
+                        rolesAndSigningLevel: $scope.rolesAndSigningLevel.rolesAndSigningLevel,
+                        userName: $scope.rolesAndSigningLevel.userName,
+                        password: md5.createHash($scope.rolesAndSigningLevel.password || ''),
+                        universityName: $scope.rolesAndSigningLevel.universityName
+                    };
+                    vnuService.createUniversityAccount($scope.request)
+                        .then(function() {
+                            $scope.alertSuccess("Tạo tài khoản thành công!", "");
+                            $scope.rolesAndSigningLevel = {};
+                            $scope.getAllRolesAndSigningLevel();
+                        })
+                }
+            }
+
             $scope.createAccount = function() {
                 if ($scope.input.userName != "" && $scope.input.password != "") {
                     $scope.request = {
@@ -929,11 +1162,13 @@
             }
 
             $scope.createUnit = function() {
-                if ($scope.input.unitName != "") {
+                if ($scope.input.unitName != "" && $scope.input.unitName != null &&
+                    $scope.input.unitName != undefined && $scope.input.abbreviation != "" &&
+                    $scope.input.abbreviation != null && $scope.input.abbreviation != undefined) {
                     vnuService.createUnit($scope.input)
                         .then(function() {
                             $scope.alertSuccess("Tạo đơn vị thành công!", "");
-                            $scope.input.unitName = "";
+                            $scope.input = {};
                             $scope.getAllUnitName();
                         }, function(error) {
                             console.log(error);
@@ -947,7 +1182,7 @@
                 if ($scope.input.uetManName != "") {
                     vnuService.createUetMan($scope.input)
                         .then(function() {
-                            $scope.alertSuccess("Tạo người kí kết (VNU-UET) thành công!", "");
+                            $scope.alertSuccess("Tạo người kí kết " + $rootScope.user.rolesAndSigningLevel.name + " thành công!", "");
                             $scope.input.uetManName = "";
                             $scope.getAllUetMan();
                         }, function(error) {
@@ -996,7 +1231,7 @@
             }
 
             $scope.getAllUetMan = function() {
-                vnuService.getAllUetMan()
+                vnuService.getAllUetManRolesAndSigningLevel()
                     .then(function(response) {
                         // console.log(response);
                         $rootScope.allUetMan = response.data;
@@ -1017,7 +1252,7 @@
             }
 
             $scope.getAllUnitName = function() {
-                vnuService.getAllUnitName()
+                vnuService.getUnitNameByRolesAndSigningLevel()
                     .then(function(response) {
                         console.log(response);
                         $rootScope.allUnit = response.data;
@@ -1038,11 +1273,11 @@
             }
 
             $scope.getAllPartner = function() {
-                NProgress.start();
+                // NProgress.start();
                 partnerService.getAllPartner()
                     .then(function(response) {
-                        NProgress.done();
-                        console.log(response.data)
+                        // NProgress.done();
+                        // console.log(response.data)
                         $rootScope.allPartner = response.data;
                         // $scope.allPartner.push({
                         //     partnerName: "Tạo mới",
@@ -1111,22 +1346,137 @@
             //         })
             // }
 
+            $scope.checkRenewContract = function(contract) {
+                var current = new Date();
+                // conso
+                var curr_date = current.getDate();
+                var curr_month = current.getMonth() + 1;
+                var curr_year = current.getFullYear();
+                current = new Date(curr_year + "-" + curr_month + "-" + curr_date);
+                if (contract != null && contract != undefined) {
+                    if (contract.renew == true) {
+                        if (contract.endDate != null) {
+                            if (contract.rolesAndSigningLevel.id == $rootScope.user.rolesAndSigningLevel.id) {
+                                var end_date = new Date(contract.endDate);
+                                var end_date_month = end_date.getMonth() + 1;
+                                var end_date_date = end_date.getDate();
+                                var end_date_year = end_date.getFullYear();
+                                var current_end_date = new Date(curr_year + "-" + end_date_month + "-" + end_date_date);
+                                if (current.getTime() / 1000 >= (end_date.getTime() / 1000 - 604800) &&
+                                    current.getTime() / 1000 <= end_date.getTime() / 1000) {
+                                    // console.log(contract)
+
+                                    function equals(element) {
+                                        return element.uid == "contractId" + contract.id;
+                                    }
+                                    var c = $rootScope.notifications.find(equals);
+                                    if (c == undefined) {
+                                        var noti = {
+                                            message: "Hoạt động hợp tác của " + contract.partner.partnerName + " sắp hết hạn. Ngày " + end_date_date + "-" + end_date_month + "-" + end_date_year,
+                                            uid: "contractId" + contract.id,
+                                            contract: contract
+                                        }
+                                        $rootScope.notifications.push(noti);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+
+            $scope.checkBirthday = function(contract) {
+                var current = new Date();
+                // conso
+                var curr_date = current.getDate();
+                var curr_month = current.getMonth() + 1;
+                var curr_year = current.getFullYear();
+                current = new Date(curr_year + "-" + curr_month + "-" + curr_date);
+                if (contract != null && contract != undefined) {
+                    if (contract.partner.birthday != null) {
+                        var birthday = new Date(contract.partner.birthday);
+                        var birthday_month = birthday.getMonth() + 1;
+                        var birthday_date = birthday.getDate();
+                        var current_birthday = new Date(curr_year + "-" + birthday_month + "-" + birthday_date);
+                        if (curr_month == birthday_month) {
+                            if (curr_date == birthday_date) {
+                                function equals(element) {
+                                    return element.uid == "partnerId" + contract.partner.id;
+                                }
+                                var p = $rootScope.notifications.find(equals);
+                                if (p == undefined) {
+                                    var noti = {
+                                        message: "Hôm nay là ngày thành lập của " + contract.partner.partnerName,
+                                        uid: "partnerId" + contract.partner.id
+                                    }
+                                    $rootScope.notifications.push(noti);
+                                }
+                            }
+                        }
+                        if (current.getTime() / 1000 > (current_birthday.getTime() / 1000 - 604800) &&
+                            current.getTime() / 1000 < current_birthday.getTime() / 1000) {
+                            console.log(contract.partner.partnerName)
+
+                            function equals(element) {
+                                return element.uid == "partnerId" + contract.partner.id;
+                            }
+                            var p = $rootScope.notifications.find(equals);
+                            if (p == undefined) {
+                                var noti = {
+                                    message: "Sắp đến ngày thành lập của " + contract.partner.partnerName + ". Ngày " + birthday_date + "-" + birthday_month + "-" + curr_year,
+                                    uid: "partnerId" + contract.partner.id
+                                }
+                                $rootScope.notifications.push(noti);
+                            }
+                            // var noti = {
+                            //     message: "Sắp đến ngày thành lập của " + contract.partner.partnername + ". Ngày " + current_birthday,
+                            // }
+                        }
+                        // if()
+                    }
+                }
+
+            }
+
             $scope.getAllContract = function() {
-                NProgress.start();
+                // NProgress.start();
+                var current = new Date();
+                // conso
+                var curr_date = current.getDate();
+                var curr_month = current.getMonth() + 1;
+                var curr_year = current.getFullYear();
+                current = new Date(curr_year + "-" + curr_month + "-" + curr_date);
+                // if ($rootScope.notifications == undefined) {
+                //     $rootScope.notifications = [];
+                // }
+                $rootScope.notifications = [];
+
+                function findRolesAndSigningLevel(rolesAndSigningLevel) {
+                    console.log(rolesAndSigningLevel)
+                    return function equlas(element) {
+                        console.log(element)
+                        return contract.rolesAndSigningLevel.name === rolesAndSigningLevel;
+                    }
+                }
                 if ($rootScope.role == 'UNIT') {
                     vnuService.getContractOfUnit()
                         .then(function(response) {
-                            NProgress.done();
+                            // NProgress.done();
                             console.log(response.data);
                             $scope.allContract = response.data;
+                            $scope.listRolesAndSigningLevel = [];
                             angular.forEach($scope.allContract, function(contract) {
                                 contract.checked = false;
                                 contract.contentContract = "";
-                                angular.forEach(contract.cooperateActivity, function(v) {
-                                    contract.contentContract = contract.contentContract + v.cooperateActivity + "<br />";
-                                });
-                                // console.log(contract.contentContract);
+                                $scope.checkBirthday(contract);
+                                $scope.checkRenewContract(contract);
+                                console.log($rootScope.notifications);
+                                $scope.listRolesAndSigningLevel[contract.rolesAndSigningLevel.name] = 1;
                             });
+                            $scope.listRolesAndSigningLevel = Object.keys($scope.listRolesAndSigningLevel);
+                            console.log($scope.listRolesAndSigningLevel);
+
                             $scope.currentPage = 1;
                             $scope.totalItems = response.data.length;
                             $scope.entryLimit = 10; // items per page
@@ -1142,20 +1492,28 @@
                         }, function(error) {
                             console.log(error);
                         })
-                } else if ($rootScope.role == 'ADMIN_UNIT') {
-                    vnuService.getAllContract()
+                } else if ($rootScope.role == 'ADMIN_UNIT' || $rootScope.role == 'ADMIN_VNU') {
+                    vnuService.getContractByRoleAndSigningLevel()
                         .then(function(response) {
-                            NProgress.done();
+                            // NProgress.done();
                             console.log(response.data);
                             $scope.allContract = response.data;
+                            $scope.listRolesAndSigningLevel = [];
                             angular.forEach($scope.allContract, function(contract) {
                                 contract.checked = false;
                                 contract.contentContract = "";
-                                angular.forEach(contract.cooperateActivity, function(v) {
-                                    contract.contentContract = contract.contentContract + v.cooperateActivity + "<br />";
-                                });
-                                // console.log(contract.contentContract);
+                                // angular.forEach(contract.cooperateActivity, function(v) {
+                                //     contract.contentContract = contract.contentContract + v.cooperateActivity + "<br />";
+                                // });
+                                // console.log(contract.contentContract); 604800 seconds
+                                $scope.checkBirthday(contract);
+                                $scope.checkRenewContract(contract);
+                                $scope.listRolesAndSigningLevel[contract.rolesAndSigningLevel.name] = 1;
+
                             });
+                            $scope.listRolesAndSigningLevel = Object.keys($scope.listRolesAndSigningLevel);
+                            // console.log($scope.listRolesAndSigningLevel);
+                            // console.log($rootScope.notifications);
                             $scope.currentPage = 1;
                             $scope.totalItems = response.data.length;
                             $scope.entryLimit = 10; // items per page
@@ -1172,7 +1530,7 @@
                             console.log(error);
                         })
                 }
-
+                // console.log($scope.listRolesAndSigningLevel);
             }
 
             $scope.entry = '';
@@ -1203,22 +1561,28 @@
             $scope.addAttachFileToScope = function(fileName, fileType, attachFile, elementId) {
                 console.log(elementId);
                 if (elementId == 'contract-edit') {
-                    $scope.editContractData.fileName = fileName;
-                    $scope.editContractData.fileType = fileType;
-                    $scope.editContractData.attachFile = attachFile;
-                    $scope.editContractData.attachFileAdd = 'edited';
+                    // console.log($rootScope.editContractData);
+                    $rootScope.editContractData.fileName = fileName;
+                    $rootScope.editContractData.fileType = fileType;
+                    $rootScope.editContractData.attachFile = attachFile;
+                    $rootScope.editContractData.attachFileAdd = 'edited';
                 } else if (elementId == 'contract-create') {
+                    // console.log("elementId == contract-create");
                     $scope.input.fileName = fileName;
                     $scope.input.fileType = fileType;
                     $scope.input.attachFile = attachFile;
-                } else if (elementId.indexOf("contract-excel-")) {
-                    // console.log($(".attach-file").attr('id').split("-").pop());
+                } else if (elementId == 'contract-renew') {
+                    // console.log("elementId == contract-renew");
+                    $rootScope.renewContractData.fileName = fileName;
+                    $rootScope.renewContractData.fileType = fileType;
+                    $rootScope.renewContractData.attachFile = attachFile;
+                    $rootScope.renewContractData.attachFileAdd = 'edited';
                 }
             }
 
             var handleFileSelect = function(evt) {
                 var file = evt.currentTarget.files[0];
-                console.log(evt.currentTarget.files);
+                // console.log(evt.currentTarget.files);
                 var id = evt.target.id;
                 var fileName = evt.currentTarget.files[0].name;
                 var fileType = evt.currentTarget.files[0].name.split('.').pop();
@@ -1232,20 +1596,22 @@
                 };
 
                 // if($(".attach-file").attr('id') == 'attach-file-modal'){
-                //     $scope.editContractData.fileName = 
+                //     $rootScope.editContractData.fileName = 
                 // }
                 reader.readAsDataURL(file);
             };
-            angular.element(document.querySelector('.attach-file')).on('change', handleFileSelect);
+            // angular.element(document.querySelector('.attach-file')).on('change', handleFileSelect);
             angular.element(document.querySelector('#contract-create')).on('change', handleFileSelect);
+            angular.element(document.querySelector('#contract-edit')).on('change', handleFileSelect);
+            angular.element(document.querySelector('#contract-renew')).on('change', handleFileSelect);
             // hiện tại, class nhưng chỉ nhận 1 input
             $scope.getLinkFile = function(attachFileAdd) {
                 // attachFileAdd = "http://www.pdf995.com/samples/pdf.pdf";
                 $rootScope.modalFileLink = $sce.trustAs($sce.RESOURCE_URL, "https://docs.google.com/gview?url=" + $rootScope.srcAdd + attachFileAdd + "&embedded=true");
             }
-
             $scope.$watch('selectedPartner', function() {
-                console.log($scope.selectedPartner);
+                // console.log($scope.selectedPartner);
+                // console.log($state.current);
                 // if()
                 // angular.forEach($rootScope.allUnit, function(c) {
                 //     c.checked = false;
@@ -1291,9 +1657,9 @@
             }
 
             $scope.createContract = function() {
-
                 var count = 0;
                 $scope.unitNames = [];
+                $scope.universities = [];
                 $scope.uetManList = [];
                 // console.log($rootScope.allUnit);
                 if ($scope.Partner != undefined) {
@@ -1313,18 +1679,31 @@
                 //     $scope.input.partnerContactId
                 // }
                 if ($scope.input.partnerId != null && $scope.input.partnerId != undefined &&
-                    $scope.input.partnerContactId != null && $scope.input.partnerContactId != undefined &&
+                    $scope.input.partnerContactId != null && $scope.input.partnerContactId != undefined
                     // $scope.input.unitNameId != null && $scope.input.unitNameId != undefined &&
                     // $scope.input.uetManId != null && $scope.input.uetManId != undefined &&
+                    &&
                     $scope.input.contentContract != null && $scope.input.contentContract != undefined) {
-                    NProgress.start();
-                    angular.forEach($rootScope.allUnit, function(unit) {
-                        if (unit.checked == true) {
-                            $scope.unitNames.push(unit);
-                        }
-                    })
+                    // NProgress.start();
+                    if ($rootScope.role != "ADMIN_VNU") {
+                        angular.forEach($rootScope.allUnit, function(unit) {
+                            if (unit.checked == true) {
+                                $scope.unitNames.push(unit);
+                            }
+                        })
+                    } else {
+                        console.log($rootScope.allRolesAndSigningLevel)
+                        angular.forEach($rootScope.allRolesAndSigningLevel, function(university) {
+                            if (university.checked == true) {
+                                $scope.universities.push(university);
+                            }
+                        })
+                    }
                     if ($scope.unitNames.length != 0) {
                         $scope.input.unitNames = $scope.unitNames;
+                    }
+                    if ($scope.universities.length != 0) {
+                        $scope.input.rolesAndSigningLevelList = $scope.universities;
                     }
                     //dùng để tích chọn uetman
                     // angular.forEach($rootScope.allUetMan, function(uetMan) {
@@ -1347,14 +1726,29 @@
                     if ($scope.input.endDate) {
                         $scope.input.endDate = $scope.input.endDate.getTime();
                     }
-                    console.log($scope.input);
                     $scope.input.contentContract = $scope.input.contentContract.replace(/(?:\r\n|\r|\n)/g, '<br />');
                     if ($scope.input.notice != null && $scope.input.notice != undefined && $scope.input.notice != "") {
                         $scope.input.notice = $scope.input.notice.replace(/(?:\r\n|\r|\n)/g, '<br />');
                     }
+                    if ($scope.input.renew == undefined || $scope.input.renew == "false") {
+                        $scope.input.renew = false;
+                    } else if ($scope.input.renew == "true") {
+                        $scope.input.renew = true;
+                    }
+                    // if ($scope.input.contactPoint != null && $scope.input.contactPoint != undefined && $scope.input.contactPoint != "") {
+                    //     $scope.input.contactPoint = $scope.input.contactPoint.replace(/(?:\r\n|\r|\n)/g, '<br />');
+                    // }
+                    // console.log($scope.input.rolesAndSigningLevel);
+                    if (isNaN($scope.input.rolesAndSigningLevelId)) {
+                        // alert(1)
+                        $scope.input.rolesAndSigningLevelId = $rootScope.user.rolesAndSigningLevel.id;
+                    } else {
+                        $scope.input.rolesAndSigningLevelId = $scope.input.rolesAndSigningLevel.id;
+                    }
+                    console.log($scope.input);
                     vnuService.createContract($scope.input)
                         .then(function() {
-                            NProgress.done();
+                            // NProgress.done();
                             // 
                             $scope.alertSuccess("Tạo hoạt động hợp tác thành công!", "");
                             $scope.input = {};
@@ -1377,71 +1771,211 @@
                                 $scope.getAllPartner();
                             }
                         }, function(error) {
-                            NProgress.done();
+                            // NProgress.done();
                             console.log(error);
                         })
                 }
             }
 
-            $scope.setEditContract = function(contract) {
-                $scope.editContractData = contract;
-                // $scope.editContractData.startDate = null;
-                sessionStorage.setItem("notice", "");
-                if ($scope.editContractData.notice != null && $scope.editContractData.notice != undefined && $scope.editContractData.notice != "") {
-                    sessionStorage.setItem("notice", $scope.editContractData.notice);
-                    $scope.editContractData.notice = $scope.editContractData.notice.replace(/<br\s*[\/]?>/g, '\r\n');
+            $scope.removeRenew = function() {
+                if ($rootScope.confirmDeleteId != null || $rootScope.confirmDeleteId != undefined) {
+                    $("#close_modal_remove_renew").trigger('click');
+                    vnuService.removeRenew($rootScope.confirmDeleteId)
+                        .then(function(response) {
+                            $scope.alertSuccess("Hủy tự động renew thành công!", "");
+
+                            function equals(element) {
+                                return element.id == $rootScope.confirmDeleteId;
+                            }
+                            var contract = $scope.allContract.find(equals);
+                            if (contract != undefined) {
+                                contract.renew = false;
+                            }
+                        })
                 }
-                if ($scope.editContractData.startDate != null) {
-                    $scope.editContractData.startDate = new Date($scope.editContractData.startDate)
+            }
+
+            $scope.setRenewContract = function(contract) {
+                console.log(contract)
+                $rootScope.renewContractData = contract;
+                if ($rootScope.renewContractData.startDate != null) {
+                    $rootScope.renewContractData.startDate = new Date($rootScope.renewContractData.startDate)
                 }
 
-                if ($scope.editContractData.endDate != null) {
-                    $scope.editContractData.endDate = new Date($scope.editContractData.endDate)
+                if ($rootScope.renewContractData.endDate != null) {
+                    $rootScope.renewContractData.endDate = new Date($rootScope.renewContractData.endDate)
+                }
+                if ($rootScope.renewContractData.renew == null || $rootScope.renewContractData.renew == false) {
+                    $rootScope.renewContractData.renew = "false";
+                } else if ($rootScope.renewContractData.renew == true) {
+                    $rootScope.renewContractData.renew = "true";
+                }
+                if ($rootScope.renewContractData.notice != null && $rootScope.renewContractData.notice != undefined && $rootScope.renewContractData.notice != "") {
+                    $rootScope.renewContractData.notice = $rootScope.renewContractData.notice.replace(/<br\s*[\/]?>/g, '\r\n');
+                }
+                if ($rootScope.renewContractData.contactPoint != null) {
+                    $rootScope.renewContractData.contactPointId = $rootScope.renewContractData.contactPoint.id;
+                    $rootScope.renewContractData.contactPoint = {};
+                }
+                if ($rootScope.renewContractData.partnerContact != null) {
+                    $rootScope.renewContractData.partnerContactId = $rootScope.renewContractData.partnerContact.id;
+                    $rootScope.renewContractData.partnerContact = {};
+                }
+                angular.forEach($rootScope.allUnit, function(u) {
+                    u.checked = false;
+                });
+                angular.forEach($rootScope.renewContractData.contractShares, function(c) {
+                    var index = $rootScope.allUnit.findIndex(x => x.id === c.unitName.id);
+                    // console.log(index);
+                    if (index != -1) {
+                        $timeout(function() {
+                            $('#unitName_share_contract_' + c.unitName.id).trigger('click');
+                        });
+                    } else {
+                        // $rootScope.allUnit[index].originCheck = false;
+                        console.log(1);
+                        console.log($('#unitName_share_contract_' + c.unitName.id));
+                    }
+                    // console.log($rootScope.allUnit[index]);
+                    // $timeout(function() {
+                    //     $scope.$apply();
+                    // });
+                })
+            }
+
+            $scope.renewContract = function() {
+                $("#close_modal_renew").trigger('click');
+                if ($rootScope.renewContractData.renew == undefined || $rootScope.renewContractData.renew == "false") {
+                    $rootScope.renewContractData.renew = false;
+                } else if ($rootScope.renewContractData.renew == "true") {
+                    $rootScope.renewContractData.renew = true;
+                }
+                if ($rootScope.renewContractData.notice != null && $rootScope.renewContractData.notice != undefined) {
+                    $rootScope.renewContractData.notice = $rootScope.renewContractData.notice.replace(/(?:\r\n|\r|\n)/g, '<br />');
+                }
+                $rootScope.renewContractData.unitNames = [];
+                angular.forEach($scope.allUnit, function(unit) {
+                    if (unit.checked == true) {
+                        $rootScope.renewContractData.unitNames.push(unit);
+                    }
+                })
+                $rootScope.renewContractData.uetManList = $rootScope.renewContractData.uetMan;
+                console.log($rootScope.renewContractData);
+                vnuService.renewContract($rootScope.renewContractData, $rootScope.renewContractData.id)
+                    .then(function(response) {
+                        $rootScope.renewContractData = {};
+                        alert("Renew hoạt động hợp tác thành công!");
+                        $scope.alertSuccess("Renew hoạt động hợp tác thành công!", "");
+                        location.reload();
+                        // $scope.getAllContract();
+
+                    }, function(error) {
+                        console.log(error)
+                    })
+            }
+
+            $scope.setEditContract = function(contract) {
+                $rootScope.editContractData = contract;
+                // $rootScope.editContractData.startDate = null;
+                sessionStorage.setItem("notice", "");
+                if ($rootScope.editContractData.notice != null && $rootScope.editContractData.notice != undefined && $rootScope.editContractData.notice != "") {
+                    sessionStorage.setItem("notice", $rootScope.editContractData.notice);
+                    $rootScope.editContractData.notice = $rootScope.editContractData.notice.replace(/<br\s*[\/]?>/g, '\r\n');
+                }
+                if ($rootScope.editContractData.startDate != null) {
+                    $rootScope.editContractData.startDate = new Date($rootScope.editContractData.startDate)
+                }
+
+                if ($rootScope.editContractData.endDate != null) {
+                    $rootScope.editContractData.endDate = new Date($rootScope.editContractData.endDate)
+                }
+                if ($rootScope.editContractData.renew == null || $rootScope.editContractData.renew == false) {
+                    $rootScope.editContractData.renew = "false";
+                } else if ($rootScope.editContractData.renew == true) {
+                    $rootScope.editContractData.renew = "true";
+                }
+                if ($rootScope.editContractData.contactPoint != null) {
+                    $rootScope.editContractData.contactPointId = $rootScope.editContractData.contactPoint.id;
+                    // $rootScope.editContractData.contactPoint = {};
+                }
+                // if($rootScope.user.role == "ADMIN_UNIT"){
+
+                // }
+                if (contract.rolesAndSigningLevel.id != $rootScope.user.rolesAndSigningLevel.id) {
+                    $timeout(function() {
+                        // $scope.addAttr(attr, className)
+                        $scope.addAttr('readonly', 'edit_contract');
+                        $scope.addAttr('disabled', 'edit_contract');
+                        $rootScope.edit_contract = false;
+                    });
+                } else {
+                    $timeout(function() {
+                        // $scope.addAttr(attr, className)
+                        $scope.removeAttr('readonly', 'edit_contract');
+                        $scope.removeAttr('disabled', 'edit_contract');
+                        $rootScope.edit_contract = true;
+                    });
                 }
             }
 
             $scope.editContract = function() {
-                NProgress.start();
-                if ($scope.editContractData.notice != null && $scope.editContractData.notice != undefined) {
-                    $scope.editContractData.editNotice = 'false';
-                    // if($scope.editContractData.notice)
-                    $scope.editContractData.notice = $scope.editContractData.notice.replace(/(?:\r\n|\r|\n)/g, '<br />');
+                // NProgress.start();
+
+                if ($rootScope.editContractData.notice != null && $rootScope.editContractData.notice != undefined) {
+                    $rootScope.editContractData.editNotice = 'false';
+                    // if($rootScope.editContractData.notice)
+                    $rootScope.editContractData.notice = $rootScope.editContractData.notice.replace(/(?:\r\n|\r|\n)/g, '<br />');
                     if (sessionStorage['notice'] == "") {
-                        // if($scope.editContractData.notice == sessionStorage['notice'])
-                        $scope.editContractData.editNotice = 'true';
+                        // if($rootScope.editContractData.notice == sessionStorage['notice'])
+                        $rootScope.editContractData.editNotice = 'true';
                     } else if (sessionStorage['notice'] != "") {
-                        if ($scope.editContractData.notice == sessionStorage['notice']) {
+                        if ($rootScope.editContractData.notice == sessionStorage['notice']) {
 
                         } else {
-                            $scope.editContractData.editNotice = 'true';
+                            $rootScope.editContractData.editNotice = 'true';
                         }
                     }
-                    // console.log($scope.editContractData.notice);
+                    // console.log($rootScope.editContractData.notice);
                 }
-                console.log($scope.editContractData);
-                if ($scope.editContractData.startDate != null) {
-                    $scope.editContractData.startDate = $scope.editContractData.startDate.getTime();
+                if ($rootScope.editContractData.startDate != null) {
+                    $rootScope.editContractData.startDate = $rootScope.editContractData.startDate.getTime();
                 }
-                if ($scope.editContractData.endDate != null) {
-                    $scope.editContractData.endDate = $scope.editContractData.endDate.getTime();
+                if ($rootScope.editContractData.endDate != null) {
+                    $rootScope.editContractData.endDate = $rootScope.editContractData.endDate.getTime();
                 }
-                if ($scope.editContractData.cooperateActivityValue != null) {
-                    $scope.editContractData.cooperateActivityValue = $scope.editContractData.cooperateActivityValue.replace(/(?:\r\n|\r|\n)/g, '<br />');
-                    // console.log($scope.editContractData.cooperateActivityValue);
+                if ($rootScope.editContractData.cooperateActivityValue != null) {
+                    $rootScope.editContractData.cooperateActivityValue = $rootScope.editContractData.cooperateActivityValue.replace(/(?:\r\n|\r|\n)/g, '<br />');
+                    // console.log($rootScope.editContractData.cooperateActivityValue);
                 }
+                if ($rootScope.editContractData.renew == undefined || $rootScope.editContractData.renew == "false") {
+                    $rootScope.editContractData.renew = false;
+                } else if ($rootScope.editContractData.renew == "true") {
+                    $rootScope.editContractData.renew = true;
+                }
+                console.log($rootScope.editContractData);
 
-                vnuService.editContract($scope.editContractData, $scope.editContractData.id)
+                vnuService.editContract($rootScope.editContractData, $rootScope.editContractData.id)
                     .then(function() {
-                        NProgress.start();
+                        // NProgress.start();
                         $("#close_modal_edit").trigger('click');
                         $('#contract-edit').val(null);
                         sessionStorage.setItem("notice", "");
                         $scope.alertSuccess("Sửa hoạt động hợp tác thành công!", "");
                         $scope.getAllContract();
+                        // $timeout(function() {
+                        //     $scope.apply();
+                        // });
                     }, function(error) {
-                        NProgress.start();
+                        // NProgress.start();
                         console.log(error);
                     })
+                $timeout(function() {
+                    if ($rootScope.editContractData.notice != null && $rootScope.editContractData.notice != undefined && $rootScope.editContractData.notice != "") {
+                        // sessionStorage.setItem("notice", $rootScope.editContractData.notice);
+                        $rootScope.editContractData.notice = $rootScope.editContractData.notice.replace(/<br\s*[\/]?>/g, '\r\n');
+                    }
+                });
+
             }
 
             $scope.setNoticesHistory = function(notices) {
@@ -1479,11 +2013,12 @@
             }
 
             $scope.deleteActivity = function() {
-                vnuService.deleteActivity($scope.confirmDeleteId)
+                vnuService.deleteActivity($rootScope.confirmDeleteId)
                     .then(function() {
                         $scope.alertSuccess('Xóa hoạt động thành công!', 'successdelete_edit');
-                        $('#tr_activity_' + $scope.confirmDeleteId).remove();
+                        $('#tr_activity_' + $rootScope.confirmDeleteId).remove();
                         $('#close_modal_delete_activity').trigger('click');
+                        $rootScope.confirmDeleteId = null;
                     }, function(error) {
                         console.log(error);
                         $('#close_modal_delete_activity').trigger('click');
@@ -1520,11 +2055,11 @@
                 }
             }
 
-            $scope.confirmDelete = function(id, name) {
-                console.log(id)
-                $scope.confirmDeleteId = id;
-                $scope.confirmDeleteName = name;
-            }
+            // $scope.confirmDelete = function(id, name) {
+            //     console.log(id)
+            //     $rootScope.confirmDeleteId = id;
+            //     $scope.confirmDeleteName = name;
+            // }
 
             $scope.close = function(id) {
                 $('#' + id).modal('hide');
@@ -1537,12 +2072,13 @@
                         $scope.alertSuccess("Xóa hoạt động hợp tác thành công!", "");
                         if ($state.current.url == '/information') {
                             $('#delete_contract').modal('hide');
-                            var index = $scope.Partner.contracts.findIndex(x => x.id === $scope.confirmDeleteId);
+                            var index = $scope.Partner.contracts.findIndex(x => x.id === $rootScope.confirmDeleteId);
                             console.log(index);
                             if (index != -1) {
                                 $scope.Partner.contracts.splice(index, 1);
                             }
                             // $scope.getAllContractOfPartner();
+                            $rootScope.confirmDeleteId = null
                         } else if ($state.current.url == '/contract') {
                             $scope.getAllContract();
                             $("#close_modal_delete").trigger('click');
@@ -1612,7 +2148,6 @@
             $scope.editUetMan = function(uetManId) {
                 var uetMan = $('#uetMan_' + uetManId).text();
                 var about = $('#about_' + uetManId).text().trim();
-                console.log(about)
                 $('#uetMan_' + uetManId).html('<input id="uetMan_value_' + uetManId + '" value="' + uetMan + '" style="border-radius:3px; border: 1px solid;"/>')
                 $('#about_' + uetManId).html('' +
                     '<select id="about_value_' + uetManId + '" style="border-radius:3px; border: 1px solid;">' +
@@ -1665,7 +2200,7 @@
                             $('#about_' + uetManId).html(about);
                             $('#save_edit_uetMan_' + uetManId).hide();
                             $('#button_cancel_edit_uetMan_' + uetManId).hide();
-                            $scope.alertSuccess('Sửa người kí kết (VNU-UET) thành công!', '');
+                            $scope.alertSuccess("Sửa người kí kết " + $rootScope.user.rolesAndSigningLevel.name + " thành công!", '');
                         }, function(error) {
                             console.log(error);
                             $scope.alertDanger(error.data.message, 'danger');
@@ -1686,20 +2221,30 @@
             }
 
             $scope.deleteUetMan = function(uetManId) {
+                $('#delete_uet_man').modal('hide');
+                $rootScope.confirmDeleteId = null;
                 vnuService.deleteUetMan(uetManId)
                     .then(function() {
-                        $scope.alertSuccess("Xóa người kí kết (VNU-UET) thành công!", '');
+                        $scope.alertSuccess("Xóa người kí kết " + $rootScope.user.rolesAndSigningLevel.name + " thành công!", '');
                         $('#delete_uet_man').modal('hide');
+                        $rootScope.confirmDeleteId = null;
                         $scope.getAllUetMan();
                     }, function(error) {
                         console.log(error);
-                        $scope.alertDanger(error.data.message, '');
+                        if(error.data.message.indexOf("xóa")){
+                            $scope.alertDanger(error.data.message, '');
+                        } else {
+                            $scope.alertDanger("Có lỗi xảy ra, không thể xóa", '');
+                        }
+                        
                     })
             }
 
             $scope.editUnitName = function(unitNameId) {
                 var unitName = $('#unitName_' + unitNameId).text();
-                $('#unitName_' + unitNameId).html('<input id="unitName_value_' + unitNameId + '" value="' + unitName + '" style="border-radius:3px; border: 1px solid;" required/>')
+                var abbreviation = $('#abbreviation_' + unitNameId).text();
+                $('#unitName_' + unitNameId).html('<input id="unitName_value_' + unitNameId + '" value="' + unitName + '" style="border-radius:3px; border: 1px solid;" required/>');
+                $('#abbreviation_' + unitNameId).html('<input id="abbreviation_value_' + unitNameId + '" value="' + abbreviation + '" style="border-radius:3px; border: 1px solid;" required/>')
                 $('#edit_unitName_' + unitNameId).hide();
                 $('#save_edit_unitName_' + unitNameId).show();
                 $('#button_cancel_edit_unitName_' + unitNameId).show();
@@ -1711,22 +2256,26 @@
                 $('#save_edit_unitName_' + unitName.id).hide();
                 $('#button_cancel_edit_unitName_' + unitName.id).hide();
                 $('#unitName_' + unitName.id).html(unitName.unitName);
+                $('#abbreviation_' + unitName.id).html(unitName.abbreviation);
             }
 
             $scope.saveEditUnitName = function(unitNameId) {
                 // console.log(unitNameId);
                 var unitName = $('#unitName_value_' + unitNameId).val();
+                var abbreviation = $('#abbreviation_value_' + unitNameId).val();
                 // console.log(v);
                 if (unitName != "") {
                     $scope.request = {
                         id: unitNameId,
-                        unitName: unitName
+                        unitName: unitName,
+                        abbreviation: abbreviation
                     }
                     // console.log($scope.request);
                     vnuService.editUnitName($scope.request)
                         .then(function() {
-                            $('#edit_unitName_' + unitNameId).show();
                             $('#unitName_' + unitNameId).html(unitName);
+                            $('#abbreviation_' + unitNameId).html(abbreviation);
+                            $('#edit_unitName_' + unitNameId).show();
                             $('#save_edit_unitName_' + unitNameId).hide();
                             $('#button_cancel_edit_unitName_' + unitNameId).hide();
                             $scope.alertSuccess('Sửa Đơn vị theo dõi thành công!', '');
@@ -1750,14 +2299,19 @@
             }
 
             $scope.deleteUnitName = function(unitNameId) {
+                $('#delete_unit').modal('hide');
                 vnuService.deleteUnitName(unitNameId)
                     .then(function() {
                         $scope.alertSuccess("Xóa Đơn vị theo dõi công!", '');
-                        $('#delete_unit').modal('hide');
+                        $rootScope.confirmDeleteId = null;
                         $scope.getAllUnitName();
                     }, function(error) {
                         console.log(error);
-                        $scope.alertDanger(error.data.message, '');
+                        if (error.data.message.indexOf("đơn vị")) {
+                            $scope.alertDanger(error.data.message, '');
+                        } else {
+                            $scope.alertDanger("Không thể xóa!", '');
+                        }
                     })
             }
 
@@ -1768,6 +2322,15 @@
             $scope.selectContract = function(contract) {
                 // console.log(contract);
             }
+
+            $scope.addAttr = function(attr, className) {
+                $('.' + className).attr(attr, attr);
+            }
+
+            $scope.removeAttr = function(attr, className) {
+                $('.' + className).removeAttr(attr);
+            }
+
             $scope.alertWarning = function(warning, timeout) {
                 $scope.warningMessage = warning;
                 $scope.warning = true;

@@ -1,0 +1,78 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" id="close_insert_excel_in"><span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title">Thêm Thỏa thuận hợp tác từ excel</h4>
+    </div>
+    <div class="modal-body">
+        <table>
+            <tr>
+                <td>
+                    <!-- <label style="border-radius:25px; border: 1px solid rgba(221,226,232,.49); box-shadow: inset 0 1px 0 rgba(0,0,0,.075);" class="btn btn-primary" for="xlfIn" ng-click="clearInputFileExcel()">Chọn file</label> -->
+                    <input style="border-radius:25px; border: 1px solid rgba(221,226,232,.49); box-shadow: inset 0 1px 0 rgba(0,0,0,.075);" type="file" name="xlfile" id="xlfIn" ng-init="convertIn()" ng-click="clearInputFileExcel()">
+                </td>
+                <!-- <td>
+                                        <button style="border-radius:25px; border: 1px solid rgba(221,226,232,.49); box-shadow: inset 0 1px 0 rgba(0,0,0,.075);" class="btn-primary" ng-click="checkExcelData()">Kiểm tra dữ liệu</button>
+                                    </td> -->
+                <td>
+                    <button style="border-radius:25px; border: 1px solid rgba(221,226,232,.49); box-shadow: inset 0 1px 0 rgba(0,0,0,.075);" class="btn-success" ng-click="importExcel()" ng-if="checkContractValue">Import</button>
+                </td>
+            </tr>
+        </table>
+        <br>
+        <div class="alert alert-warning" ng-if="checkContractValue == false">
+            <strong>Kiểm tra lại file excel chọn lại</strong>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped jambo_table bulk_action" ng-if="excelTableIn != null">
+                <thead>
+                    <tr class="headings">
+                        <th class="column-title">Tên cơ quan hợp tác</th>
+                        <!-- <th class="column-title">Quốc gia</th> -->
+                        <th class="column-title">Người ký đối tác</th>
+                        <th class="column-title">Nội dung hợp tác</th>
+                        <th class="column-title">Người ký VNU</th>
+                        <th class="column-title">Đơn vị theo dõi</th>
+                        <th class="column-title">Ngày ký</th>
+                        <th class="column-title">Ngày hết hiệu lực</th>
+                        <th class="column-title">Tự động renew</th>
+                        <th class="column-title">Hiệu quả hợp tác</th>
+                        <th class="column-title">Lưu ý</th>
+                        <!-- <th class="column-title">Biên bản ghi nhớ</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="even pointer" ng-repeat="contract in excelTableIn" id="In_excel_{{contract.STT}}">
+                        <td id="In_partnerName_{{contract.STT}}">{{contract.partnerName}}</td>
+                        <!-- <td id="">{{contract.nation}}</td> -->
+                        <td id="In_contactName_{{contract.STT}}">{{contract.contactName}}</td>
+                        <td id="" ng-bind-html="contract.contentContract"></td>
+                        <!-- <td id="In_uetMan_{{contract.STT}}" ng-mouseleave="hideButton(contract.STT)">
+                                                <p id="In_p_uetMan_{{contract.STT}}" ng-mouseover="showButton(contract.STT)">{{contract.uetMan}}</p>
+                                            </td> -->
+                        <td id="In_uetMan_{{contract.STT}}" ng-bind-html="contract.uetMan">
+                        </td>
+                        <td id="In_unitName_{{contract.STT}}" ng-bind-html="contract.unitName">
+                        </td>
+                        <td id="">{{contract.startDate | date:'dd/MM/yyyy'}}</td>
+                        <td id="">{{contract.endDate | date:'dd/MM/yyyy'}}</td>
+                        <td id="">{{contract.renew}}</td>
+                        <td id="">{{contract.result}}</td>
+                        <td id="" ng-bind-html="contract.notice"></td>
+                        <!-- <td id="">
+                                                <label for="contract-excel-{{contract.STT}}" class="cursor">
+                                                    <i class="fa fa-file-pdf-o"></i>
+                                                    Chọn file
+                                                </label>
+                                                <input class="attach-file" type="file" name="input_file_pdf" id="contract-excel-{{contract.STT}}" accept=".doc, .docx, .pdf" ng-show="show">
+                                            </td> -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" ng-click="createContract()">Tạo Thỏa thuận hợp tác</button> -->
+    </div>
+</div>
