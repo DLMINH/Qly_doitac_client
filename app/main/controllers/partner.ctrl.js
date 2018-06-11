@@ -112,7 +112,7 @@
             $scope.getPartnerAndId = function() {
                 partnerService.getPartnerAndId()
                     .then(function(response) {
-                        // console.log(response.data);
+                        console.log(response.data);
                         $scope.allPartnerNameId = response.data;
                     }, function(error) {
                         console.log(error);

@@ -306,7 +306,7 @@
                 wscols[12] = { wpx: 200 };
                 wscols[13] = { wpx: 200 };
                 // wscols[11] = { wpx: 200 };
-                var ws = { '!ref': "A1:M" + ($scope.allContract.length + 1) };
+                var ws = { '!ref': "A1:N" + ($scope.allContract.length + 1) };
                 ws['!cols'] = wscols;
                 // ws['A1'] = { h: "test", r: "<t>test</t>", t: "s", v: "test", w: "test" }
                 var i = 2;
@@ -332,11 +332,11 @@
                     w: "Người ký đối tác"
                 };
                 ws['D1'] = {
-                    h: "Người ký " + $rootScope.user.rolesAndSigningLevel.name + "",
-                    r: "Người ký " + $rootScope.user.rolesAndSigningLevel.name + "",
+                    h: "Người ký",
+                    r: "Người ký",
                     t: "s",
-                    v: "Người ký " + $rootScope.user.rolesAndSigningLevel.name + "",
-                    w: "Người ký " + $rootScope.user.rolesAndSigningLevel.name + ""
+                    v: "Người ký",
+                    w: "Người ký"
                 };
                 ws['E1'] = {
                     h: "Nội dung hợp tác chính",
@@ -767,13 +767,16 @@
                             worksheet['I1'].w = "renew";
                             worksheet['J1'].w = "unitName";
                             worksheet['K1'].w = "notice";
+                            worksheet['L1'].w = "contactPoint";
                             $rootScope.excelIn = XLSX.utils.sheet_to_json(worksheet);
                             $timeout(function() {
                                 $scope.checkExcelData();
                             })
                         };
                         reader.readAsBinaryString(f);
+
                     }
+
                     // $timeout(function() {
                     //     $scope.checkExcelData();
                     // }, 1000)
@@ -804,6 +807,12 @@
                         // console.log(v.contentContract);
                         data.endDate = new Date(data.endDate).getTime();
                         data.startDate = new Date(data.startDate).getTime();
+                        // if (data.renew != undefined) {
+                        //     if (data.renew.toLowerCase().indexOf("x")) {
+                        //         data.renew = true;
+                        //     }
+                        // }
+
                         if (data.partnerIds != null && data.partnerIds != undefined) {
 
                         }
@@ -901,29 +910,61 @@
                                     data.partnerName = partner.partnerName;
                                     data.partnerId = partner.id;
                                     if (partner.partnerContacts != null) {
-                                        function equals(element) {
-                                            return element.id == data.contactName;
-                                        }
-                                        var partnerContact = partner.partnerContacts.find(equals);
-                                        if (partnerContact != undefined) {
-                                            data.contactName = partnerContact.contactName;
-                                            data.partnerContactId = partnerContact.id;
-                                        } else {
-                                            // console.log($('#In_contactName_' + data.STT))
-                                            if (isNaN(data.contactName)) {
-                                                data.contactName = "-Hãy điền mã người kí đối tác";
-                                            } else {
-                                                data.contactName = "-Mã " + data.contactName + " chưa đúng";
+                                        if (data.contactName != 0) {
+                                            function equals(element) {
+                                                return element.id == data.contactName;
                                             }
-                                            $('#In_contactName_' + data.STT).css('background-color', '#f0ad4e');
-                                            $scope.checkContractValue = false;
-                                            data.error = true;
+                                            var partnerContact = partner.partnerContacts.find(equals);
+                                            if (partnerContact != undefined) {
+                                                data.contactName = partnerContact.contactName;
+                                                data.partnerContactId = partnerContact.id;
+                                            } else {
+                                                // console.log($('#In_contactName_' + data.STT))
+                                                if (isNaN(data.contactName)) {
+                                                    data.contactName = "-Hãy điền mã người kí đối tác";
+                                                } else {
+                                                    data.contactName = "-Mã " + data.contactName + " chưa đúng";
+                                                }
+                                                $('#In_contactName_' + data.STT).css('background-color', '#f0ad4e');
+                                                $scope.checkContractValue = false;
+                                                data.error = true;
+                                            }
                                         }
-                                    } else {
-                                        $('#In_contactname_' + data.STT).css('background-color', '#f0ad4e');
-                                        $scope.checkContractValue = false;
-                                        data.error = true;
+
                                     }
+                                    // else {
+                                    //     $('#In_contactname_' + data.STT).css('background-color', '#f0ad4e');
+                                    //     $scope.checkContractValue = false;
+                                    //     data.error = true;
+                                    // }
+                                    if (partner.partnerContacts != null) {
+                                        if (data.contactPoint != 0) {
+                                            function equals(element) {
+                                                return element.id == data.contactPoint;
+                                            }
+                                            var contactPoint = partner.partnerContacts.find(equals);
+                                            if (contactPoint != undefined) {
+                                                data.contactPoint = partnerContact.contactName;
+                                                data.contactPointId = partnerContact.id;
+                                            } else {
+                                                // console.log($('#In_contactName_' + data.STT))
+                                                if (isNaN(data.contactPoint)) {
+                                                    data.contactPoint = "-Hãy điền mã người kí đối tác";
+                                                } else {
+                                                    data.contactPoint = "-Mã " + data.contactPoint + " chưa đúng";
+                                                }
+                                                $('#In_contactPoint_' + data.STT).css('background-color', '#f0ad4e');
+                                                $scope.checkContractValue = false;
+                                                data.error = true;
+                                            }
+                                        }
+
+                                    }
+                                    // else {
+                                    //     $('#In_contactPoint_' + data.STT).css('background-color', '#f0ad4e');
+                                    //     $scope.checkContractValue = false;
+                                    //     data.error = true;
+                                    // }
                                 } else {
                                     $('#In_partnerName_' + data.STT).css('background-color', '#f0ad4e');
                                     $scope.checkContractValue = false;
@@ -940,6 +981,9 @@
                             $('#In_contactName_' + data.STT).css('background-color', '#f0ad4e');
                             $scope.checkContractValue = false;
                             data.error = true;
+                        }
+                        if (data.contactPoint != null && data.contactPoint != undefined) {
+
                         }
                         // if (data.error == true) {
 
@@ -1087,7 +1131,7 @@
                         })
                 }
                 if ($scope.excelTableIn != null) {
-                    // console.log($scope.excelTableIn);
+                    console.log($scope.excelTableIn);
                     vnuService.importExcel($scope.excelTableIn)
                         .then(function(response) {
                             console.log(response.data);
@@ -1100,7 +1144,8 @@
                                 $scope.excelTableIn = response.data;
                             }
                             $scope.clearInputFileExcel();
-
+                            // window.location.reload();
+                            // $scope.getAllContract();
                         }, function(error) {
                             console.log(error);
                         })
@@ -1166,7 +1211,8 @@
                     $scope.input.unitName != undefined && $scope.input.abbreviation != "" &&
                     $scope.input.abbreviation != null && $scope.input.abbreviation != undefined) {
                     vnuService.createUnit($scope.input)
-                        .then(function() {
+                        .then(function(response) {
+                            console.log(response.data);
                             $scope.alertSuccess("Tạo đơn vị thành công!", "");
                             $scope.input = {};
                             $scope.getAllUnitName();
@@ -2151,6 +2197,7 @@
                 $('#uetMan_' + uetManId).html('<input id="uetMan_value_' + uetManId + '" value="' + uetMan + '" style="border-radius:3px; border: 1px solid;"/>')
                 $('#about_' + uetManId).html('' +
                     '<select id="about_value_' + uetManId + '" style="border-radius:3px; border: 1px solid;">' +
+                    '<option value=" "> </option>' +
                     '<option value="Giám đốc">Giám đốc</option>' +
                     '<option value="Phó giám đốc">Phó giám đốc</option>' +
                     '<option value="Trưởng ban">Trưởng ban</option>' +
@@ -2231,12 +2278,12 @@
                         $scope.getAllUetMan();
                     }, function(error) {
                         console.log(error);
-                        if(error.data.message.indexOf("xóa")){
+                        if (error.data.message.indexOf("xóa")) {
                             $scope.alertDanger(error.data.message, '');
                         } else {
                             $scope.alertDanger("Có lỗi xảy ra, không thể xóa", '');
                         }
-                        
+
                     })
             }
 

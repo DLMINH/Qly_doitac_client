@@ -16,7 +16,7 @@ config(['$locationProvider', '$routeProvider', '$stateProvider', '$urlRouterProv
                 // templateUrl: "/main/views/login/login.html",
                 controller: function() {
 
-                    window.location.href = 'login.html';
+                    // window.location.href = 'login.html';
                 }
             }).otherwise({ redirectTo: "/login" });
 
