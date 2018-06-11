@@ -38,6 +38,7 @@
                         <th class="column-title">Tự động renew</th>
                         <th class="column-title">Hiệu quả hợp tác</th>
                         <th class="column-title">Lưu ý</th>
+                        <th class="column-title">Đầu mối liên hệ</th>
                         <!-- <th class="column-title">Biên bản ghi nhớ</th> -->
                     </tr>
                 </thead>
@@ -59,6 +60,7 @@
                         <td id="">{{contract.renew}}</td>
                         <td id="">{{contract.result}}</td>
                         <td id="" ng-bind-html="contract.notice"></td>
+                        <td id="In_contactPoint_{{contract.STT}}">{{contract.contactPoint}}</td>
                         <!-- <td id="">
                                                 <label for="contract-excel-{{contract.STT}}" class="cursor">
                                                     <i class="fa fa-file-pdf-o"></i>

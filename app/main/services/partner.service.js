@@ -132,7 +132,7 @@
 
         function getAllPartner() {
             return $http({
-                url: $rootScope.serverAdd + '/partner',
+                url: $rootScope.serverAdd + '/partner/fit',
                 method: 'GET'
             })
         }
