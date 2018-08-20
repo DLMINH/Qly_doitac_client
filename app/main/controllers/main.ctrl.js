@@ -3,7 +3,7 @@
         .controller('mainCtrl', ['$scope', '$rootScope', '$location', '$window', 'userService', '$state', '$http', '$timeout', 'md5', 'vnuService',
             function($scope, $rootScope, $location, $window, userService, $state, $http, $timeout, md5, vnuService) {
                 $rootScope.serverAdd = "http://112.137.129.69:8180";
-                $rootScope.clientAdd = "http://112.137.129.69:8080";
+                $rootScope.clientAdd = "http://112.137.129.69:80";
                 $rootScope.srcAdd = "http://112.137.129.69:9000";
                 $scope.isLoading = function() {
                     return $http.pendingRequests.length > 0;
