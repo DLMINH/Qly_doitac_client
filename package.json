@@ -15,7 +15,7 @@
     "jasmine-core": "^2.4.1"
   },
   "scripts": {
-    "start": "http-server -a 10.10.1.20 -p 8080 -d false -i false -c-1 ./app -f /index.html"
+    "start": "http-server -a 10.10.1.20 -p 80 -d false -i false -c-1 ./app -f /index.html"
   },
   "dependencies": {
     "grunt-contrib-compress": "^1.4.3",
